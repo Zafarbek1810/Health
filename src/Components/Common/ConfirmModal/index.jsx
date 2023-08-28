@@ -13,13 +13,15 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     minHeight: 200,
-    maxWidth: 400,
+    maxWidth: 600,
+    width: "100%",
     transform: "translate(-50%, -50%)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 8,
     color:"#000",
+    backgroundColor:"#fff",
   },
 };
 
@@ -47,7 +49,6 @@ const ConfirmModal = ({ children }) => {
     >
       <ModalHeader>
         <h1 className="modal-title fs-5" id="staticBackdropLabel">
-          Chiqish
         </h1>
         <Button
           type="button"
@@ -62,7 +63,7 @@ const ConfirmModal = ({ children }) => {
       <ModalContent>
         <p className="text">{children}</p>
       </ModalContent>
-      <ModalFooter className="modal-footer">
+      {/* <ModalFooter className="modal-footer">
         <Button type="button" onClick={RejectAndClose} data-bs-dismiss="modal" variant="contained"
         class="btn btn-danger btn-rounded col-6"
         >
@@ -73,7 +74,7 @@ const ConfirmModal = ({ children }) => {
         >
           Tasdiqlash
         </Button>
-      </ModalFooter>
+      </ModalFooter> */}
     </Modal>
   );
 };

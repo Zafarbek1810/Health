@@ -73,7 +73,7 @@ const LaborantMain = () => {
   return (
     <LaborantMainWrapper>
       <div className="top">
-        <h3 className="col-2">Foydalanuvchilar</h3>
+        <h3 className="col-2">Laborantlar</h3>
 
         <Button
           class="col-2 btn btn-success btn-rounded"

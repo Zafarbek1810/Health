@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import AddCompanyWrapper from "./style";
 import { ModalContent, ModalHeader } from "../../User/AddUser/style";
 import ButtonLoader from "../../../../../Common/ButtonLoader";
-import Select from "react-select";
 import { Controller, useForm } from "react-hook-form";
 import CompanyProvider from "../../../../../../Data/CompanyProvider";
 import { toast } from "react-toastify";

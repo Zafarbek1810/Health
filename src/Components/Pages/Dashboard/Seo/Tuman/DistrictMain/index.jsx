@@ -137,7 +137,7 @@ const DistrictMain = () => {
           anchor={"right"}
           open={isOpenModal2}
           onClose={() => {
-            onCloseModal();
+            onCloseModal2();
           }}
         >
           <EditDistrict onCloseModal2={onCloseModal2} editTuman={editTuman}/>

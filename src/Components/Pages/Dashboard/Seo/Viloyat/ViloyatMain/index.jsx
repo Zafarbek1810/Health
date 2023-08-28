@@ -139,7 +139,7 @@ const ViloyatMain = () => {
           anchor={"right"}
           open={isOpenModal2}
           onClose={() => {
-            onCloseModal();
+            onCloseModal2();
           }}
         >
           <EditViloyat onCloseModal2={onCloseModal2} editViloyat={editViloyat}/>

@@ -23,7 +23,6 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
   useEffect(() => {
     AuthProvider.getMe()
       .then((res) => {
-        console.log(res.data);
         setName(res.data);
       })
       .catch((err) => {
@@ -31,7 +30,6 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
       });
   }, []);
 
-  console.log(name);
 
   const handleLogout = () => {
     RefObj.current.textContent = `Haqiqatan ham tizimdan chiqmoqchimisiz?`;

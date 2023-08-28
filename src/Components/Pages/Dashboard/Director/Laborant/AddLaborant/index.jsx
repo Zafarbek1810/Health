@@ -71,7 +71,7 @@ const AddLaborant = ({ onCloseModal }) => {
   return (
     <DrawerWrapper>
       <ModalHeader className="modal-header">
-        <h2 className="title">Foydalanuvchi qo`shish</h2>
+        <h2 className="title">Laborant qo`shish</h2>
         <button className="closeSvg" onClick={onCloseModal}>
           <CloseIconSvg />
         </button>

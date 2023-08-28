@@ -9,32 +9,68 @@ import { SidebarWrapper } from "./Sidebar.style";
 const NavListMenu = [
   //seo role
   {
-    title: "Foydalanuvchi yaratish",
+    title: "Foydalanuvchilar",
     path: "/dashboard/ceo/users",
     src: <UserCircle />,
     role: ["ROLE_SEO"],
   },
   {
-    title: "Company yaratish",
+    title: "Kompaniyalar",
     path: "/dashboard/ceo/company",
     src: <UserCircle />,
     role: ["ROLE_SEO"],
   },
   {
-    title: "Viloyat yaratish",
+    title: "Viloyatlar",
     path: "/dashboard/ceo/region",
     src: <UserCircle />,
     role: ["ROLE_SEO"],
   },
   {
-    title: "Tuman yaratish",
+    title: "Tumanlar",
     path: "/dashboard/ceo/district",
     src: <UserCircle />,
     role: ["ROLE_SEO"],
   },
   {
-    title: "Labaratoriya yaratish",
+    title: "Labaratoriyalar",
     path: "/dashboard/ceo/labaratory",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
+    title: "Analiz",
+    path: "/dashboard/ceo/analiz",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
+    title: "Analiz narxlari",
+    path: "/dashboard/ceo/analiz-price",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
+    title: "Bakteriya",
+    path: "/dashboard/ceo/bactery",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
+    title: "Parazit",
+    path: "/dashboard/ceo/parasit",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
+    title: "Antibiotik",
+    path: "/dashboard/ceo/antibiotic",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
+    title: "Virusologiya",
+    path: "/dashboard/ceo/virusology",
     src: <UserCircle />,
     role: ["ROLE_SEO"],
   },
@@ -43,11 +79,25 @@ const NavListMenu = [
   //admin role
   //casheir role
   {
-    title: "Bemorlarni yaratish",
+    title: "Bemorlar",
     path: "/dashboard/cashier/patient",
     src: <UserCircle />,
     role: ["ROLE_CASHIER"],
   },
+  {
+    title: "Buyurtmalar",
+    path: "/dashboard/cashier/order",
+    src: <UserCircle />,
+    role: ["ROLE_CASHIER"],
+  },
+  //director role
+  {
+    title: "Laborantlar",
+    path: "/dashboard/director/laborant",
+    src: <UserCircle />,
+    role: ["ROLE_DIRECTOR"],
+  },
+  
 ];
 
 const Sidebar = () => {

@@ -6,15 +6,26 @@ import { DrawerWrapper, ModalContent, ModalHeader } from "./style";
 import Select from "react-select";
 import UserProvider from "../../../../../../Data/UserProvider";
 import CompanyProvider from "../../../../../../Data/CompanyProvider";
+import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import { toast } from "react-toastify";
 import { PatternFormat } from "react-number-format";
 
 const AddUser = ({ onCloseModal }) => {
-  const { register, handleSubmit, control, reset, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm();
   const [loading, setLoading] = useState(false);
-  const [roleType, setRoleType] = useState(null);
+  const [roleType, setRoleType] = useState({});
   const [companyValue, setCompanyValue] = useState({});
-  const [company, setCompany] = useState(null);
+  const [labaratoriyaValue, setLabaratoriyaValue] = useState({});
+  const [phoneValue, setPhoneValue] = useState({});
+  const [company, setCompany] = useState([]);
+  const [labaratory, setLabaratory] = useState([]);
 
   useEffect(() => {
     CompanyProvider.getAllCompany()
@@ -26,18 +37,31 @@ const AddUser = ({ onCloseModal }) => {
       });
   }, []);
 
+  useEffect(() => {
+    LabaratoryProvider.getAllLaboratory()
+      .then((res) => {
+        setLabaratory(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const onSubmitUser = async (values) => {
+    console.log(values);
     const body = {};
     body.firstName = values.firstName;
     body.lastName = values.lastName;
     body.username = values.username;
     body.password = values.password;
     body.roleType = roleType.value;
-    body.phoneNumber = values.phoneNumber;
+    body.phoneNumber = values.phoneNumber
     body.companyId = companyValue.value;
+    body.laboratoryId = labaratoriyaValue.value;
     body.telegramUsername = values.telegramUsername;
+    body.email = "zafar@gmail.com";
 
-    console.log("body", body);
+    console.log("body", values);
     setLoading(true);
     UserProvider.createUser(body)
       .then((res) => {
@@ -55,13 +79,19 @@ const AddUser = ({ onCloseModal }) => {
   };
 
   const options = [
-    { value: 2, label: "Admin" },
+    // { value: 2, label: "Admin" },
     { value: 3, label: "Direktor" },
     { value: 4, label: "Kassir" },
     { value: 5, label: "Laborant" },
   ];
 
   const optionCompany = company?.map((item) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+  const optionLabaratoriya = labaratory?.map((item) => {
     return {
       value: item.id,
       label: item.name,
@@ -131,23 +161,16 @@ const AddUser = ({ onCloseModal }) => {
             <label>Telefon raqami</label>
             <Controller
               control={control}
-              rules={{
-                required: true,
-                minLength: 16,
-                maxLength: 16,
-              }}
               name="phoneNumber"
               render={({ field: { onChange, onBlur, value } }) => (
                 <PatternFormat
-                  format="+998#########"
+                  format="+998## ### ## ##"
                   className="form-control"
+                  name="phoneNumber"
                   allowEmptyFormatting
                   value={value}
                   style={{ width: "100%" }}
-                  onChange={(v)=>{
-                    onChange(v.target.value)
-                    setValue("phoneNumber", v.target.value, { shouldValidate: true })
-                  }}
+                  onChange={onChange}
                   onBlur={onBlur}
                 />
               )}
@@ -189,6 +212,27 @@ const AddUser = ({ onCloseModal }) => {
                   onChange={(v) => {
                     onChange(v);
                     setCompanyValue(v);
+                  }}
+                  ref={ref}
+                />
+              )}
+            />
+          </div>
+          <div className="label">
+            <label>Labaratoriya</label>
+            <Controller
+              control={control}
+              name="labaratory"
+              render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                <Select
+                  className="select col-3 w-100"
+                  value={value}
+                  placeholder="Laboratoriya"
+                  options={optionLabaratoriya}
+                  onBlur={onBlur}
+                  onChange={(v) => {
+                    onChange(v);
+                    setLabaratoriyaValue(v);
                   }}
                   ref={ref}
                 />

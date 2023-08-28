@@ -7,7 +7,7 @@ import UserProvider from "../../../../../../Data/UserProvider";
 import CompanyProvider from "../../../../../../Data/CompanyProvider";
 import { toast } from "react-toastify";
 import { PatternFormat } from "react-number-format";
-import { DrawerWrapper, ModalContent, ModalHeader } from "../AddUser/style";
+import { DrawerWrapper, ModalContent, ModalHeader } from "../AddLaborant/style";
 
 const UpdateLaborant = ({ onCloseModal2, editUser }) => {
   const { register, handleSubmit, control, reset, setValue } = useForm();

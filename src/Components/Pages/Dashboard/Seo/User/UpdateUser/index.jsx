@@ -8,6 +8,7 @@ import CompanyProvider from "../../../../../../Data/CompanyProvider";
 import { toast } from "react-toastify";
 import { PatternFormat } from "react-number-format";
 import { DrawerWrapper, ModalContent, ModalHeader } from "../AddUser/style";
+import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 
 const UpdateUser = ({ onCloseModal2, editUser }) => {
   const { register, handleSubmit, control, reset, setValue } = useForm();
@@ -15,6 +16,8 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
   const [roleType, setRoleType] = useState({});
   const [companyValue, setCompanyValue] = useState({});
   const [company, setCompany] = useState(null);
+  const [labaratoriyaValue, setLabaratoriyaValue] = useState({});
+  const [labaratory, setLabaratory] = useState([]);
 
   useEffect(() => {
     CompanyProvider.getAllCompany()
@@ -37,6 +40,16 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
     setCompanyValue({ value: editUser.companyId, label: editUser.companyName });
     }, [editUser]);
 
+    useEffect(() => {
+      LabaratoryProvider.getAllLaboratory()
+        .then((res) => {
+          setLabaratory(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []);
+
   const onSubmitEditUser = async (values) => {
     const body = {};
     body.id = editUser.id;
@@ -48,6 +61,8 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
     body.phoneNumber = values.phoneNumber;
     body.companyId = companyValue.value;
     body.telegramUsername = values.telegramUsername;
+
+    console.log(body);
 
     setLoading(true);
     UserProvider.updateUser(body)
@@ -66,8 +81,10 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
   };
 
   const options = [
-    { value: 2, label: "Admin" },
+    // { value: 2, label: "Admin" },
     { value: 3, label: "Direktor" },
+    { value: 4, label: "Kassir" },
+    { value: 5, label: "Laborant" },
   ];
 
   const optionCompany = company?.map((item) => {
@@ -76,6 +93,15 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
       label: item.name,
     };
   });
+
+  const optionLabaratoriya = labaratory?.map((item) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+
+
   return (
     <DrawerWrapper>
       <ModalHeader className="modal-header">
@@ -139,25 +165,16 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
             <label>Telefon raqami</label>
             <Controller
               control={control}
-              rules={{
-                required: true,
-                minLength: 16,
-                maxLength: 16,
-              }}
               name="phoneNumber"
               render={({ field: { onChange, onBlur, value } }) => (
                 <PatternFormat
-                  format="+998#########"
+                  format="+998## ### ## ##"
                   className="form-control"
+                  name="phoneNumber"
                   allowEmptyFormatting
                   value={value}
                   style={{ width: "100%" }}
-                  onChange={(v) => {
-                    onChange(v.target.value);
-                    setValue("phoneNumber", v.target.value, {
-                      shouldValidate: true,
-                    });
-                  }}
+                  onChange={onChange}
                   onBlur={onBlur}
                 />
               )}
@@ -199,6 +216,27 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
                   onChange={(v) => {
                     onChange(v);
                     setCompanyValue(v);
+                  }}
+                  ref={ref}
+                />
+              )}
+            />
+          </div>
+          <div className="label">
+            <label>Labaratoriya</label>
+            <Controller
+              control={control}
+              name="labaratory"
+              render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                <Select
+                  className="select col-3 w-100"
+                  value={value}
+                  placeholder="Laboratoriya"
+                  options={optionLabaratoriya}
+                  onBlur={onBlur}
+                  onChange={(v) => {
+                    onChange(v);
+                    setLabaratoriyaValue(v);
                   }}
                   ref={ref}
                 />

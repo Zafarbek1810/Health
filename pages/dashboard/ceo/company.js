@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
       <WithAuthComponent>
         <DashboardLayout>
-        <CompanyMain />
+          <CompanyMain />
         </DashboardLayout>
       </WithAuthComponent>
     </div>

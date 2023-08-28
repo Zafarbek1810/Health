@@ -36,12 +36,16 @@ const Login = () => {
           router.replace("/dashboard/ceo/users");
           break;
         }
-        case "ROLE_ADMIN": {
+        case "ROLE_OPERATOR": {
           router.replace("/dashboard/admin/region");
           break;
         }
         case "ROLE_CASHIER": {
           router.replace("/dashboard/cashier/patient");
+          break;
+        }
+        case "ROLE_DIRECTOR": {
+          router.replace("/dashboard/director/laborant");
           break;
         }
       }

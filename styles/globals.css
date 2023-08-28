@@ -15,6 +15,10 @@ body {
   box-sizing: border-box;
 }
 
+.ReactModal__Overlay--after-open{
+  background-color: rgba(0, 0, 0, 0.38) !important;
+}
+
 
 
 @font-face {

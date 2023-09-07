@@ -13,7 +13,6 @@ const UpdateCompany = ({onCloseModal2, editCompany}) => {
 
   useEffect(() => {
     setValue("companyName", editCompany.name);
-    console.log(editCompany);
     }, [editCompany]);
 
   const onSubmitCompany = async (values) => {

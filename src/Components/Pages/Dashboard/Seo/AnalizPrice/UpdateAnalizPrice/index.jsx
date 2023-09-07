@@ -17,7 +17,6 @@ const UpdateAnalizPrice = ({ onCloseModal2, editAnalizPrice }) => {
   const [company, setCompany] = useState([]);
   const [analiz, setAnaliz] = useState([]);
 
-  console.log(editAnalizPrice, "editAnalizPrice");
 
   useEffect(() => {
     setValue("company", {

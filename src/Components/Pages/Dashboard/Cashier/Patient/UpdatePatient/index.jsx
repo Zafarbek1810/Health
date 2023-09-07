@@ -11,10 +11,9 @@ import PatientProvider from "../../../../../../Data/PatientProvider";
 import { toast } from "react-toastify";
 
 const UpdatePatient = ({ onCloseModal2, editPatient }) => {
-  const { register, handleSubmit, control, reset, setValue } = useForm();
+  const { register, handleSubmit, control, reset, setValue, getValues } = useForm();
+  const [patientEdit, setPatientEdit] = useState({});
   const [loading, setLoading] = useState(false);
-  const [regionId, setRegionId] = useState({});
-  const [districtId, setDistrictId] = useState({});
   const [region, setRegion] = useState([]);
   const [district, setDistrict] = useState([]);
 
@@ -38,46 +37,64 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
       });
   }, []);
 
+  useEffect(() => {
+    PatientProvider.getOnePatient(editPatient.id)
+      .then((res) => {
+        console.log(res.data.data);
+        setPatientEdit(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [editPatient]);
+
+  console.log(editPatient, 'editPatient');
+  console.log(patientEdit, 'patientEdit');
+  console.log(getValues());
+
 
   useEffect(() => {
     setValue("firstName", editPatient.first_name);
     setValue("lastName", editPatient.last_name);
     setValue("phoneNumber", editPatient.phone_number);
-    setValue("birthDay", editPatient.birthDay);
+    setValue("birthDay", editPatient.birth_day);
     setValue("address", editPatient.address);
     setValue("officeName", editPatient.office_name);
     setValue("contract", editPatient.contract);
     setValue("privilege", editPatient.privilege);
     setValue("comment", editPatient.comment);
     setValue("region", {
-        value: editPatient.region.id,
-        label: editPatient.region.name,
-        });
-    setValue("district", {
-        value: editPatient.district.id,
-        label: editPatient.district.name,
-        });
-  }, [editPatient]);
+      value: editPatient?.region?.id,
+      label: editPatient?.region?.name,
+    });
+    setValue("district",{
+      value: editPatient?.district?.id,
+      label: editPatient?.district?.name,
+    });
+  }, []);
+
 
   const onSubmitPatient = async (values) => {
     const body = {};
-    body.id = editPatient.id;
-    body.firstName = values.firstName;
-    body.lastName = values.lastName;
-    body.phoneNumber = values.phoneNumber;
-    body.regionId = regionId.value;
-    body.districtId = districtId.value;
-    body.birthDay = values.birthDay;
-    body.address = values.address;
-    body.officeName = values.officeName;
-    body.contract = values.contract;
-    body.privilege = values.privilege;
-    body.comment = values.comment;
+    if (editPatient) {
+      body.id = editPatient.id;
+      body.firstName = values.firstName;
+      body.lastName = values.lastName;
+      body.phoneNumber = values.phoneNumber;
+      body.regionId = editPatient?.region?.id;
+      body.districtId = editPatient?.district?.id;
+      body.birthDay = values.birthDay;
+      body.address = values.address;
+      body.officeName = values.officeName;
+      body.contract = values.contract;
+      body.privilege = values.privilege;
+      body.comment = values.comment;
+    }
 
     setLoading(true);
     PatientProvider.updatePatient(body)
       .then((res) => {
-        toast.success(res.data?.message);
+        toast.success("Muvaffaqiyatli o`zgartirildi");
         onCloseModal2();
         reset();
       })
@@ -149,7 +166,6 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
                   onBlur={onBlur}
                   onChange={(v) => {
                     onChange(v);
-                    setRegionId(v);
                   }}
                   ref={ref}
                 />
@@ -170,7 +186,6 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
                   onBlur={onBlur}
                   onChange={(v) => {
                     onChange(v);
-                    setDistrictId(v);
                   }}
                   ref={ref}
                 />
@@ -211,7 +226,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               autoComplete="off"
               className="form-control"
               placeholder={"Manzil"}
-              {...register("address", { required: true })}
+              {...register("address", { required: false })}
             />
           </div>
           <div className="label">
@@ -220,7 +235,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               autoComplete="off"
               className="form-control"
               placeholder={"officeName"}
-              {...register("officeName", { required: true })}
+              {...register("officeName", { required: false })}
             />
           </div>
           <div className="label">
@@ -229,7 +244,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               autoComplete="off"
               className="form-control"
               placeholder={"contract"}
-              {...register("contract", { required: true })}
+              {...register("contract", { required: false })}
             />
           </div>
           <div className="label">
@@ -239,7 +254,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               className="form-control"
               type="number"
               placeholder={"privilege"}
-              {...register("privilege", { required: true })}
+              {...register("privilege", { required: false })}
             />
           </div>
           <div className="label">
@@ -248,7 +263,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               autoComplete="off"
               className="form-control"
               placeholder={"comment"}
-              {...register("comment", { required: true })}
+              {...register("comment", { required: false })}
             />
           </div>
 

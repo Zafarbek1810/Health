@@ -1,8 +1,6 @@
 import { styled } from "styled-components";
 
 const LoginWrapper = styled.div`
-  background: rgb(29,84,141);
-  background:#e2e2e2;
   height: 100vh;
   width: 100%;
   background-repeat: no-repeat;
@@ -17,16 +15,19 @@ const LoginWrapper = styled.div`
     position: relative;
     z-index: 33 !important;
     background-color: #fff;
-    width: 30%;
+    width: 80%;
     height: auto;
     padding: 20px;
     text-align: center;
     border-radius: 8px;
     display: flex;
+    gap: 30px;
     align-items: center;
 
     .right{
-      width: 100%;
+      width: 50%;
+      text-align: center;
+
       h4{
         color: #332e38;
         font-size: 32px;

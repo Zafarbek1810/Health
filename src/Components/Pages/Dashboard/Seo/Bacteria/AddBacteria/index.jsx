@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CloseIconSvg from "../../../../../Common/Svgs/CloseIconSvg";
 import ButtonLoader from "../../../../../Common/ButtonLoader";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { AddBacteriaWrapper } from "./style";
 import { ModalContent, ModalHeader } from "../../Viloyat/AddViloyat/style";
@@ -71,7 +71,7 @@ const AddBacteria = ({ onCloseModal }) => {
             <label>Laboratory</label>
             <Controller
               control={control}
-              name="region"
+              name="laboratory"
               render={({ field: { onChange, onBlur, value, name, ref } }) => (
                 <Select
                   className="select col-3 w-100"

@@ -29,7 +29,6 @@ const Login = () => {
 
   useEffect(() => {
     console.log(currentUser);
-    console.log(isAuth);
     if (isAuth && currentUser) {
       switch (currentUser.roles) {
         case "ROLE_SEO": {
@@ -37,7 +36,7 @@ const Login = () => {
           break;
         }
         case "ROLE_OPERATOR": {
-          router.replace("/dashboard/admin/region");
+          router.replace("/dashboard/operator/result");
           break;
         }
         case "ROLE_CASHIER": {
@@ -45,7 +44,7 @@ const Login = () => {
           break;
         }
         case "ROLE_DIRECTOR": {
-          router.replace("/dashboard/director/laborant");
+          router.replace("/dashboard/director/orders");
           break;
         }
       }
@@ -72,6 +71,9 @@ const Login = () => {
   return (
     <LoginWrapper>
       <div className="main">
+        <div className="left">
+          <img src="/images/login.jpg" alt="" />
+        </div>
         <div className="right">
           <h4>Kirish</h4>
           <form onSubmit={handleSubmit(onSubmit)}>

@@ -85,6 +85,10 @@ const OrdersMain = () => {
       });
   };
 
+  const handleEditOrder = (obj) => {
+    router.push(`/dashboard/cashier/order-create?id=${obj.id}`);
+  };
+
   const optionPatient = patient?.map((item) => {
     return {
       value: item.id,
@@ -166,19 +170,32 @@ const OrdersMain = () => {
           <tbody>
             {!loading ? (
               order.map((obj, index) => (
-                <tr
-                  key={index}
-                  onClick={() => {
-                    handleTableRow(obj);
-                  }}
-                >
-                  <td style={{ minWidth: "20%" }} className="col">
+                <tr key={index}>
+                  <td
+                    onClick={() => {
+                      handleTableRow(obj);
+                    }}
+                    style={{ minWidth: "20%" }}
+                    className="col"
+                  >
                     {index + 1}.{obj.firstName} {obj.lastName}
                   </td>
-                  <td style={{ minWidth: "15%" }} className="col">
+                  <td
+                    onClick={() => {
+                      handleTableRow(obj);
+                    }}
+                    style={{ minWidth: "15%" }}
+                    className="col"
+                  >
                     {obj.phoneNumber}
                   </td>
-                  <td style={{ minWidth: "15%" }} className="col">
+                  <td
+                    onClick={() => {
+                      handleTableRow(obj);
+                    }}
+                    style={{ minWidth: "15%" }}
+                    className="col"
+                  >
                     {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                   </td>
                   <td style={{ minWidth: "15%" }} className="col">
@@ -187,9 +204,9 @@ const OrdersMain = () => {
                   <td style={{ minWidth: "15%" }} className="col">
                     {+obj.paymentType === 10
                       ? "Naqd"
-                      : obj.paymentType === 20
+                      : +obj.paymentType === 20
                       ? "Plastik"
-                      : obj.paymentType === 30
+                      : +obj.paymentType === 30
                       ? "Hisobdan o'tkazish"
                       : "Bunday to'lov turi yo'q"}
                   </td>
@@ -198,12 +215,9 @@ const OrdersMain = () => {
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
                     <div className="btns">
-                      <a class="text-success mr-2" href="#">
-                        <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                      </a>
-                      {/* <IconButton onClick={() => handleEditPatient(obj)}>
-                      <EditSvg />
-                    </IconButton> */}
+                      <IconButton onClick={() => handleEditOrder(obj)}>
+                        <EditSvg />
+                      </IconButton>
                       <IconButton onClick={() => handleDeleteOrder(obj)}>
                         <DeleteSvg />
                       </IconButton>
@@ -237,7 +251,7 @@ const OrdersMain = () => {
             <tbody>
               {!loadingModal ? (
                 <>
-                {modalAnalizData.map((obj, index) => (
+                  {modalAnalizData.map((obj, index) => (
                     <tr key={index}>
                       <td style={{ minWidth: "50%" }} className="col">
                         {index + 1}.{obj.analysisName}
@@ -246,15 +260,15 @@ const OrdersMain = () => {
                         {obj.price}
                       </td>
                     </tr>
-                ))}
-                <tr>
-                  <td style={{ minWidth: "50%" }} className="col">
-                    Jami:
-                  </td>
-                  <td style={{ minWidth: "50%" }} className="col">
-                    {modalAnalizData.reduce((a, b) => a + b.price, 0)}
-                  </td>
-                </tr>
+                  ))}
+                  <tr>
+                    <td style={{ minWidth: "50%" }} className="col">
+                      Jami:
+                    </td>
+                    <td style={{ minWidth: "50%" }} className="col">
+                      {modalAnalizData.reduce((a, b) => a + b.price, 0)}
+                    </td>
+                  </tr>
                 </>
               ) : (
                 <MinLoader />

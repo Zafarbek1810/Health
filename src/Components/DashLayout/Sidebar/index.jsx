@@ -51,6 +51,12 @@ const NavListMenu = [
     role: ["ROLE_SEO"],
   },
   {
+    title: "Antibiotik",
+    path: "/dashboard/ceo/antibiotic",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
     title: "Bakteriya",
     path: "/dashboard/ceo/bactery",
     src: <UserCircle />,
@@ -59,12 +65,6 @@ const NavListMenu = [
   {
     title: "Parazit",
     path: "/dashboard/ceo/parasit",
-    src: <UserCircle />,
-    role: ["ROLE_SEO"],
-  },
-  {
-    title: "Antibiotik",
-    path: "/dashboard/ceo/antibiotic",
     src: <UserCircle />,
     role: ["ROLE_SEO"],
   },
@@ -92,10 +92,36 @@ const NavListMenu = [
   },
   //director role
   {
-    title: "Laborantlar",
-    path: "/dashboard/director/laborant",
+    title: "Buyurtmalar",
+    path: "/dashboard/director/orders",
     src: <UserCircle />,
     role: ["ROLE_DIRECTOR"],
+  },
+  // {
+  //   title: "Laborantlar",
+  //   path: "/dashboard/director/laborant",
+  //   src: <UserCircle />,
+  //   role: ["ROLE_DIRECTOR"],
+  // },
+  
+  //operator role
+  // {
+  //   title: "Analiz yaratish",
+  //   path: "/dashboard/operator/analiz-result-add",
+  //   src: <UserCircle />,
+  //   role: ["ROLE_OPERATOR"],
+  // },
+  {
+    title: "Analiz yaratish",
+    path: "/dashboard/operator/orders",
+    src: <UserCircle />,
+    role: ["ROLE_OPERATOR"],
+  },
+  {
+    title: "Natijalar",
+    path: "/dashboard/operator/result",
+    src: <UserCircle />,
+    role: ["ROLE_OPERATOR"],
   },
   
 ];

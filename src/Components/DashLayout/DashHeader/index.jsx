@@ -5,6 +5,7 @@ import UserContext from "../../../Context/UserContext";
 import { useRouter } from "next/router";
 import MyLink from "../../Common/MyLink";
 import AuthProvider from "../../../Data/AuthProvider";
+import { useConfirm } from "material-ui-confirm";
 
 
 const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
@@ -12,17 +13,20 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
     UserContext,
     (ctx) => ctx.actions.logout
   );
-  const router = useRouter();
 
+  const router = useRouter();
+    const confirm = useConfirm();
   const [name, setName] = useState([]);
 
   const handleOpen = () => {
     setOpen((p) => !p);
   };
 
+
   useEffect(() => {
     AuthProvider.getMe()
       .then((res) => {
+        console.log(res.data);
         setName(res.data);
       })
       .catch((err) => {
@@ -32,11 +36,10 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
 
 
   const handleLogout = () => {
-    RefObj.current.textContent = `Haqiqatan ham tizimdan chiqmoqchimisiz?`;
-    setIsOpen(true);
-    new Promise((res, rej) => {
-      RefObj.current.resolve = res;
-      RefObj.current.reject = rej;
+    confirm({
+      title: "Haqiqatan ham tizimdan chiqmoqchimisiz?",
+      confirmationText: "Ha",
+      cancellationText: "Yo'q",
     })
       .then(() => {
         logoutContext();

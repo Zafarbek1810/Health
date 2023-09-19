@@ -72,13 +72,13 @@ const VirusMain = () => {
   return (
     <VirusMainWrapper>
       <div className="top">
-        <h3 className="col-2">Virusologiyalar</h3>
+        <h3 className="col-2">Viruslar</h3>
         <Button
           class="col-2 btn btn-success btn-rounded"
           variant="contained"
           onClick={() => openModal()}
         >
-          Virusologiya qo`shish
+          Virus qo`shish
         </Button>
       </div>
 
@@ -86,7 +86,7 @@ const VirusMain = () => {
         <thead>
           <tr>
             <th style={{ minWidth: "35%" }} className="col">
-            Virusologiya nomi
+            Virus nomi
             </th>
             <th style={{ minWidth: "35%" }} className="col">
               Labaratory nomi

@@ -18,7 +18,7 @@ const MainResult = () => {
 
   useEffect(() => {
     setLoading(true);
-    OrderProvider.getAllOrders()
+    OrderProvider.getAllOrders(1, 2000)
       .then((res) => {
         console.log(res.data.data);
         setOrder(res.data.data);
@@ -42,9 +42,11 @@ const MainResult = () => {
       });
   }, []);
 
-
   return (
     <ParasitologyResultWrapper>
+      <div className="top">
+        <h3>Buyurtmalar</h3>
+      </div>
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
@@ -58,16 +60,13 @@ const MainResult = () => {
               Yaratilgan sana
             </th>
             <th style={{ minWidth: "15%" }} className="col">
-              confirm
+              Tasdiqlangan sana
             </th>
             <th style={{ minWidth: "15%" }} className="col">
-              To`lov turi
+              Analiz natijasi
             </th>
-            <th style={{ minWidth: "10%" }} className="col">
-              Narxi
-            </th>
-            <th style={{ minWidth: "10%" }} className="col">
-              Amallar
+            <th style={{ minWidth: "15%" }} className="col">
+              Buyurtma holati
             </th>
           </tr>
         </thead>
@@ -117,29 +116,40 @@ const MainResult = () => {
                   style={{ minWidth: "15%" }}
                   className="col"
                 >
-                  {obj.confirm}
+                  {obj.approvedAt &&
+                    moment(new Date(obj.approvedAt)).format("DD.MM.YYYY HH:mm")}
                 </td>
-                <td style={{ minWidth: "15%" }} className="col">
-                  {+obj.paymentType === 10
-                    ? "Naqd"
-                    : obj.paymentType === 20
-                    ? "Plastik"
-                    : obj.paymentType === 30
-                    ? "Hisobdan o'tkazish"
-                    : "Bunday to'lov turi yo'q"}
+                <td
+                  onClick={() => {
+                    router.push(
+                      `/dashboard/operator/analiz-result-add?id=${obj.id}&patientId=${obj.patientId}`
+                    );
+                  }}
+                  style={{ minWidth: "15%" }}
+                  className="col"
+                >
+                  {obj.result === 1 ? (
+                    <span style={{ color: "green" }}>Kiritilgan</span>
+                  ) : (
+                    <span style={{ color: "red" }}>Kiritilmagan</span>
+                  )}
                 </td>
-                <td style={{ minWidth: "10%" }} className="col">
-                  {obj.price}
-                </td>
-                <td style={{ minWidth: "10%" }} className="col">
-                  {/* <div className="btns">
-                    <IconButton onClick={() => handleEditOrderAnaliz(obj)}>
-                      <EditSvg />
-                    </IconButton>
-                    <IconButton onClick={() => handleDeleteOrder(obj)}>
-                      <DeleteSvg />
-                    </IconButton>
-                  </div> */}
+                <td
+                  onClick={() => {
+                    router.push(
+                      `/dashboard/operator/analiz-result-add?id=${obj.id}&patientId=${obj.patientId}`
+                    );
+                  }}
+                  style={{ minWidth: "15%" }}
+                  className="col"
+                >
+                 {obj.confirm === "1" ? (
+                    <span style={{ color: "green" }}>Tasdiqlangan</span>
+                  ) : obj.confirm === "0" ? (
+                    <span style={{color:"red"}}>Rad etilgan</span>
+                  ) : (
+                    <span style={{ color: "orange" }}>Tasdiqlanmagan</span>
+                  )}
                 </td>
               </tr>
             ))

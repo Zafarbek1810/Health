@@ -4,7 +4,6 @@ import ParasiteProvider from "../../../../../../Data/ParasiteProvider";
 import { ParasitologyResultWrapper } from "./style";
 import MinLoader from "../../../../../Common/MinLoader";
 import { IconButton } from "@mui/material";
-import DeleteSvg from "../../../../../Common/Svgs/DeleteSvg";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -18,7 +17,7 @@ const MainResult = () => {
 
   useEffect(() => {
     setLoading(true);
-    OrderProvider.getAllOrders()
+    OrderProvider.getAllOrders(1, 2000)
       .then((res) => {
         console.log(res.data.data);
         setOrder(res.data.data);
@@ -43,12 +42,22 @@ const MainResult = () => {
   }, []);
 
 
+  const handleEditResult = (obj) => {
+    console.log(obj);
+    router.push(
+      `/dashboard/operator/edit-result?patientId=${obj.patientId}&orderId=${obj.id}`
+    );
+  };
+
   return (
     <ParasitologyResultWrapper>
+      <div className="top">
+        <h3>Natijalar</h3>
+      </div>
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th style={{ minWidth: "20%" }} className="col">
+            <th style={{ minWidth: "15%" }} className="col">
               Ismi Familyasi
             </th>
             <th style={{ minWidth: "15%" }} className="col">
@@ -56,6 +65,15 @@ const MainResult = () => {
             </th>
             <th style={{ minWidth: "15%" }} className="col">
               Yaratilgan sana
+            </th>
+            <th style={{ minWidth: "15%" }} className="col">
+              Tasdiqlangan sana
+            </th>
+            <th style={{ minWidth: "15%" }} className="col">
+              Analiz natijasi
+            </th>
+            <th style={{ minWidth: "15%" }} className="col">
+              Buyurtma holati
             </th>
             <th style={{ minWidth: "10%" }} className="col">
               Amallar
@@ -69,10 +87,10 @@ const MainResult = () => {
                 <td
                   onClick={() => {
                     router.push(
-                      `/dashboard/operator/list-result?id=${obj.id}&patientId=${obj.patientId}`
+                      `/dashboard/operator/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
                     );
                   }}
-                  style={{ minWidth: "20%" }}
+                  style={{ minWidth: "15%" }}
                   className="col"
                 >
                   {index + 1}.{obj.firstName} {obj.lastName}
@@ -80,7 +98,7 @@ const MainResult = () => {
                 <td
                   onClick={() => {
                     router.push(
-                      `/dashboard/operator/list-result?id=${obj.id}&patientId=${obj.patientId}`
+                      `/dashboard/operator/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
                     );
                   }}
                   style={{ minWidth: "15%" }}
@@ -91,7 +109,7 @@ const MainResult = () => {
                 <td
                   onClick={() => {
                     router.push(
-                      `/dashboard/operator/list-result?id=${obj.id}&patientId=${obj.patientId}`
+                      `/dashboard/operator/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
                     );
                   }}
                   style={{ minWidth: "15%" }}
@@ -99,15 +117,43 @@ const MainResult = () => {
                 >
                   {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                 </td>
+                <td
+                  onClick={() => {
+                    router.push(
+                      `/dashboard/operator/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
+                    );
+                  }}
+                  style={{ minWidth: "15%" }}
+                  className="col"
+                >
+                  {obj.approvedAt &&
+                    moment(new Date(obj.approvedAt)).format("DD.MM.YYYY HH:mm")}
+                </td>
+                <td style={{ minWidth: "15%" }} className="col">
+                  {obj.result === 1 ? (
+                    <span style={{ color: "green" }}>Kiritilgan</span>
+                  ) : (
+                    <span style={{ color: "red" }}>Kiritilmagan</span>
+                  )}
+                </td>
+                <td style={{ minWidth: "15%" }} className="col">
+                  {obj.confirm === "1" ? (
+                    <span style={{ color: "green" }}>Tasdiqlangan</span>
+                  ) : obj.confirm === "0" ? (
+                    <span style={{color:"red"}}>Rad etilgan</span>
+                  ) : (
+                    <span style={{ color: "orange" }}>Tasdiqlanmagan</span>
+                  )}
+                </td>
                 <td style={{ minWidth: "10%" }} className="col">
-                  {/* <div className="btns">
-                    <IconButton onClick={() => handleEditOrderAnaliz(obj)}>
+                  <div className="btns">
+                    <IconButton onClick={() => handleEditResult(obj)}>
                       <EditSvg />
                     </IconButton>
-                    <IconButton onClick={() => handleDeleteOrder(obj)}>
+                    {/* <IconButton onClick={() => handleDeleteResult(obj)}>
                       <DeleteSvg />
-                    </IconButton>
-                  </div> */}
+                    </IconButton> */}
+                  </div>
                 </td>
               </tr>
             ))

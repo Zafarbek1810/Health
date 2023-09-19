@@ -55,7 +55,7 @@ const AddUser = ({ onCloseModal }) => {
     body.username = values.username;
     body.password = values.password;
     body.roleType = roleType.value;
-    body.phoneNumber = values.phoneNumber
+    body.phoneNumber = values.phoneNumber;
     body.companyId = companyValue.value;
     body.laboratoryId = labaratoriyaValue.value;
     body.telegramUsername = values.telegramUsername;
@@ -145,7 +145,7 @@ const AddUser = ({ onCloseModal }) => {
               autoComplete="off"
               className="form-control"
               placeholder={"Telegram Username"}
-              {...register("telegramUsername", { required: true })}
+              {...register("telegramUsername", { required: false })}
             />
           </div>
           <div className="label">
@@ -206,7 +206,7 @@ const AddUser = ({ onCloseModal }) => {
                 <Select
                   className="select col-3 w-100"
                   value={value}
-                  placeholder="Lavozimi"
+                  placeholder="Company"
                   options={optionCompany}
                   onBlur={onBlur}
                   onChange={(v) => {
@@ -218,27 +218,29 @@ const AddUser = ({ onCloseModal }) => {
               )}
             />
           </div>
-          <div className="label">
-            <label>Labaratoriya</label>
-            <Controller
-              control={control}
-              name="labaratory"
-              render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                <Select
-                  className="select col-3 w-100"
-                  value={value}
-                  placeholder="Laboratoriya"
-                  options={optionLabaratoriya}
-                  onBlur={onBlur}
-                  onChange={(v) => {
-                    onChange(v);
-                    setLabaratoriyaValue(v);
-                  }}
-                  ref={ref}
-                />
-              )}
-            />
-          </div>
+          {roleType.value === 5 || roleType.value === 3 ? (
+            <div className="label">
+              <label>Labaratoriya</label>
+              <Controller
+                control={control}
+                name="labaratory"
+                render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                  <Select
+                    className="select col-3 w-100"
+                    value={value}
+                    placeholder="Laboratoriya"
+                    options={optionLabaratoriya}
+                    onBlur={onBlur}
+                    onChange={(v) => {
+                      onChange(v);
+                      setLabaratoriyaValue(v);
+                    }}
+                    ref={ref}
+                  />
+                )}
+              />
+            </div>
+          ) : null}
           <button
             type="submit"
             className="btn btn-success btn-rounded m-1"

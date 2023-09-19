@@ -6,11 +6,15 @@ export default class ParasitologyResultProvider {
     }
     
     static async updateResultParasite (body){
-        return await client.put("/result/parasite/update", body);
+        return await client.put(`/result/parasite/update`, body);
     }
     
     static async getResultParasite(id) {
         return await client.get(`/result/parasite/get/${id}}`);
+    }
+    
+    static async getResultParasiteByPatientId(patientId, orderId ) {
+        return await client.get(`/result/parasite/get/data/by/patient/and/order?patientId=${patientId}&orderId=${orderId}`);
     }
 
     static async deleteResultParasite(id) {

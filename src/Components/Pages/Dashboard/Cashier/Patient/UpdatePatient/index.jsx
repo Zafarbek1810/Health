@@ -48,11 +48,6 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
       });
   }, [editPatient]);
 
-  console.log(editPatient, 'editPatient');
-  console.log(patientEdit, 'patientEdit');
-  console.log(getValues());
-
-
   useEffect(() => {
     setValue("firstName", editPatient.first_name);
     setValue("lastName", editPatient.last_name);
@@ -230,46 +225,46 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
             />
           </div>
           <div className="label">
-            <label>officeName</label>
+            <label>Ish joyi</label>
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"officeName"}
+              placeholder={"Ish joyi"}
               {...register("officeName", { required: false })}
             />
           </div>
           <div className="label">
-            <label>contract</label>
+            <label>Contract</label>
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"contract"}
+              placeholder={"Contract"}
               {...register("contract", { required: false })}
             />
           </div>
           <div className="label">
-            <label>privilege</label>
+            <label>Chegirma</label>
             <input
               autoComplete="off"
               className="form-control"
               type="number"
-              placeholder={"privilege"}
+              placeholder={"Chegirma"}
               {...register("privilege", { required: false })}
             />
           </div>
           <div className="label">
-            <label>comment</label>
+            <label>Izoh</label>
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"comment"}
+              placeholder={"Izoh"}
               {...register("comment", { required: false })}
             />
           </div>
 
           <button
             type="submit"
-            className="btn btn-success btn-rounded m-1"
+            className="btn btn-primary btn-rounded m-1"
             style={{ display: "flex" }}
           >
             O`zgartirish {loading && <ButtonLoader />}

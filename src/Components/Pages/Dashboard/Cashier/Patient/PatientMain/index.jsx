@@ -106,16 +106,16 @@ const PatientMain = () => {
               Addres
             </th>
             <th style={{ minWidth: "8%" }} className="col">
-              officeName
+              Ish joyi
             </th>
             <th style={{ minWidth: "8%" }} className="col">
-              contract
+              Contract
             </th>
             <th style={{ minWidth: "5%" }} className="col">
-              privilege
+              Chegirma
             </th>
             <th style={{ minWidth: "8%" }} className="col">
-              comment
+              Izoh
             </th>
             <th style={{ minWidth: "8%" }} className="col">
               Amallar

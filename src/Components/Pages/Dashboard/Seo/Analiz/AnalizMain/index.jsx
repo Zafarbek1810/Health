@@ -57,7 +57,7 @@ const AnalizMain = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [isOpenModal, isOpenModal2]);
+  }, [isOpenModal, isOpenModal2, editAnaliz]);
 
   const openModal = () => {
     setIsOpenModal(true);

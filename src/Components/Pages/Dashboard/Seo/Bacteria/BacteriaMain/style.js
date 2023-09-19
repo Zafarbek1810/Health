@@ -27,7 +27,7 @@ const BacteriaMainWrapper = styled.div`
         th.col{
           font-style: normal;
           font-weight:500;
-          font-size: 18px;
+          font-size: 14px;
           line-height: 24px;
           color: #000;
           display: flex;
@@ -47,16 +47,16 @@ const BacteriaMainWrapper = styled.div`
         display: flex;
         /* border-bottom: 1px solid rgba(159, 160, 184, 0.3); */
         justify-content: space-between;
+        cursor: pointer;
         
         td.col {
           font-style: normal;
           font-weight: 400;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 24px;
           display: flex;
           align-items: center;
           justify-content: start;
-          color: rgba(0, 0, 0, 0.7);
           text-align: center;
           font-family: "Azo sans";
           padding: 5px;

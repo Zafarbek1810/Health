@@ -59,7 +59,7 @@ const Updatevirus = ({ onCloseModal2, editVirus }) => {
   return (
     <div>
       <ModalHeader className="modal-header">
-        <h2 className="title">Virusologiya o`zgartirish</h2>
+        <h2 className="title">Virus o`zgartirish</h2>
         <button className="closeSvg" onClick={onCloseModal2}>
           <CloseIconSvg />
         </button>
@@ -96,7 +96,7 @@ const Updatevirus = ({ onCloseModal2, editVirus }) => {
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"Virusologiya nomi"}
+              placeholder={"Virus nomi"}
               {...register("virusName", { required: true })}
             />
           </div>

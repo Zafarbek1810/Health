@@ -85,11 +85,8 @@ const UserMain = () => {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th style={{ minWidth: "15%" }} className="col">
-              Familyasi
-            </th>
-            <th style={{ minWidth: "15%" }} className="col">
-              Ismi
+            <th style={{ minWidth: "25%" }} className="col">
+             Ismi Familyasi
             </th>
             <th style={{ minWidth: "15%" }} className="col">
               Username
@@ -97,7 +94,7 @@ const UserMain = () => {
             <th style={{ minWidth: "10%" }} className="col">
               Lavozimi
             </th>
-            <th style={{ minWidth: "10%" }} className="col">
+            <th style={{ minWidth: "15%" }} className="col">
               Telefon
             </th>
             <th style={{ minWidth: "10%" }} className="col">
@@ -115,19 +112,16 @@ const UserMain = () => {
           {!loading ? (
             users.map((obj, index) => (
               <tr key={index}>
-                <td style={{ minWidth: "15%" }} className="col">
-                  {index + 1}. {obj.lastName}
-                </td>
-                <td style={{ minWidth: "15%" }} className="col">
-                  {obj.firstName}
+                <td style={{ minWidth: "25%" }} className="col">
+                  {index + 1}. {obj.lastName} {obj.firstName}
                 </td>
                 <td style={{ minWidth: "15%" }} className="col">
                   {obj.username}
                 </td>
                 <td style={{ minWidth: "10%" }} className="col">
-                  {obj.roleName}
+                  {obj.roleName==="ROLE_ADMIN" ? "Admin" : obj.roleName==="ROLE_OPERATOR" ? "Laborant" : "Kassir"}
                 </td>
-                <td style={{ minWidth: "10%" }} className="col">
+                <td style={{ minWidth: "15%" }} className="col">
                   {obj.phoneNumber}
                 </td>
                 <td style={{ minWidth: "10%" }} className="col">

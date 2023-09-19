@@ -11,24 +11,22 @@ import MinLoader from "../../../../../Common/MinLoader";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import moment from "moment/moment";
+import { Dropdown, Menu } from "antd";
 
 const OrdersMainDirector = () => {
-    const { register, handleSubmit, control, reset, setValue } = useForm();
-  const router = useRouter();
+  const { register, handleSubmit, control, reset, setValue } = useForm();
   const confirm = useConfirm();
-  const [patient, setPatient] = useState([]);
   const [modalAnalizData, setModalAnalizData] = useState([]); // modal analiz data
-  const [patientId, setPatientId] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
   const [order, setOrder] = useState([]);
   const RefObj = useRef({ resolve() {}, reject() {} });
   const [modalIsOpen, setIsOpen] = useState(false);
-
+  const [forRender, setForRender] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    OrderProvider.getAllOrders()
+    OrderProvider.getAllOrders(1, 20000)
       .then((res) => {
         console.log(res.data.data);
         setOrder(res.data.data);
@@ -39,34 +37,15 @@ const OrdersMainDirector = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
 
-  const handleDeleteOrder = (obj) => {
-    confirm({
-      title: "Rostan ham o'chirishni xohlaysizmi?",
-      confirmationText: "Ha",
-      cancellationText: "Yo'q",
-    })
-      .then(async () => {
-        await OrderProvider.deleteOrder(obj.id);
-        setOrder((p) =>
-          p.filter((user) => {
-            return user.id !== obj.id;
-          })
-        );
-        toast.success("O'chirildi!");
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err?.response?.data?.reason);
-      });
-  };
+  }, [forRender]);
 
   const handleTableRow = (obj) => {
     setLoadingModal(true);
     OrderProvider.getOrdersById(obj.id)
       .then((res) => {
-        setModalAnalizData(res.data.data);
+        setModalAnalizData(res.data.data.orderDetailDTOS);
+        console.log(res.data.data.orderDetailDTOS);
         setIsOpen(true);
       })
       .catch((err) => {
@@ -77,13 +56,62 @@ const OrdersMainDirector = () => {
       });
   };
 
+  const confirmOrder = (obj) => {
+      confirm({
+        title: "Rostan ham tasdiqlaysizmi?",
+        confirmationText: "Ha",
+        cancellationText: "Yo'q",
+      })
+        .then(async () => {
+          await OrderProvider.orderConfirm(obj.id);
+           setForRender(Math.random())
+          toast.success("Tasdiqlandi!");
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.reason);
+        })
+  }
+  const cancelOrder = (obj) => {
+      confirm({
+        title: "Rostan ham bekor qilasizmi?",
+        confirmationText: "Ha",
+        cancellationText: "Yo'q",
+      })
+        .then(async () => {
+          await OrderProvider.orderCancel(obj.id);
+           setForRender(Math.random())
+          toast.success("Bekor qilindi!");
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.reason);
+        })
+  }
+  const rejectOrder = (obj) => {
+      confirm({
+        title: "Rostan ham rad etasizmi?",
+        confirmationText: "Ha",
+        cancellationText: "Yo'q",
+      })
+        .then(async () => {
+          await OrderProvider.orderReject(obj.id);
+           setForRender(Math.random())
+          toast.success("Rad etildi!");
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.reason);
+        })
+  }
+
   return (
     <>
       <OrdersMainWrapper>
         <div className="top">
           <h3>Buyurtmalar</h3>
         </div>
-        <table className="table table-striped table-bordered table-hover">
+        <table className="table table-bordered table-hover">
           <thead>
             <tr>
               <th style={{ minWidth: "20%" }} className="col">
@@ -98,23 +126,44 @@ const OrdersMainDirector = () => {
               <th style={{ minWidth: "15%" }} className="col">
                 Tasdiqlangan sana
               </th>
-              <th style={{ minWidth: "10%" }} className="col">
-                Tasdiqlash
-              </th>
-              <th style={{ minWidth: "10%" }} className="col">
-                Amallar
-              </th>
             </tr>
           </thead>
           <tbody>
             {!loading ? (
               order.map((obj, index) => (
+                <Dropdown
+                key={index}
+                overlay={
+                  <Menu>
+                    <Menu.Item key="1">
+                      <Button 
+                      onClick={() => confirmOrder(obj)}
+                      >
+                        Tasdiqlash
+                      </Button>
+                    </Menu.Item>
+                    <Menu.Item key="2">
+                      <Button onClick={() => rejectOrder(obj)}>Rad etish</Button>
+                    </Menu.Item>
+                    <Menu.Item key="3">
+                      <Button onClick={() => cancelOrder(obj)}>Bekor qilish</Button>
+                    </Menu.Item>
+                  </Menu>
+                }
+                trigger={["contextMenu"]}
+              >
                 <tr key={index}>
                   <td
                     onClick={() => {
                       handleTableRow(obj);
                     }}
-                    style={{ minWidth: "20%" }}
+                    style={
+                      obj.confirm === "0"
+                        ? { backgroundColor: "rgb(240, 146, 146)" }
+                        : obj.confirm === "1"
+                        ? { backgroundColor: "rgb(185, 240, 146)" }
+                        : { backgroundColor: "rgb(240, 206, 146)" }
+                    }
                     className="col"
                   >
                     {index + 1}.{obj.firstName} {obj.lastName}
@@ -123,7 +172,13 @@ const OrdersMainDirector = () => {
                     onClick={() => {
                       handleTableRow(obj);
                     }}
-                    style={{ minWidth: "15%" }}
+                    style={
+                      obj.confirm === "0"
+                        ? { backgroundColor: "rgb(240, 146, 146)" }
+                        : obj.confirm === "1"
+                        ? { backgroundColor: "rgb(185, 240, 146)" }
+                        : { backgroundColor: "rgb(240, 206, 146)" }
+                    }
                     className="col"
                   >
                     {obj.phoneNumber}
@@ -132,27 +187,33 @@ const OrdersMainDirector = () => {
                     onClick={() => {
                       handleTableRow(obj);
                     }}
-                    style={{ minWidth: "15%" }}
+                    style={
+                      obj.confirm === "0"
+                        ? { backgroundColor: "rgb(240, 146, 146)" }
+                        : obj.confirm === "1"
+                        ? { backgroundColor: "rgb(185, 240, 146)" }
+                        : { backgroundColor: "rgb(240, 206, 146)" }
+                    }
                     className="col"
                   >
                     {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                   </td>
-                  <td style={{ minWidth: "15%" }} className="col">
-                  {obj.approvedAt ===null ? '' : moment(new Date(obj.approvedAt)).format("DD.MM.YYYY HH:mm")}
-                  </td>
-                  <td style={{ minWidth: "15%" }} className="col">
-                    <Button variant="contained" style={{width:"100%"}} color="primary">
-                      Tasdiqlash
-                    </Button>
-                  </td>
-                  <td style={{ minWidth: "10%" }} className="col">
-                    <div className="btns">
-                      <IconButton onClick={() => handleDeleteOrder(obj)}>
-                        <DeleteSvg />
-                      </IconButton>
-                    </div>
+                  <td className="col"
+                  style={
+                      obj.confirm === "0"
+                        ? { backgroundColor: "rgb(240, 146, 146)" }
+                        : obj.confirm === "1"
+                        ? { backgroundColor: "rgb(185, 240, 146)" }
+                        : { backgroundColor: "rgb(240, 206, 146)" }
+                    }>
+                    {obj.approvedAt === null
+                      ? ""
+                      : moment(new Date(obj.approvedAt)).format(
+                          "DD.MM.YYYY HH:mm"
+                        )}
                   </td>
                 </tr>
+              </Dropdown>
               ))
             ) : (
               <MinLoader />

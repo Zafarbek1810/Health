@@ -7,7 +7,6 @@ import MyLink from "../../Common/MyLink";
 import AuthProvider from "../../../Data/AuthProvider";
 import { useConfirm } from "material-ui-confirm";
 
-
 const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
   const logoutContext = useContextSelector(
     UserContext,
@@ -15,25 +14,11 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
   );
 
   const router = useRouter();
-    const confirm = useConfirm();
-  const [name, setName] = useState([]);
+  const confirm = useConfirm();
 
   const handleOpen = () => {
     setOpen((p) => !p);
   };
-
-
-  useEffect(() => {
-    AuthProvider.getMe()
-      .then((res) => {
-        console.log(res.data);
-        setName(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
 
   const handleLogout = () => {
     confirm({
@@ -65,7 +50,18 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
           </div>
           <div className="right">
             <h3>
-              {name.firstName} {name.lastName}
+              {localStorage.getItem("health-name")}{" "}
+              {localStorage.getItem("health-lastname")} (
+              {localStorage.getItem("health-roles") === "ROLE_DIRECTOR"
+                ? "Direktor"
+                : localStorage.getItem("health-roles") === "ROLE_OPERATOR"
+                ? "Operator"
+                : localStorage.getItem("health-roles") === "ROLE_CASHIER"
+                ? "Kassir"
+                : localStorage.getItem("health-roles") === "ROLE_SEO"
+                ? "CEO"
+                : ""}
+              )
             </h3>
             <button onClick={handleLogout} title="Chiqish">
               Chiqish <img src="/images/logout.png" alt="" />

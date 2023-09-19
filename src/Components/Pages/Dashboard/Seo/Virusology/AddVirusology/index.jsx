@@ -56,7 +56,7 @@ const AddVirus = ({ onCloseModal }) => {
   return (
     <AddVirusWrapper>
       <ModalHeader className="modal-header">
-        <h2 className="title">Virusologiya qo`shish</h2>
+        <h2 className="title">Virus qo`shish</h2>
         <button className="closeSvg" onClick={onCloseModal}>
           <CloseIconSvg />
         </button>
@@ -93,7 +93,7 @@ const AddVirus = ({ onCloseModal }) => {
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"Virusologiya nomi"}
+              placeholder={"Virus nomi"}
               {...register("virusName", { required: true })}
             />
           </div>

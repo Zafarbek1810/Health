@@ -33,6 +33,7 @@ const AnalizResultAdd = ({id, patientId}) => {
     const rowData = parasitology.map((row) => ({
       patientId: patientId,
       parasiteId: row.id,
+      orderId:id,
       light: row.light || null,
       medium: row.medium || null,
       heavy: row.heavy || null,
@@ -59,7 +60,10 @@ const AnalizResultAdd = ({id, patientId}) => {
 
   return (
     <AnalizResultAddWrapper>
+      <div className="top">
         <MyLink to="/dashboard/operator/orders">Orqaga</MyLink>
+      <h3>Blanka yaratish</h3>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">
           <thead>

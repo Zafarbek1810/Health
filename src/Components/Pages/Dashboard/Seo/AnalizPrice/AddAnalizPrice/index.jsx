@@ -9,6 +9,7 @@ import Select from "react-select";
 import CompanyProvider from "../../../../../../Data/CompanyProvider";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
 import AnalizPriceProvider from "../../../../../../Data/AnalizPriceProvider";
+import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 
 const AddAnalizPrice = ({ onCloseModal }) => {
   const { register, handleSubmit, control, reset, setValue } = useForm();
@@ -17,6 +18,8 @@ const AddAnalizPrice = ({ onCloseModal }) => {
   const [analizId, setAnalizId] = useState(null);
   const [company, setCompany] = useState([]);
   const [analiz, setAnaliz] = useState([]);
+  const [laboratory, setLaboratory] = useState([]);
+  const [laboratoryId, setLaboratoryId] = useState(null);
 
   useEffect(() => {
     CompanyProvider.getAllCompany()
@@ -27,16 +30,29 @@ const AddAnalizPrice = ({ onCloseModal }) => {
         console.log(err);
       });
   }, []);
+
   useEffect(() => {
-    AnalizProvider.getAllAnalysis()
+    LabaratoryProvider.getAllLaboratory()
       .then((res) => {
-        setAnaliz(res.data.data.content);
+        setLaboratory(res.data.data);
         console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+
+  useEffect(() => {
+    AnalizProvider.getAllAnalysisByLab(laboratoryId)
+      .then((res) => {
+        setAnaliz(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [laboratoryId]);
 
   const optionCompany = company?.map((item) => {
     return {
@@ -51,11 +67,18 @@ const AddAnalizPrice = ({ onCloseModal }) => {
     };
   });
 
+  const optionLaboratory = laboratory?.map((item) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+
   const onSubmitAnalizPrice = async (values) => {
     const body = {};
     body.companyId = companyId;
     body.analysisId = analizId;
-    body.price = values.price;
+    body.price = values.price.replace(/\s/g, "");
 
     setLoading(true);
     AnalizPriceProvider.createAnalysisPrice(body)
@@ -73,6 +96,25 @@ const AddAnalizPrice = ({ onCloseModal }) => {
         setLoading(false);
       });
   };
+
+
+
+  function formatRaqam() {
+    let input = document.getElementById("raqamInput");
+    let value = input.value.replace(/\D/g, ""); // Raqamlardan boshqa belgilarni olib tashlash
+    let formattedValue = "";
+
+    for (let i = value.length - 1, j = 0; i >= 0; i--) {
+      formattedValue = value[i] + formattedValue;
+      j++;
+      if (j === 3 && i !== 0) {
+        formattedValue = " " + formattedValue; // Oxiridan 3-ta raqamdan sanab ketish
+        j = 0;
+      }
+    }
+
+    input.value = formattedValue;
+  }
 
   return (
     <AddAnalizPriceWrapper>
@@ -110,6 +152,27 @@ const AddAnalizPrice = ({ onCloseModal }) => {
             />
           </div>
           <div className="label">
+            <label>Laboratoriya</label>
+            <Controller
+              control={control}
+              name="labaratory"
+              render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                <Select
+                  className="select col-3 w-100"
+                  value={value}
+                  placeholder="Laboratoriyani tanlang"
+                  options={optionLaboratory}
+                  onBlur={onBlur}
+                  onChange={(v) => {
+                    onChange(v);
+                    setLaboratoryId(v.value);
+                  }}
+                  ref={ref}
+                />
+              )}
+            />
+          </div>
+          <div className="label">
             <label>Analiz</label>
             <Controller
               control={control}
@@ -133,7 +196,9 @@ const AddAnalizPrice = ({ onCloseModal }) => {
           <div className="label">
             <label>Narxi</label>
             <input
+              id="raqamInput"
               autoComplete="off"
+              onInput={formatRaqam}
               className="form-control"
               placeholder={"Analiz narxi"}
               {...register("price", { required: true })}

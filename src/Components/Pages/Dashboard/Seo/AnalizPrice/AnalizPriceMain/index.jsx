@@ -109,8 +109,8 @@ const AnalizPriceMain = () => {
                 <td style={{ minWidth: "25%" }} className="col">
                   {obj.analysisName}
                 </td>
-                <td style={{ minWidth: "25%" }} className="col">
-                  {obj.price}
+                <td style={{ minWidth: "25%", fontWeight:600 }} className="col">
+                  {obj.price.toLocaleString().replace(/,/g, " ")}
                 </td>
                 <td style={{ minWidth: "25%" }} className="col">
                   <div className="btns">

@@ -29,6 +29,8 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
       });
   }, []);
 
+  console.log(editUser);
+
   useEffect(() => { 
     setValue("firstName", editUser.firstName);
     setValue("lastName", editUser.lastName);
@@ -36,8 +38,7 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
     setValue("password", editUser.password);
     setValue("phoneNumber", editUser.phoneNumber.slice(4));
     setValue("telegramUsername", editUser.telegramUsername);
-    setRoleType({ value: editUser.roleType, label: editUser.roleType });
-    setCompanyValue({ value: editUser.companyId, label: editUser.companyName });
+    setValue("lavozim", { value: editUser.roleType, label: editUser.roleType });
     }, [editUser]);
 
     useEffect(() => {
@@ -149,7 +150,7 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
               autoComplete="off"
               className="form-control"
               placeholder={"Telegram Username"}
-              {...register("telegramUsername", { required: true })}
+              {...register("telegramUsername", { required: false })}
             />
           </div>
           <div className="label">

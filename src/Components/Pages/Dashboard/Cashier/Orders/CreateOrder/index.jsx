@@ -81,7 +81,7 @@ const CreateOrder = ({ id }) => {
 
   return (
     <CreateOrderWrapper>
-      <div className="top">Buyurtma yaratish {id}</div>
+      <div className="top">Buyurtma yaratish</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Select
           className="select col-3 w-100"

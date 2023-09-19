@@ -6,8 +6,8 @@ import ListResultMain from '../../../src/Components/Pages/Dashboard/Operator/Res
 
 export default function Home() {
     const router = useRouter();
-    const { id } = router.query;
     const { patientId } = router.query;
+    const { orderId } = router.query;
 
     return (
         <div>
@@ -18,7 +18,7 @@ export default function Home() {
             </Head>
             <WithAuthComponent>
                 <DashboardLayout>
-                    <ListResultMain id={id} patientId={patientId} />
+                    <ListResultMain patientId={patientId} orderId={orderId}/>
                 </DashboardLayout>
             </WithAuthComponent>
         </div>

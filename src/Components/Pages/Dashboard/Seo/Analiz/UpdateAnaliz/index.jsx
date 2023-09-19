@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { ModalContent, ModalHeader } from '../AddAnaliz/style';
-import CloseIconSvg from '../../../../../Common/Svgs/CloseIconSvg';
-import { Controller, useForm } from 'react-hook-form';
-import Select from 'react-select';
-import ButtonLoader from '../../../../../Common/ButtonLoader';
-import AnalizProvider from '../../../../../../Data/AnalizProvider';
-import { toast } from 'react-toastify';
-import LabaratoryProvider from '../../../../../../Data/LabaratoryProvider';
+import React, { useEffect, useState } from "react";
+import { ModalContent, ModalHeader } from "../AddAnaliz/style";
+import CloseIconSvg from "../../../../../Common/Svgs/CloseIconSvg";
+import { Controller, useForm } from "react-hook-form";
+import Select from "react-select";
+import ButtonLoader from "../../../../../Common/ButtonLoader";
+import AnalizProvider from "../../../../../../Data/AnalizProvider";
+import { toast } from "react-toastify";
+import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 
-const UpdateAnaliz = ({onCloseModal2, editAnaliz}) => {
-    const { register, handleSubmit, control, reset, setValue } = useForm();
+const UpdateAnaliz = ({ onCloseModal2, editAnaliz }) => {
+  const { register, handleSubmit, control, reset, setValue } = useForm();
   const [loading, setLoading] = useState(false);
   const [labaratoryId, setLabaratoryId] = useState(null);
   const [labaratory, setLabaratory] = useState([]);
@@ -31,14 +31,20 @@ const UpdateAnaliz = ({onCloseModal2, editAnaliz}) => {
     };
   });
 
+  console.log(editAnaliz);
+
   useEffect(() => {
     setValue("name", editAnaliz.name);
-    }, [editAnaliz]);
+    setValue("labaratory", {
+      value: editAnaliz.laboratory?.id,
+      label: editAnaliz.laboratory?.name,
+    });
+  }, [editAnaliz]);
 
   const onSubmitLabaratory = async (values) => {
     const body = {};
     body.name = values.name;
-    body.laboratoryId = labaratoryId;
+    body.laboratoryId = editAnaliz.laboratory?.id;
     body.id = editAnaliz.id;
 
     setLoading(true);
@@ -56,9 +62,9 @@ const UpdateAnaliz = ({onCloseModal2, editAnaliz}) => {
         setLoading(false);
       });
   };
-    return (
-        <div>
-            <ModalHeader className="modal-header">
+  return (
+    <div>
+      <ModalHeader className="modal-header">
         <h2 className="title">Analiz o`zgartirish</h2>
         <button className="closeSvg" onClick={onCloseModal2}>
           <CloseIconSvg />
@@ -83,7 +89,7 @@ const UpdateAnaliz = ({onCloseModal2, editAnaliz}) => {
             <label>Laboratory</label>
             <Controller
               control={control}
-              name="region"
+              name="labaratory"
               render={({ field: { onChange, onBlur, value, name, ref } }) => (
                 <Select
                   className="select col-3 w-100"
@@ -109,8 +115,8 @@ const UpdateAnaliz = ({onCloseModal2, editAnaliz}) => {
           </button>
         </form>
       </ModalContent>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default UpdateAnaliz;

@@ -192,50 +192,50 @@ const AddPatient = ({onCloseModal}) => {
               autoComplete="off"
               className="form-control"
               placeholder={"Manzil"}
-              {...register("address", { required: true })}
+              {...register("address", { required: false })}
             />
           </div>
           <div className="label">
-            <label>officeName</label>
+            <label>Ish joyi</label>
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"officeName"}
-              {...register("officeName", { required: true })}
+              placeholder={"Ish joyi"}
+              {...register("officeName", { required: false })}
             />
           </div>
           <div className="label">
-            <label>contract</label>
+            <label>Contract</label>
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"contract"}
-              {...register("contract", { required: true })}
+              placeholder={"Contract"}
+              {...register("contract", { required: false })}
             />
           </div>
           <div className="label">
-            <label>privilege</label>
+            <label>Chegirma</label>
             <input
               autoComplete="off"
               className="form-control"
               type="number"
-              placeholder={"privilege"}
-              {...register("privilege", { required: true })}
+              placeholder={"Chegirma"}
+              {...register("privilege", { required: false })}
             />
           </div>
           <div className="label">
-            <label>comment</label>
+            <label>Izoh</label>
             <input
               autoComplete="off"
               className="form-control"
-              placeholder={"comment"}
-              {...register("comment", { required: true })}
+              placeholder={"Izoh"}
+              {...register("comment", { required: false })}
             />
           </div>
 
           <button
             type="submit"
-            className="btn btn-success btn-rounded m-1"
+            className="btn btn-primary btn-rounded m-1"
             style={{ display: "flex" }}
           >
             Qo`shish {loading && <ButtonLoader />}

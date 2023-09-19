@@ -25,7 +25,7 @@ const OrderMainWrapper = styled.div`
         th.col{
           font-style: normal;
           font-weight:500;
-          font-size: 18px;
+          font-size: 14px;
           line-height: 24px;
           color: #000;
           display: flex;
@@ -50,7 +50,7 @@ const OrderMainWrapper = styled.div`
         td.col {
           font-style: normal;
           font-weight: 400;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 24px;
           display: flex;
           align-items: center;

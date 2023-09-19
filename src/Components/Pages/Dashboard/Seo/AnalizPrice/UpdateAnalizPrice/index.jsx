@@ -17,14 +17,15 @@ const UpdateAnalizPrice = ({ onCloseModal2, editAnalizPrice }) => {
   const [company, setCompany] = useState([]);
   const [analiz, setAnaliz] = useState([]);
 
+  console.log(editAnalizPrice);
 
   useEffect(() => {
     setValue("company", {
-      value: editAnalizPrice?.company?.id,
+      value: +editAnalizPrice?.companyId,
       label: editAnalizPrice?.companyName,
     });
     setValue("analiz", {
-      value: editAnalizPrice?.analiz?.id, 
+      value: +editAnalizPrice?.analysisId, 
       label: editAnalizPrice?.analysisName,
     });
     setValue("price", editAnalizPrice?.price);
@@ -65,8 +66,8 @@ const UpdateAnalizPrice = ({ onCloseModal2, editAnalizPrice }) => {
   const onSubmitAnalizPrice = async (values) => {
     const body = {};
     body.id = editAnalizPrice.id;
-    body.companyId = companyId;
-    body.analysisId = analizId;
+    body.companyId = +editAnalizPrice?.companyId;
+    body.analysisId = +editAnalizPrice?.analysisId;
     body.price = values.price;
 
     setLoading(true);

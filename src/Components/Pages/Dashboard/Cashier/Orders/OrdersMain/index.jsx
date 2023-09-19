@@ -40,7 +40,7 @@ const OrdersMain = () => {
 
   useEffect(() => {
     setLoading(true);
-    OrderProvider.getAllOrders()
+    OrderProvider.getAllOrders(1, 20000)
       .then((res) => {
         console.log(res.data.data);
         setOrder(res.data.data);
@@ -86,7 +86,7 @@ const OrdersMain = () => {
   };
 
   const handleEditOrder = (obj) => {
-    router.push(`/dashboard/cashier/order-create?id=${obj.id}`);
+    router.push(`/dashboard/cashier/order-update?id=${obj.id}`);
   };
 
   const optionPatient = patient?.map((item) => {
@@ -154,7 +154,7 @@ const OrdersMain = () => {
                 Yaratilgan sana
               </th>
               <th style={{ minWidth: "15%" }} className="col">
-                confirm
+                Buyurtma holati
               </th>
               <th style={{ minWidth: "15%" }} className="col">
                 To`lov turi
@@ -199,7 +199,13 @@ const OrdersMain = () => {
                     {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                   </td>
                   <td style={{ minWidth: "15%" }} className="col">
-                    {obj.confirm}
+                  {obj.confirm === 1 ? (
+                    <span style={{ color: "green" }}>Tasdiqlangan</span>
+                  ) : obj.confirm === 0 ? (
+                    <span>Rad etilgan</span>
+                  ) : (
+                    <span style={{ color: "orange" }}>Tasdiqlanmagan</span>
+                  )}
                   </td>
                   <td style={{ minWidth: "15%" }} className="col">
                     {+obj.paymentType === 10
@@ -211,7 +217,7 @@ const OrdersMain = () => {
                       : "Bunday to'lov turi yo'q"}
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
-                    {obj.price}
+                    {obj.price.toLocaleString().replace(/,/g, " ")}
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
                     <div className="btns">

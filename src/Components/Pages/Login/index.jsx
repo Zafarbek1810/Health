@@ -36,7 +36,7 @@ const Login = () => {
           break;
         }
         case "ROLE_OPERATOR": {
-          router.replace("/dashboard/operator/result");
+          router.replace("/dashboard/operator/orders");
           break;
         }
         case "ROLE_CASHIER": {
@@ -59,6 +59,9 @@ const Login = () => {
         console.log(data.data);
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("id", data.data.id);
+        localStorage.setItem("health-roles", data.data.role);
+        localStorage.setItem("health-name", data.data.firstName);
+        localStorage.setItem("health-lastname", data.data.lastName);
         loginContext(data.data);
       })
       .catch((err) => {

@@ -91,18 +91,18 @@ const NavListMenu = [
     role: ["ROLE_CASHIER"],
   },
   //director role
+  // {
+  //   title: "Statistika",
+  //   path: "/dashboard/director/statistika",
+  //   src: <UserCircle />,
+  //   role: ["ROLE_DIRECTOR"],
+  // },
   {
     title: "Buyurtmalar",
     path: "/dashboard/director/orders",
     src: <UserCircle />,
     role: ["ROLE_DIRECTOR"],
   },
-  // {
-  //   title: "Laborantlar",
-  //   path: "/dashboard/director/laborant",
-  //   src: <UserCircle />,
-  //   role: ["ROLE_DIRECTOR"],
-  // },
   
   //operator role
   // {
@@ -112,7 +112,7 @@ const NavListMenu = [
   //   role: ["ROLE_OPERATOR"],
   // },
   {
-    title: "Analiz yaratish",
+    title: "Buyurtmalar",
     path: "/dashboard/operator/orders",
     src: <UserCircle />,
     role: ["ROLE_OPERATOR"],

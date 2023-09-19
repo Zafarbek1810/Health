@@ -1,7 +1,24 @@
 import { styled } from "styled-components";
 
 const AnalizResultAddWrapper = styled.div`
-    .table{
+.top{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: start;
+  margin-bottom: 20px;
+
+  h3{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 24px;
+    color: #000000;
+    font-family: "Azo sans";
+    margin-bottom: 0;
+  }
+}
+.table{
     margin-top: 20px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.06), 0 3px 6px rgba(0,0,0,0.03);
     width: 100%;
@@ -21,7 +38,7 @@ const AnalizResultAddWrapper = styled.div`
         th.col{
           font-style: normal;
           font-weight:500;
-          font-size: 18px;
+          font-size: 14px;
           line-height: 24px;
           color: #000;
           display: flex;
@@ -41,11 +58,12 @@ const AnalizResultAddWrapper = styled.div`
         display: flex;
         /* border-bottom: 1px solid rgba(159, 160, 184, 0.3); */
         justify-content: space-between;
+        cursor: pointer;
         
         td.col {
           font-style: normal;
           font-weight: 400;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 24px;
           display: flex;
           align-items: center;

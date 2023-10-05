@@ -7,7 +7,7 @@ const ModalContent = styled.div`
   .text {
     white-space: pre-wrap;
     font-size: 1rem;
-    font-family: "Inter";
+    font-family: "Azo sans" !important;
 
     strong {
       font-weight: 700;

@@ -35,4 +35,12 @@ export default class OrderProvider {
     static async updateOrder( body) {
         return await client.put(`/order/update/detail`, body);
     }
+
+    static async getCurrencyDashboard() {
+        return await client.get(`/order/general/statistics`);
+    }
+
+    static async changePaymentStatus (orderId , paymentStatus){
+        return await client.post(`/order/change/payment-status?orderId=${orderId}&paymentStatus=${paymentStatus}`);
+    }
 }

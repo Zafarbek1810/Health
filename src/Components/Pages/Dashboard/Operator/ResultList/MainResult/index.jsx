@@ -130,7 +130,7 @@ const MainResult = () => {
                     moment(new Date(obj.approvedAt)).format("DD.MM.YYYY HH:mm")}
                 </td>
                 <td style={{ minWidth: "15%" }} className="col">
-                  {obj.result === 1 ? (
+                  {obj.analysisResult === 1 ? (
                     <span style={{ color: "green" }}>Kiritilgan</span>
                   ) : (
                     <span style={{ color: "red" }}>Kiritilmagan</span>

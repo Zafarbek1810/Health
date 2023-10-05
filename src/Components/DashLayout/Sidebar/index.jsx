@@ -78,12 +78,7 @@ const NavListMenu = [
   
   //admin role
   //casheir role
-  {
-    title: "Bemorlar",
-    path: "/dashboard/cashier/patient",
-    src: <UserCircle />,
-    role: ["ROLE_CASHIER"],
-  },
+  
   {
     title: "Buyurtmalar",
     path: "/dashboard/cashier/order",
@@ -112,17 +107,23 @@ const NavListMenu = [
   //   role: ["ROLE_OPERATOR"],
   // },
   {
-    title: "Buyurtmalar",
-    path: "/dashboard/operator/orders",
+    title: "Bemorlar",
+    path: "/dashboard/operator/patient",
     src: <UserCircle />,
     role: ["ROLE_OPERATOR"],
   },
   {
-    title: "Natijalar",
-    path: "/dashboard/operator/result",
+    title: "Buyurtmalar",
+    path: "/dashboard/operator/order",
     src: <UserCircle />,
     role: ["ROLE_OPERATOR"],
   },
+  // {
+  //   title: "Natijalar",
+  //   path: "/dashboard/operator/result",
+  //   src: <UserCircle />,
+  //   role: ["ROLE_OPERATOR"],
+  // },
   
 ];
 

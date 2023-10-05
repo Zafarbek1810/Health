@@ -4,13 +4,28 @@ import jwtDecode from "jwt-decode";
 import UserProvider from "../../Data/UserProvider";
 
 const Provider = ({ children }) => {
-  const [userData, setUserData] = useState({ isAuth: false, user: null });
+  const [userData, setUserData] = useState(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      const data = token && (jwtDecode(token) || null);
+      return {
+        isAuth: !!data,
+        user: data,
+      };
+    } else {
+      return {
+        isAuth: false,
+        user: null,
+      };
+    }
+  });
+
   const [actions] = useState({ login, logout });
   const [isDoneUserChecking, setIsDoneUserChecking] = useState(false);
 
   function login(data) {
     const user_data = data?.token && (jwtDecode(data.token) || null);
-    console.log(user_data, data.token, data.id, 'fsfsdfsdfsd');
+    console.log(user_data, data.token, data.id, "fsfsdfsdfsd");
     setUserData({ isAuth: true, user: user_data });
   }
 

@@ -20,7 +20,7 @@ const MainResult = () => {
     setLoading(true);
     OrderProvider.getAllOrders(1, 2000)
       .then((res) => {
-        console.log(res.data.data);
+        console.log(res.data);
         setOrder(res.data.data);
       })
       .catch((err) => {
@@ -128,7 +128,7 @@ const MainResult = () => {
                   style={{ minWidth: "15%" }}
                   className="col"
                 >
-                  {obj.result === 1 ? (
+                  {obj.analysisResult === 1 ? (
                     <span style={{ color: "green" }}>Kiritilgan</span>
                   ) : (
                     <span style={{ color: "red" }}>Kiritilmagan</span>

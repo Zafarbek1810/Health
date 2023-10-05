@@ -85,16 +85,16 @@ const AnalizPriceMain = () => {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th style={{ minWidth: "25%" }} className="col">
+            <th style={{ minWidth: "30%" }} className="col">
               Company nomi
             </th>
-            <th style={{ minWidth: "25%" }} className="col">
+            <th style={{ minWidth: "40%" }} className="col">
               Analiz nomi
             </th>
-            <th style={{ minWidth: "25%" }} className="col">
+            <th style={{ minWidth: "10%" }} className="col">
               Narxi
             </th>
-            <th style={{ minWidth: "25%" }} className="col">
+            <th style={{ minWidth: "20%" }} className="col">
               Amallar
             </th>
           </tr>
@@ -103,16 +103,16 @@ const AnalizPriceMain = () => {
           {!loading ? (
             analizPrice.map((obj, index) => (
               <tr key={index}>
-                <td style={{ minWidth: "25%" }} className="col">
+                <td style={{ minWidth: "30%" }} className="col">
                   {index + 1}. {obj.companyName}
                 </td>
-                <td style={{ minWidth: "25%" }} className="col">
+                <td style={{ minWidth: "40%" }} className="col">
                   {obj.analysisName}
                 </td>
-                <td style={{ minWidth: "25%", fontWeight:600 }} className="col">
+                <td style={{ minWidth: "10%", fontWeight:600 }} className="col">
                   {obj.price.toLocaleString().replace(/,/g, " ")}
                 </td>
-                <td style={{ minWidth: "25%" }} className="col">
+                <td style={{ minWidth: "20%" }} className="col">
                   <div className="btns">
                     <a class="text-success mr-2" href="#">
                       <i class="nav-icon i-Pen-2 font-weight-bold"></i>

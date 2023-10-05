@@ -20,15 +20,14 @@ const customStyles = {
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 8,
-    color:"#000",
-    backgroundColor:"#fff",
+    color: "#000",
+    backgroundColor: "#fff",
   },
 };
 
 Modal.setAppElement("#__next");
 
-
-const ConfirmModal = ({ children }) => {
+const ConfirmModal = ({ children , title}) => {
   const { RefObj, setIsOpen, modalIsOpen } = useContext(ModalContext);
 
   function ResolveAndClose() {
@@ -49,6 +48,7 @@ const ConfirmModal = ({ children }) => {
     >
       <ModalHeader>
         <h1 className="modal-title fs-5" id="staticBackdropLabel">
+          {title}
         </h1>
         <Button
           type="button"
@@ -57,7 +57,7 @@ const ConfirmModal = ({ children }) => {
           data-bs-dismiss="modal"
           aria-label="Close"
         >
-          <CloseIconSvg/>
+          <CloseIconSvg />
         </Button>
       </ModalHeader>
       <ModalContent>

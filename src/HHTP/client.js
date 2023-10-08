@@ -1,7 +1,10 @@
 import axios from "axios";
 import Message from "../utils/Message";
 
+<<<<<<< HEAD
 // export const API_URL = "http://45.95.234.56:8080/api";
+=======
+>>>>>>> 1adc1a6d56c99ac9613ff9e307c0c396e550c0df
 export const API_URL = "https://e-ses.uz/api";
 
 const client = axios.create({

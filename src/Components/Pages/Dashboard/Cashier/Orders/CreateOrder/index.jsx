@@ -16,7 +16,7 @@ const CreateOrder = ({ id }) => {
   const [laboratory, setLaboratory] = useState([]);
   const [analizId, setAnalizId] = useState({});
   const [laboratoryId, setLaboratoryId] = useState([]);
-  const [paymentId, setPaymentId] = useState([]);
+  const [paymentId, setPaymentId] = useState([10]);
 
   useEffect(() => {
     laboratoryId.map((id) => {
@@ -68,7 +68,7 @@ const CreateOrder = ({ id }) => {
         console.log(res);
         if (res.data.success) {
           toast.success(res.data.message);
-          router.push(`/dashboard/cashier/order`);
+          router.push(`/dashboard/operator/order`);
         } else {
           toast.error(res.data.message);
         }
@@ -106,6 +106,9 @@ const CreateOrder = ({ id }) => {
                 <Select
                   size="large"
                   // status="error"
+                  defaultValue={{
+                    value: 10,
+                  }}
                   className="select w-100"
                   placeholder="To'lov turini tanlang"
                   options={optionPayment}
@@ -147,7 +150,7 @@ const CreateOrder = ({ id }) => {
           <div className="right">
             {laboratoryId.map((id, index) => {
               return (
-                <div className="analiz" key={index}>
+                <div className="analiz" style={{marginBottom:30}} key={index}>
                   <div className="analizName">
                     {laboratory.filter((i) => i.id === id)[0].name}
                   </div>

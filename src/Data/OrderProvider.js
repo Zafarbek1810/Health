@@ -40,7 +40,7 @@ export default class OrderProvider {
         return await client.get(`/order/general/statistics`);
     }
 
-    static async changePaymentStatus (orderId , paymentStatus){
-        return await client.post(`/order/change/payment-status?orderId=${orderId}&paymentStatus=${paymentStatus}`);
+    static async changePaymentStatus (body){
+        return await client.post(`/order/change/payment-status` , body);
     }
 }

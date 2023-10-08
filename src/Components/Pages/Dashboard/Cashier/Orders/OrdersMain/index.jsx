@@ -120,7 +120,11 @@ const OrdersMain = () => {
   ];
 
   const onchangeStatus = () => {
-    OrderProvider.changePaymentStatus(orderId, paymentStatus)
+    const body ={
+      orderId: orderId,
+      paymentStatus: paymentStatus
+    }
+    OrderProvider.changePaymentStatus(body)
       .then((res) => {
         toast.success(res.data.message);
         setIsOpen2(false);
@@ -147,9 +151,9 @@ const OrdersMain = () => {
               <th style={{ minWidth: "15%" }} className="col">
                 Yaratilgan sana
               </th>
-              <th style={{ minWidth: "15%" }} className="col">
+              {/* <th style={{ minWidth: "15%" }} className="col">
                 Buyurtma holati
-              </th>
+              </th> */}
               <th style={{ minWidth: "10%" }} className="col">
                 To`lov turi
               </th>
@@ -178,7 +182,7 @@ const OrdersMain = () => {
                     {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                   </td>
 
-                  <td style={{ minWidth: "15%" }} className="col">
+                  {/* <td style={{ minWidth: "15%" }} className="col">
                     {obj.confirm === "1" ? (
                       <span style={{ color: "green" }}>Tasdiqlangan</span>
                     ) : obj.confirm === "0" ? (
@@ -186,7 +190,7 @@ const OrdersMain = () => {
                     ) : (
                       <span style={{ color: "orange" }}>Tasdiqlanmagan</span>
                     )}
-                  </td>
+                  </td> */}
                   <td style={{ minWidth: "10%" }} className="col">
                     {+obj.paymentType === 10
                       ? "Naqd"

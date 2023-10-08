@@ -1,7 +1,8 @@
 import axios from "axios";
 import Message from "../utils/Message";
 
-export const API_URL = "http://45.95.234.56:8080/api";
+// export const API_URL = "http://45.95.234.56:8080/api";
+export const API_URL = "https://e-ses.uz/api";
 
 const client = axios.create({
   withCredentials: true,

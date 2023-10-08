@@ -14,9 +14,19 @@ import { toast } from "react-toastify";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import moment from "moment";
+import FilterSvg from "../../../../../Common/Svgs/FilterSvg";
+import { Drawer } from "antd";
 
 const OrdersMain = () => {
-  const { register,setError, handleSubmit, control, reset, setValue, formState:{errors} } = useForm();
+  const {
+    register,
+    setError,
+    handleSubmit,
+    control,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm();
   const router = useRouter();
   const confirm = useConfirm();
   const [patient, setPatient] = useState([]);
@@ -27,6 +37,7 @@ const OrdersMain = () => {
   const [order, setOrder] = useState([]);
   const RefObj = useRef({ resolve() {}, reject() {} });
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   useEffect(() => {
     PatientProvider.getAllPatient()
@@ -54,14 +65,14 @@ const OrdersMain = () => {
   }, []);
 
   const handleCreateOrder = () => {
-    if(!patientId) {
+    if (!patientId) {
       setError("patient", { type: "focus" }, { shouldFocus: true });
     }
-    
+
     OrderProvider.createOrder(patientId)
-    .then((res) => {
+      .then((res) => {
         console.log(res.data.data);
-        router.push(`/dashboard/cashier/order-create?id=${res.data.data.id}`);
+        router.push(`/dashboard/operator/order-create?id=${res.data.data.id}`);
       })
       .catch((err) => {
         console.log(err);
@@ -104,7 +115,8 @@ const OrdersMain = () => {
     setLoadingModal(true);
     OrderProvider.getOrdersById(obj.id)
       .then((res) => {
-        setModalAnalizData(res.data.data.orderDetailDTOS);
+        // console.log(res.data.data);
+        setModalAnalizData(res.data.data.orderDetailDTOList);
         setIsOpen(true);
       })
       .catch((err) => {
@@ -118,36 +130,51 @@ const OrdersMain = () => {
   return (
     <>
       <OrderMainWrapper>
-        <form className="top" onSubmit={handleSubmit(handleCreateOrder)}>
+        <div className="top">
           <div className="left">
-          <Controller
-            control={control}
-            name="patient"
-            render={({ field: { onChange, onBlur, value, name, ref } }) => (
-              <Select
-                className="select"
-                value={value}
-                placeholder="Bemorni tanlang"
-                options={optionPatient}
-                onBlur={onBlur}
-                onChange={(v) => {
-                  onChange(v);
-                  setPatientId(v.value);
-                }}
-                ref={ref}
+            <form onSubmit={handleSubmit(handleCreateOrder)}>
+              <Controller
+                control={control}
+                name="patient"
+                className="w-100"
+                render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                  <Select
+                    className="select"
+                    value={value}
+                    placeholder="Bemorni tanlang"
+                    options={optionPatient}
+                    onBlur={onBlur}
+                    onChange={(v) => {
+                      onChange(v);
+                      setPatientId(v.value);
+                    }}
+                    ref={ref}
+                  />
+                )}
               />
-            )}
-          />
-          {errors.patient && <p className="errorText">Iltimos bemorni tanlang!</p>}
+              {errors.patient && (
+                <p className="errorText">Iltimos bemorni tanlang!</p>
+              )}
+              <Button
+                className="btn btn-outline-primary btn-rounded"
+                variant="contained"
+                type="submit"
+              >
+                Buyurtma yaratish
+              </Button>
+            </form>
           </div>
-          <Button
-            class="col-2 btn btn-primary btn-rounded"
-            variant="contained"
-            type="submit"
-          >
-            Buyurtma yaratish
-          </Button>
-        </form>
+          <div className="right">
+            <Button
+              className="btn btn-outline-primary btn-rounded"
+              variant="contained"
+              type="button"
+              onClick={() => setOpenDrawer(true)}
+            >
+              <FilterSvg /> Filter
+            </Button>
+          </div>
+        </div>
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
@@ -160,9 +187,9 @@ const OrdersMain = () => {
               <th style={{ minWidth: "15%" }} className="col">
                 Yaratilgan sana
               </th>
-              <th style={{ minWidth: "10%" }} className="col">
+              {/* <th style={{ minWidth: "10%" }} className="col">
                 Analiz natijasi
-              </th>
+              </th> */}
               <th style={{ minWidth: "15%" }} className="col">
                 Buyurtma holati
               </th>
@@ -208,7 +235,7 @@ const OrdersMain = () => {
                   >
                     {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                   </td>
-                  <td
+                  {/* <td
                     onClick={() => {
                       handleTableRow(obj);
                     }}
@@ -220,7 +247,7 @@ const OrdersMain = () => {
                     ) : (
                       <span style={{ color: "red" }}>Kiritilmagan</span>
                     )}
-                  </td>
+                  </td> */}
                   <td style={{ minWidth: "15%" }} className="col">
                     {obj.confirm === "1" ? (
                       <span style={{ color: "green" }}>Tasdiqlangan</span>
@@ -260,6 +287,19 @@ const OrdersMain = () => {
           </tbody>
         </table>
       </OrderMainWrapper>
+
+      <Drawer
+        anchor="right"
+        open={openDrawer}
+        width={600}
+        title="Filter"
+        onClose={() => {
+          setOpenDrawer(false);
+        }}
+      >
+        ddd
+      </Drawer>
+
       <ModalContextProvider
         RefObj={RefObj}
         modalIsOpen={modalIsOpen}

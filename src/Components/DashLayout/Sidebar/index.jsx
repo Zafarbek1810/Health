@@ -80,6 +80,12 @@ const NavListMenu = [
   //casheir role
   
   {
+    title: "Statistika",
+    path: "/dashboard/cashier/statistika",
+    src: <UserCircle />,
+    role: ["ROLE_CASHIER"],
+  },
+  {
     title: "Buyurtmalar",
     path: "/dashboard/cashier/order",
     src: <UserCircle />,
@@ -106,6 +112,12 @@ const NavListMenu = [
   //   src: <UserCircle />,
   //   role: ["ROLE_OPERATOR"],
   // },
+  {
+    title: "Statistika",
+    path: "/dashboard/operator/statistika",
+    src: <UserCircle />,
+    role: ["ROLE_OPERATOR"],
+  },
   {
     title: "Bemorlar",
     path: "/dashboard/operator/patient",

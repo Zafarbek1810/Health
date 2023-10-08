@@ -1,47 +1,82 @@
 import { styled } from "styled-components";
 
 const OrderMainWrapper = styled.div`
-    .top{
+  .top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+
+    .left {
+      width: 50%;
+      form{
+        width: 100%;
         display: flex;
-        gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
 
-        .left{
-            width: 30%;
-            position: relative;
+      button {
+        border-radius: 6px;
+        width: 40%;
+        text-transform: capitalize;
+      }
+      
+      .select {
+        width: 60%;
+      }
+    }
+    }
+    .right{
+      width: 30%;
+      text-align: right;
 
-            .select{
-            }
+      button{
+        border-radius: 6px;
+        width: 40%;
+        text-transform: capitalize;
+
+        svg{
+          width: 20px;
+          height: 20px;
+          stroke: #006786;
         }
 
+        &:hover{
+          svg{
+            stroke: #fff;
+          }
+        }
       }
+    }
+  }
 
-      .errorText{
-        position: absolute;
-        bottom: -35px;
-        left: 0;
-        color: red;
-        font-size: 12px;
-      }
-    .table{
+  .errorText {
+    position: absolute;
+    bottom: -35px;
+    left: 0;
+    color: red;
+    font-size: 12px;
+  }
+  .table {
     margin-top: 20px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.06), 0 3px 6px rgba(0,0,0,0.03);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.03);
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     /* box-shadow: rgb(20 21 33 / 18%) 0px 2px 10px 0px; */
 
-    thead{
+    thead {
       width: 100%;
-      tr{
+      tr {
         display: flex;
         /* background: #006786; */
         /* border-radius: 6px 6px 0px 0px; */
         border-bottom: 1px solid rgba(159, 160, 184, 0.3);
-        
-        th.col{
+
+        th.col {
           font-style: normal;
-          font-weight:500;
+          font-weight: 500;
           font-size: 14px;
           line-height: 24px;
           color: #000;
@@ -51,19 +86,18 @@ const OrderMainWrapper = styled.div`
           text-align: center;
           font-family: "Azo sans";
           padding: 15px 12px 10px 20px;
-
         }
       }
     }
 
-    tbody{
+    tbody {
       background: #fff;
-      tr{
+      tr {
         display: flex;
         /* border-bottom: 1px solid rgba(159, 160, 184, 0.3); */
         justify-content: space-between;
         cursor: pointer;
-        
+
         td.col {
           font-style: normal;
           font-weight: 400;
@@ -76,10 +110,9 @@ const OrderMainWrapper = styled.div`
           text-align: center;
           font-family: "Azo sans";
           padding: 5px;
-          
         }
 
-        img{
+        img {
           width: 50px;
           height: 50px;
         }
@@ -104,10 +137,8 @@ const OrderMainWrapper = styled.div`
           }
         }
       }
-
     }
   }
-
-`
+`;
 
 export default OrderMainWrapper;

@@ -16,11 +16,11 @@ const CreateOrder = ({ id }) => {
   const [laboratory, setLaboratory] = useState([]);
   const [analizId, setAnalizId] = useState({});
   const [laboratoryId, setLaboratoryId] = useState([]);
-  const [paymentId, setPaymentId] = useState([]);
+  const [paymentId, setPaymentId] = useState(10);
 
   useEffect(() => {
     laboratoryId.map((id) => {
-      AnalizProvider.getAllAnalysisByLab(id)
+      AnalizProvider.getAllAnalysisByLabWithPrice(id)
         .then((res) => {
           setAnaliz({ ...analiz, [id]: res.data.data });
           console.log(res.data.data, id);
@@ -68,7 +68,7 @@ const CreateOrder = ({ id }) => {
         console.log(res);
         if (res.data.success) {
           toast.success(res.data.message);
-          router.push(`/dashboard/cashier/order`);
+          router.push(`/dashboard/operator/order`);
         } else {
           toast.error(res.data.message);
         }
@@ -118,7 +118,25 @@ const CreateOrder = ({ id }) => {
             <div className="result">
               <div className="result-top">
                 <h3>Umumiy narxi:</h3>
-                <span className="price">0 so`m</span>
+                <span className="price">
+                  {/* pastdagi analizlarning yig'indisini chiqarsin */}
+                  {Object.values(analizId)
+                    .flat()
+                    .reduce((a, b) => {
+                      return (
+                        +analiz?.[laboratoryId[0]]?.filter((i) => i.id === b)[0]
+                          ?.price +
+                        +analiz?.[laboratoryId[1]]?.filter((i) => i.id === b)[0]
+                          ?.price +
+                        a +
+                        b
+                        
+                      );
+                    }, 0)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+                  so`m
+                </span>
               </div>
               <hr />
               <div className="redult-bottom">
@@ -128,15 +146,31 @@ const CreateOrder = ({ id }) => {
                     return (
                       <div className="analiz-result" key={id}>
                         <div className="analizName">
-                          {analiz?.[laboratoryId[0]]?.filter(
-                            (i) => i.id === id
-                          )[0]?.name}
+                          {
+                            analiz?.[laboratoryId[0]]?.filter(
+                              (i) => i.id === id
+                            )[0]?.analysisName
+                          }
 
-                          {analiz?.[laboratoryId[1]]?.filter(
-                            (i) => i.id === id
-                          )[0]?.name}
+                          {
+                            analiz?.[laboratoryId[1]]?.filter(
+                              (i) => i.id === id
+                            )[0]?.analysisName
+                          }
                         </div>
-                        <div className="price">0 so`m</div>
+                        <div className="price">
+                          {
+                            analiz?.[laboratoryId[0]]?.filter(
+                              (i) => i.id === id
+                            )[0]?.price
+                          }
+
+                          {
+                            analiz?.[laboratoryId[1]]?.filter(
+                              (i) => i.id === id
+                            )[0]?.price
+                          }
+                        </div>
                       </div>
                     );
                   })}
@@ -147,7 +181,11 @@ const CreateOrder = ({ id }) => {
           <div className="right">
             {laboratoryId.map((id, index) => {
               return (
-                <div className="analiz" key={index}>
+                <div
+                  className="analiz"
+                  style={{ marginBottom: 30 }}
+                  key={index}
+                >
                   <div className="analizName">
                     {laboratory.filter((i) => i.id === id)[0].name}
                   </div>
@@ -159,7 +197,7 @@ const CreateOrder = ({ id }) => {
                     options={analiz[id]?.map((item) => {
                       return {
                         value: item.id,
-                        label: item.name,
+                        label: item.analysisName,
                       };
                     })}
                     onChange={(v) => {

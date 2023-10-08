@@ -59,7 +59,6 @@ const AddUser = ({ onCloseModal }) => {
     body.companyId = companyValue.value;
     body.laboratoryId = labaratoriyaValue.value;
     body.telegramUsername = values.telegramUsername;
-    body.email = "zafar@gmail.com";
 
     console.log("body", values);
     setLoading(true);
@@ -71,7 +70,7 @@ const AddUser = ({ onCloseModal }) => {
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err?.response?.data?.message);
+        toast.error(err?.response?.data?.reason);
       })
       .finally(() => {
         setLoading(false);
@@ -79,10 +78,11 @@ const AddUser = ({ onCloseModal }) => {
   };
 
   const options = [
-    // { value: 2, label: "Admin" },
+    { value: 2, label: "Admin" },
     { value: 3, label: "Direktor" },
     { value: 4, label: "Kassir" },
-    { value: 5, label: "Laborant" },
+    { value: 5, label: "Operator" },
+    { value: 6, label: "Laborant" },
   ];
 
   const optionCompany = company?.map((item) => {
@@ -218,7 +218,7 @@ const AddUser = ({ onCloseModal }) => {
               )}
             />
           </div>
-          {roleType.value === 5 || roleType.value === 3 ? (
+          {roleType.value === 6 || roleType.value === 3 ? (
             <div className="label">
               <label>Labaratoriya</label>
               <Controller
@@ -243,7 +243,7 @@ const AddUser = ({ onCloseModal }) => {
           ) : null}
           <button
             type="submit"
-            className="btn btn-success btn-rounded m-1"
+            className="btn btn-primary btn-rounded m-1"
             style={{ display: "flex" }}
           >
             Qo`shish {loading && <ButtonLoader />}

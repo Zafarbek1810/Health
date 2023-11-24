@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import ParasitologyResultProvider from "../../../../../../Data/ParasitologyResultProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import MyLink from '../../../../../Common/MyLink'
+import MyLink from "../../../../../Common/MyLink";
 
-const AnalizResultAdd = ({id, patientId}) => {
+const AnalizResultAdd = ({ id, patientId }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [parasitology, setParasitology] = useState([]);
@@ -31,20 +31,21 @@ const AnalizResultAdd = ({id, patientId}) => {
 
   const onSubmit = () => {
     const rowData = parasitology.map((row) => ({
-      patientId: patientId,
+      patientId: +patientId,
       parasiteId: row.id,
-      orderId:id,
+      orderDetailId: +id,
+      analysisId: +row.analysis?.id,
       light: row.light || null,
       medium: row.medium || null,
       heavy: row.heavy || null,
-      norm: row.norm || 'bo\'lmaydi',
+      norm: row.norm || "bo'lmaydi",
     }));
 
-    ParasitologyResultProvider.createResultParasite(rowData, id)
+    ParasitologyResultProvider.createResultParasite(rowData)
       .then((res) => {
         console.log(res);
         toast.success(res.data.message);
-        router.push(`/dashboard/operator/result`);
+        router.push(`/dashboard/laborant/tahlil-result`);
       })
       .catch((err) => {
         console.log(err);
@@ -61,8 +62,8 @@ const AnalizResultAdd = ({id, patientId}) => {
   return (
     <AnalizResultAddWrapper>
       <div className="top">
-        <MyLink to="/dashboard/operator/orders">Orqaga</MyLink>
-      <h3>Blanka yaratish</h3>
+        <MyLink to="/dashboard/laborant/tahlillar">Orqaga</MyLink>
+        <h3>Blanka yaratish</h3>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">
@@ -126,7 +127,7 @@ const AnalizResultAdd = ({id, patientId}) => {
                     <input
                       autoComplete="off"
                       className="form-control"
-                      value={obj.norm || 'bo\'lmaydi'}
+                      value={obj.norm || "bo'lmaydi"}
                       onChange={(e) =>
                         handleRowChange(index, "norm", e.target.value)
                       }

@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import WithAuthComponent from '../../../src/Hocs/PrivateRoute'
 import DashboardLayout from "../../../src/Components/DashLayout"
+import Statistika from '../../../src/Components/Pages/Dashboard/Director/Statistika'
 
 export default function Home() {
     return (
@@ -12,7 +13,7 @@ export default function Home() {
             </Head>
             <WithAuthComponent>
                 <DashboardLayout>
-                    stat
+                    <Statistika/>
                 </DashboardLayout>
             </WithAuthComponent>
         </div>

@@ -92,26 +92,38 @@ const NavListMenu = [
     role: ["ROLE_CASHIER"],
   },
   //director role
+  {
+    title: "Statistika",
+    path: "/dashboard/director/statistika",
+    src: <UserCircle />,
+    role: ["ROLE_DIRECTOR"],
+  },
   // {
-  //   title: "Statistika",
-  //   path: "/dashboard/director/statistika",
+  //   title: "Buyurtmalar",
+  //   path: "/dashboard/director/orders",
   //   src: <UserCircle />,
   //   role: ["ROLE_DIRECTOR"],
   // },
   {
-    title: "Buyurtmalar",
-    path: "/dashboard/director/orders",
+    title: "Tahlillar",
+    path: "/dashboard/director/tahlillar",
     src: <UserCircle />,
     role: ["ROLE_DIRECTOR"],
   },
   
   //operator role
-  // {
-  //   title: "Analiz yaratish",
-  //   path: "/dashboard/operator/analiz-result-add",
-  //   src: <UserCircle />,
-  //   role: ["ROLE_OPERATOR"],
-  // },
+  {
+    title: "Tahlillar",
+    path: "/dashboard/laborant/tahlillar",
+    src: <UserCircle />,
+    role: ["ROLE_LABORANT"],
+  },
+  {
+    title: "Tahlil natijalari",
+    path: "/dashboard/laborant/tahlil-result",
+    src: <UserCircle />,
+    role: ["ROLE_LABORANT"],
+  },
   {
     title: "Statistika",
     path: "/dashboard/operator/statistika",

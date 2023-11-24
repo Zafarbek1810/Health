@@ -39,6 +39,10 @@ const Login = () => {
           router.replace("/dashboard/operator/statistika");
           break;
         }
+        case "ROLE_LABORANT": {
+          router.replace("/dashboard/laborant/tahlillar");
+          break;
+        }
         case "ROLE_CASHIER": {
           router.replace("/dashboard/cashier/statistika");
           break;

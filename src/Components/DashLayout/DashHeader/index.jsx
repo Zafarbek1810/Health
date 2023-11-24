@@ -72,6 +72,8 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
                 ? "Kassir"
                 : localStorage.getItem("health-roles") === "ROLE_SEO"
                 ? "CEO"
+                : localStorage.getItem("health-roles") === "ROLE_LABORANT"
+                ? "Laborant"
                 : ""}
               )
             </h3>

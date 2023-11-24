@@ -69,7 +69,6 @@ const AnalizResultAddWrapper = styled.div`
           align-items: center;
           justify-content: start;
           color: rgba(0, 0, 0, 0.7);
-          text-align: center;
           font-family: "Azo sans";
           padding: 5px;
           

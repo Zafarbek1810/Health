@@ -9,8 +9,8 @@ export default class PatientProvider {
         return await client.put("/patient/update", body);
     }
     
-    static async getAllPatient() {
-        return await client.get(`/patient/get/data/by/company`);
+    static async getAllPatient(keyword, page, size) {
+        return await client.get(`/patient/get/data/by/company?keyword=${keyword}&page=${page}&size=${size}`);
     }
     
     static async getOnePatient(id) {
@@ -19,5 +19,9 @@ export default class PatientProvider {
 
     static async deletePatient(id) {
         return await client.delete(`/patient/delete/${id}`);
+    }
+
+    static async getPatientStatistic() {
+        return await client.get(`patient/get/patient-count`);
     }
 }

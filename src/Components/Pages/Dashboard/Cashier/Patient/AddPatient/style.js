@@ -68,6 +68,11 @@ const ModalContent = styled.div`
         color: #000000;
         border-radius: 6px;
         padding: 10px 10px;
+
+        /* &:focus{
+          border: red;
+          box-shadow: 0 0 0 0.1rem rgba(255,99,71);
+        } */
       }
 
       span.err-text {

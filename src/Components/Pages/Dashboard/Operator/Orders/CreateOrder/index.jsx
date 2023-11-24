@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import AnalizPriceProvider from "../../../../../../Data/AnalizPriceProvider";
 
 const CreateOrder = ({ id }) => {
   const router = useRouter();
@@ -17,6 +18,21 @@ const CreateOrder = ({ id }) => {
   const [analizId, setAnalizId] = useState({});
   const [laboratoryId, setLaboratoryId] = useState([]);
   const [paymentId, setPaymentId] = useState(10);
+  const [commonSum, setCommonSum] = useState("");
+  const [changeAnaliz, setChangeAnaliz] = useState([]);
+  const [newAnaliz, setNewAnaliz] = useState([]);
+
+  useEffect(() => {
+    AnalizPriceProvider.getAllPrices({ ids: newAnaliz })
+      .then((res) => {
+        setChangeAnaliz(res.data.data.allDTOList);
+        console.log(res.data.data, 'change')
+        setCommonSum(res.data.data.sum);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [newAnaliz]);
 
   useEffect(() => {
     laboratoryId.map((id) => {
@@ -118,62 +134,28 @@ const CreateOrder = ({ id }) => {
             <div className="result">
               <div className="result-top">
                 <h3>Umumiy narxi:</h3>
-                <span className="price">
-                  {/* pastdagi analizlarning yig'indisini chiqarsin */}
-                  {Object.values(analizId)
-                    .flat()
-                    .reduce((a, b) => {
-                      return (
-                        +analiz?.[laboratoryId[0]]?.filter((i) => i.id === b)[0]
-                          ?.price +
-                        +analiz?.[laboratoryId[1]]?.filter((i) => i.id === b)[0]
-                          ?.price +
-                        a +
-                        b
-                        
-                      );
-                    }, 0)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
-                  so`m
-                </span>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span
+                    className="price"
+                    // style={{ textDecoration: "line-through" }}
+                  >
+                    {commonSum} so`m
+                  </span>
+                  {/* <span className="price">
+                    {((100 - data.privilege) * commonSum) / 100} so`m
+                  </span> */}
+                </div>
               </div>
               <hr />
               <div className="redult-bottom">
-                {Object.values(analizId)
-                  .flat()
-                  .map((id) => {
-                    return (
-                      <div className="analiz-result" key={id}>
-                        <div className="analizName">
-                          {
-                            analiz?.[laboratoryId[0]]?.filter(
-                              (i) => i.id === id
-                            )[0]?.analysisName
-                          }
-
-                          {
-                            analiz?.[laboratoryId[1]]?.filter(
-                              (i) => i.id === id
-                            )[0]?.analysisName
-                          }
-                        </div>
-                        <div className="price">
-                          {
-                            analiz?.[laboratoryId[0]]?.filter(
-                              (i) => i.id === id
-                            )[0]?.price
-                          }
-
-                          {
-                            analiz?.[laboratoryId[1]]?.filter(
-                              (i) => i.id === id
-                            )[0]?.price
-                          }
-                        </div>
-                      </div>
-                    );
-                  })}
+                {changeAnaliz.map((item) => {
+                  return (
+                    <div key={item.id} className="analiz-result">
+                      <div className="name">{item?.name}</div>
+                      <div className="price">{item.price}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -197,11 +179,12 @@ const CreateOrder = ({ id }) => {
                     options={analiz[id]?.map((item) => {
                       return {
                         value: item.id,
-                        label: item.analysisName,
+                        label: item.analysisName || item.name,
                       };
                     })}
                     onChange={(v) => {
                       setAnalizId({ ...analizId, [id]: v });
+                      setNewAnaliz(v);
                     }}
                   />
                 </div>

@@ -11,8 +11,14 @@ import ButtonLoader from "../../../../../Common/ButtonLoader";
 import { toast } from "react-toastify";
 import moment from "moment";
 
-const AddPatient = ({onCloseModal}) => {
-  const { register, handleSubmit, control, reset, setValue } = useForm();
+const AddPatient = ({ onCloseModal }) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    control,
+    reset,
+  } = useForm();
   const [loading, setLoading] = useState(false);
   const [regionId, setRegionId] = useState({});
   const [districtId, setDistrictId] = useState({});
@@ -44,16 +50,13 @@ const AddPatient = ({onCloseModal}) => {
     console.log("values", values);
     body.firstName = values.firstName;
     body.lastName = values.lastName;
-    body.phoneNumber = values.phoneNumber;
+    body.phoneNumber = values.phoneNumber.replace(/\s/g, "");
     body.regionId = regionId.value;
     body.districtId = districtId.value;
     body.birthDay = values.birthDay;
     body.address = values.address;
     body.officeName = values.officeName;
-    body.contract = values.contract;
     body.privilege = values.privilege;
-    body.comment = values.comment;
-    
 
     console.log("body", body);
     setLoading(true);
@@ -84,6 +87,7 @@ const AddPatient = ({onCloseModal}) => {
       label: item.name,
     };
   });
+
   return (
     <AddPatientWrapper>
       <ModalHeader className="modal-header">
@@ -100,19 +104,23 @@ const AddPatient = ({onCloseModal}) => {
         >
           <div className="label">
             <label>Ismi</label>
+            {errors.firstName && <span className="err-text">Majburiy maydon</span>}
             <input
               autoComplete="off"
               className="form-control"
+              style={errors.firstName && { border: "1px solid red" }}
               placeholder={"Ismi"}
               {...register("firstName", { required: true })}
             />
           </div>
           <div className="label">
             <label>Familyasi</label>
+            {errors.lastName && <span className="err-text">Majburiy maydon</span>}
             <input
               autoComplete="off"
               className="form-control"
               placeholder={"Familyasi"}
+              style={errors.lastName && { border: "1px solid red" }}
               {...register("lastName", { required: true })}
             />
           </div>
@@ -174,7 +182,7 @@ const AddPatient = ({onCloseModal}) => {
               name="phoneNumber"
               render={({ field: { onChange, onBlur, value } }) => (
                 <PatternFormat
-                  format="+998## ### ## ##"
+                  format="+998#########"
                   className="form-control"
                   name="phoneNumber"
                   allowEmptyFormatting
@@ -204,32 +212,17 @@ const AddPatient = ({onCloseModal}) => {
               {...register("officeName", { required: false })}
             />
           </div>
-          <div className="label">
-            <label>Contract</label>
-            <input
-              autoComplete="off"
-              className="form-control"
-              placeholder={"Contract"}
-              {...register("contract", { required: false })}
-            />
-          </div>
+
           <div className="label">
             <label>Chegirma</label>
             <input
               autoComplete="off"
               className="form-control"
               type="number"
+              max={100}
+              min={0}
               placeholder={"Chegirma"}
               {...register("privilege", { required: false })}
-            />
-          </div>
-          <div className="label">
-            <label>Izoh</label>
-            <input
-              autoComplete="off"
-              className="form-control"
-              placeholder={"Izoh"}
-              {...register("comment", { required: false })}
             />
           </div>
 

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import WithAuthComponent from '../../../src/Hocs/PrivateRoute'
 import DashboardLayout from "../../../src/Components/DashLayout"
-import Statistika from '../../../src/Components/Pages/Dashboard/Seo/Statistika'
+import Statistika from '../../../src/Components/Pages/Dashboard/Operator/Statistika'
 
 export default function Home() {
   return (

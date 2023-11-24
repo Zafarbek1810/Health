@@ -38,11 +38,12 @@ const OrdersMain = () => {
   const RefObj = useRef({ resolve() {}, reject() {} });
   const [modalIsOpen, setIsOpen] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [validateSelect, setValidateSelect] = useState(false);
 
   useEffect(() => {
-    PatientProvider.getAllPatient()
+    PatientProvider.getAllPatient("")
       .then((res) => {
-        setPatient(res.data.data);
+        setPatient(res.data.data.content);
       })
       .catch((err) => {
         console.log(err);
@@ -76,6 +77,7 @@ const OrdersMain = () => {
       })
       .catch((err) => {
         console.log(err);
+        setValidateSelect(true);
       });
   };
 
@@ -101,7 +103,7 @@ const OrdersMain = () => {
   };
 
   const handleEditOrder = (obj) => {
-    router.push(`/dashboard/cashier/order-update?id=${obj.id}`);
+    router.push(`/dashboard/operator/order-update?id=${obj.id}`);
   };
 
   const optionPatient = patient?.map((item) => {
@@ -132,49 +134,30 @@ const OrdersMain = () => {
       <OrderMainWrapper>
         <div className="top">
           <div className="left">
-            <form onSubmit={handleSubmit(handleCreateOrder)}>
-              <Controller
-                control={control}
-                name="patient"
-                className="w-100"
-                render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                  <Select
-                    className="select"
-                    value={value}
-                    placeholder="Bemorni tanlang"
-                    options={optionPatient}
-                    onBlur={onBlur}
-                    onChange={(v) => {
-                      onChange(v);
-                      setPatientId(v.value);
-                    }}
-                    ref={ref}
-                  />
-                )}
+            <div style={validateSelect ? { border: "1px solid red" } : {}}>
+              <Select
+                {...register("patient", { required: true })}
+                options={optionPatient}
+                placeholder="Bemorni tanlang"
+                onChange={(e) => {
+                  setPatientId(e.value);
+                  setValidateSelect(false);
+                }}
               />
-              {errors.patient && (
-                <p className="errorText">Iltimos bemorni tanlang!</p>
-              )}
-              <Button
-                className="btn btn-outline-primary btn-rounded"
-                variant="contained"
-                type="submit"
-              >
-                Buyurtma yaratish
-              </Button>
-            </form>
+            </div>
+            {validateSelect ? <span className="valid">Bemor tanlang</span> : ""}
           </div>
           <div className="right">
             <Button
-              className="btn btn-outline-primary btn-rounded"
               variant="contained"
-              type="button"
-              onClick={() => setOpenDrawer(true)}
+              color="primary"
+              onClick={handleCreateOrder}
             >
-              <FilterSvg /> Filter
+              Buyurtma yaratish
             </Button>
           </div>
         </div>
+
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
@@ -206,36 +189,40 @@ const OrdersMain = () => {
           </thead>
           <tbody>
             {!loading ? (
-              order.map((obj, index) => (
-                <tr key={index}>
-                  <td
-                    onClick={() => {
-                      handleTableRow(obj);
-                    }}
-                    style={{ minWidth: "15%" }}
-                    className="col"
-                  >
-                    {index + 1}.{obj.firstName} {obj.lastName}
-                  </td>
-                  <td
-                    onClick={() => {
-                      handleTableRow(obj);
-                    }}
-                    style={{ minWidth: "15%" }}
-                    className="col"
-                  >
-                    {obj.phoneNumber}
-                  </td>
-                  <td
-                    onClick={() => {
-                      handleTableRow(obj);
-                    }}
-                    style={{ minWidth: "15%" }}
-                    className="col"
-                  >
-                    {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
-                  </td>
-                  {/* <td
+              order
+                .filter((i) => i.price != 0)
+                .map((obj, index) => (
+                  <tr key={index}>
+                    <td
+                      onClick={() => {
+                        handleTableRow(obj);
+                      }}
+                      style={{ minWidth: "15%" }}
+                      className="col"
+                    >
+                      {index + 1}.{obj.firstName} {obj.lastName}
+                    </td>
+                    <td
+                      onClick={() => {
+                        handleTableRow(obj);
+                      }}
+                      style={{ minWidth: "15%" }}
+                      className="col"
+                    >
+                      {obj.phoneNumber}
+                    </td>
+                    <td
+                      onClick={() => {
+                        handleTableRow(obj);
+                      }}
+                      style={{ minWidth: "15%" }}
+                      className="col"
+                    >
+                      {moment(new Date(obj.createdAt)).format(
+                        "DD.MM.YYYY HH:mm"
+                      )}
+                    </td>
+                    {/* <td
                     onClick={() => {
                       handleTableRow(obj);
                     }}
@@ -248,39 +235,41 @@ const OrdersMain = () => {
                       <span style={{ color: "red" }}>Kiritilmagan</span>
                     )}
                   </td> */}
-                  <td style={{ minWidth: "15%" }} className="col">
-                    {obj.confirm === "1" ? (
-                      <span style={{ color: "green" }}>Tasdiqlangan</span>
-                    ) : obj.confirm === "0" ? (
-                      <span style={{ color: "red" }}>Rad etilgan</span>
-                    ) : (
-                      <span style={{ color: "orange" }}>Tasdiqlanmagan</span>
-                    )}
-                  </td>
-                  <td style={{ minWidth: "10%" }} className="col">
-                    {+obj.paymentType === 10
-                      ? "Naqd"
-                      : +obj.paymentType === 20
-                      ? "Plastik"
-                      : +obj.paymentType === 30
-                      ? "Hisobdan o'tkazish"
-                      : "Bunday to'lov turi yo'q"}
-                  </td>
-                  <td style={{ minWidth: "10%" }} className="col">
-                    {obj.price.toLocaleString().replace(/,/g, " ")}
-                  </td>
-                  <td style={{ minWidth: "10%" }} className="col">
-                    <div className="btns">
-                      <IconButton onClick={() => handleEditOrder(obj)}>
-                        <EditSvg />
-                      </IconButton>
-                      <IconButton onClick={() => handleDeleteOrder(obj)}>
-                        <DeleteSvg />
-                      </IconButton>
-                    </div>
-                  </td>
-                </tr>
-              ))
+                    <td style={{ minWidth: "15%" }} className="col">
+                      {obj.state === 1 ? (
+                        <span style={{ color: "green" }}>Qabul qilindi</span>
+                      ) : obj.state === 0 ? (
+                        <span style={{ color: "red" }}>Qabul qilinmadi</span>
+                      ) : obj.state === -1 ? (
+                        <span style={{ color: "orange" }}>Bekor qilindi</span>
+                      ) : (
+                        <></>
+                      )}
+                    </td>
+                    <td style={{ minWidth: "10%" }} className="col">
+                      {+obj.paymentType === 10
+                        ? "Naqd"
+                        : +obj.paymentType === 20
+                        ? "Plastik"
+                        : +obj.paymentType === 30
+                        ? "Hisobdan o'tkazish"
+                        : "Bunday to'lov turi yo'q"}
+                    </td>
+                    <td style={{ minWidth: "10%" }} className="col">
+                      {obj.price.toLocaleString().replace(/,/g, " ")}
+                    </td>
+                    <td style={{ minWidth: "10%" }} className="col">
+                      <div className="btns">
+                        <IconButton onClick={() => handleEditOrder(obj)}>
+                          <EditSvg />
+                        </IconButton>
+                        <IconButton onClick={() => handleDeleteOrder(obj)}>
+                          <DeleteSvg />
+                        </IconButton>
+                      </div>
+                    </td>
+                  </tr>
+                ))
             ) : (
               <MinLoader />
             )}

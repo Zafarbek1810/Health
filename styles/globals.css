@@ -24,6 +24,10 @@ body {
   height: 12px !important;
 }
 
+.table-striped>tbody>tr:nth-of-type(odd)>*{
+  background-color: rgb(252, 252, 255);
+  --bs-table-bg-type: transparent !important;
+}
 
 
 

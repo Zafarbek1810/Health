@@ -86,10 +86,10 @@ const OrdersMain = () => {
         value: obj.paymentStatus,
         label:
           obj.paymentStatus === 1
-            ? "To`langan"
+            ? "To`landi"
             : obj.paymentStatus === 0
-            ? "To`lanmagan"
-            : "Qaytarilgan",
+            ? "To`lanmadi"
+            : "Qaytarildi",
       });
     }
     setPaymentStatus(obj.paymentStatus);
@@ -114,9 +114,9 @@ const OrdersMain = () => {
   };
 
   const optionStatus = [
-    { value: "1", label: "To`langan" },
-    { value: "0", label: "To`lanmagan" },
-    { value: "-1", label: "Qaytarilgan" },
+    { value: "1", label: "To`landi" },
+    { value: "0", label: "To`lanmadi" },
+    { value: "-1", label: "Qaytarildi" },
   ];
 
   const onchangeStatus = () => {

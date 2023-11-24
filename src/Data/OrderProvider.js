@@ -24,6 +24,9 @@ export default class OrderProvider {
     static async getAllOrders(pageNum, pageSize) {
         return await client.get(`/order/get/data?pageNum=${pageNum}&pageSize=${pageSize}`);
     }
+    static async getAllAnalysisStatus(pageNum, pageSize) {
+        return await client.get(`/order/get/all/analysis-status?pageNum=${pageNum}&pageSize=${pageSize}`);
+    }
     static async getOrdersById(id) {
         return await client.get(`/order/get/detail/data?orderId=${id}`);
     }
@@ -42,5 +45,9 @@ export default class OrderProvider {
 
     static async changePaymentStatus (body){
         return await client.post(`/order/change/payment-status` , body);
+    }
+
+    static async changeAnalizStatus (orderDetailId, analysisStatus){
+        return await client.post(`/order/change/analysis-result-status?orderDetailId=${orderDetailId}&analysisStatus=${analysisStatus}`);
     }
 }

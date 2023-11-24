@@ -3,46 +3,54 @@ import { styled } from "styled-components";
 const OrderMainWrapper = styled.div`
   .top {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     gap: 20px;
+    margin-bottom: 40px;
 
     .left {
       width: 50%;
-      form{
+      position: relative;
+      form {
         width: 100%;
         display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+
+        button {
+          border-radius: 6px;
+          width: 40%;
+          text-transform: capitalize;
+        }
+
+        .select {
+          width: 60%;
+        }
+      }
+
+      .valid{
+        position: absolute;
+        bottom: -25px;
+        left: 10px;
+        color: red;
+      }
+    }
+    .right {
+      width: 50%;
 
       button {
         border-radius: 6px;
         width: 40%;
         text-transform: capitalize;
-      }
-      
-      .select {
-        width: 60%;
-      }
-    }
-    }
-    .right{
-      width: 30%;
-      text-align: right;
 
-      button{
-        border-radius: 6px;
-        width: 40%;
-        text-transform: capitalize;
-
-        svg{
+        svg {
           width: 20px;
           height: 20px;
           stroke: #006786;
         }
 
-        &:hover{
-          svg{
+        &:hover {
+          svg {
             stroke: #fff;
           }
         }

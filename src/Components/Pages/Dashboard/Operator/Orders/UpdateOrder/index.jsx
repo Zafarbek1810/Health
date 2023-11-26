@@ -14,59 +14,53 @@ import AnalizPriceProvider from "../../../../../../Data/AnalizPriceProvider";
 const UpdateOrder = ({ id }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
-  const [analiz, setAnaliz] = useState(null);
+
   const [laboratory, setLaboratory] = useState([]);
-  const [analizId, setAnalizId] = useState({});
-  const [laboratoryId, setLaboratoryId] = useState([]);
-  const [paymentId, setPaymentId] = useState([]);
-  const [data, setData] = useState(null);
-  const [defaultLab, setDefaultLab] = useState(null);
-  const [newAnaliz, setNewAnaliz] = useState([]);
+  const [defaultLab, setDefaultLab] = useState([]);
+
+  const [paymentId, setPaymentId] = useState();
   const [commonSum, setCommonSum] = useState("");
+
   const [changeAnaliz, setChangeAnaliz] = useState([]);
+
+  const [analiz, setAnaliz] = useState(null);
+  const [laboratoryId, setLaboratoryId] = useState([]);
+  const [data, setData] = useState(null);
+  const [newAnaliz, setNewAnaliz] = useState({});
   const [defaultResult, setDefaultResult] = useState([]);
 
-  console.log(defaultLab, analiz, 'defaultlab')
+
 
   useEffect(() => {
-    AnalizPriceProvider.getAllPrices({ ids: newAnaliz })
-      .then((res) => {
-        setChangeAnaliz(res.data.data.allDTOList);
-        setCommonSum(res.data.data.sum);
+    if (defaultLab && defaultLab.length > 0) {
+      let allAnaliz = []
+      defaultLab.map((id) => {
+        if (newAnaliz[id]) {
+          allAnaliz = [...allAnaliz, ...newAnaliz[id]]
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [newAnaliz]);
+      allAnaliz = removeDuplicates(allAnaliz)
+      AnalizPriceProvider.getAllPrices({ ids: allAnaliz })
+        .then((res) => {
+          if (res.data.success) {
+            setChangeAnaliz(res.data.data.allDTOList);
+            console.log('newAnaliz', res.data.data.allDTOList);
+            setCommonSum(res.data.data.sum);
+          } else {
+            console.log(err);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (!defaultLab || defaultLab.length === 0) {
+      setChangeAnaliz([])
+      setData(prev => ({ ...prev, orderDetailMap: {} }))
+    }
 
-  useEffect(() => {
-    AnalizPriceProvider.getDefaultPrice(id)
-      .then((res) => {
-        setNewAnaliz(res.data.data.allDTOList);
-        setCommonSum(res.data.data.sum);
-        console.log(res.data.data?.allDTOList, "defaultResult");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
+  }, [newAnaliz, defaultLab]);
 
-  // useEffect(() => {
-  //   if (defaultLab && id) {
-  //     defaultLab.map((id) => {
-  //       AnalizProvider.getAllAnalysisByLab(id)
-  //         .then((res) => {
-  //           setAnaliz({ ...analiz, [id]: res.data.data });
-  //           console.log(res.data.data, "analiz");
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //         });
-  //     });
-  //   }
-  // }, [defaultLab, id]);
 
-  console.log(newAnaliz, "newanaliz");
 
   useEffect(() => {
     if (id) {
@@ -74,12 +68,11 @@ const UpdateOrder = ({ id }) => {
         .then((res) => {
           setData(res.data.data);
           setPaymentId(res.data.data?.paymentType);
-          setAnalizId([
-            ...res.data.data.orderDetailDTOList.map((v) => v.analysisId),
-          ]);
-          setChangeAnaliz(res.data.data.orderDetailDTOList);
+          for (const [key, value] of Object.entries(res.data.data.orderDetailMap)) {
+            setNewAnaliz(prev => ({ ...prev, [key]: value.map(obj => obj.analysisId) }));
+          }
+          console.log('res.data.data.orderDetailDTOList', res.data.data);
           getDefaultLab();
-          // getDefaultAnalysis();
           console.log(res.data.data, "data");
           setLaboratoryId(
             res.data.data.orderDetailDTOList.map((item) => item.laboratoryId)
@@ -129,12 +122,20 @@ const UpdateOrder = ({ id }) => {
   ];
 
   const onSubmit = (val) => {
-    console.log(val);
-    const body = {};
-    // body.laboratoryId = laboratoryId[0];
-    body.analysisIds =
-      newAnaliz == 0 ? defaultResult.map((item) => item.id) : newAnaliz;
-    body.formPayment = paymentId;
+
+    let allAnaliz = []
+    defaultLab.map((id) => {
+      if (newAnaliz[id]) {
+        allAnaliz = [...allAnaliz, ...newAnaliz[id]]
+      }
+    })
+    allAnaliz = removeDuplicates(allAnaliz)
+
+    const body = {
+      formPayment: paymentId,
+      analysisIds: allAnaliz
+    };
+
     body.orderId = +id;
 
     OrderProvider.updateOrder(body)
@@ -167,12 +168,27 @@ const UpdateOrder = ({ id }) => {
     return analizzz;
   };
 
+  const renderAnalyzList = (
+    <div className="redult-bottom">
+      {changeAnaliz.length > 0 &&
+        changeAnaliz.map((item) => {
+          return (
+            <div key={item.id} className="analiz-result">
+              <div className="name">{item?.name || item?.analysisName}</div>
+              <div className="price">{item.price}</div>
+            </div>
+          );
+        })}
+    </div>
+  )
+
   if (!data?.orderDetailDTOList || !defaultLab || !analiz) {
     return <div>Loading ...</div>;
   }
 
   return (
     <CreateOrderWrapper>
+      {console.log('changeAnaliz', changeAnaliz, defaultLab)}
       <div className="top">Buyurtma o`zgartirish</div>
       <div className="wrapper">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -184,22 +200,22 @@ const UpdateOrder = ({ id }) => {
               <Select
                 size="large"
                 mode="multiple"
-                defaultValue={defaultLab || []}
+                value={defaultLab}
                 className="select w-100"
                 placeholder="Labaratoriya tanlang"
                 options={optionLaboratory}
                 onChange={(v) => {
-                  // setLaboratoryId(v);
                   setDefaultLab(v);
                 }}
               />
             </div>
+
             <div>
               <label>
                 To`lov turi<span className="span">*</span>
                 <Select
                   size="large"
-                  defaultValue={[data?.paymentType]}
+                  value={paymentId}
                   className="select w-100"
                   placeholder="To'lov turini tanlang"
                   options={optionPayment}
@@ -209,6 +225,7 @@ const UpdateOrder = ({ id }) => {
                 />
               </label>
             </div>
+
             <div className="result">
               <div className="result-top">
                 <h3>Umumiy narxi:</h3>
@@ -225,17 +242,7 @@ const UpdateOrder = ({ id }) => {
                 </div>
               </div>
               <hr />
-              <div className="redult-bottom">
-                {changeAnaliz.length > 0 &&
-                  changeAnaliz.map((item) => {
-                    return (
-                      <div key={item.id} className="analiz-result">
-                        <div className="name">{item?.name}</div>
-                        <div className="price">{item.price}</div>
-                      </div>
-                    );
-                  })}
-              </div>
+              {renderAnalyzList}
             </div>
           </div>
 
@@ -253,7 +260,8 @@ const UpdateOrder = ({ id }) => {
                   <Select
                     size="large"
                     mode="multiple"
-                    defaultValue={getDefaultAnalysis(id)}
+                    // defaultValue={getDefaultAnalysis(id)}
+                    value={newAnaliz[id]}
                     className="select w-100"
                     placeholder="Analiz tanlang"
                     options={analiz[id]?.map((item) => {
@@ -271,8 +279,7 @@ const UpdateOrder = ({ id }) => {
                       };
                     })}
                     onChange={(v) => {
-                      setAnalizId({ ...analizId, [id]: v });
-                      setNewAnaliz((prev) => removeDuplicates([...prev, ...v]));
+                      setNewAnaliz({ ...newAnaliz, [id]: v });
                     }}
                   />
                 </div>

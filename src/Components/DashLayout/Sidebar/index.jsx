@@ -111,7 +111,13 @@ const NavListMenu = [
     role: ["ROLE_DIRECTOR"],
   },
   
-  //operator role
+  //laborant role
+  {
+    title: "Statistika",
+    path: "/dashboard/laborant/statistika",
+    src: <UserCircle />,
+    role: ["ROLE_LABORANT"],
+  },
   {
     title: "Tahlillar",
     path: "/dashboard/laborant/tahlillar",
@@ -124,6 +130,7 @@ const NavListMenu = [
     src: <UserCircle />,
     role: ["ROLE_LABORANT"],
   },
+  // operator role
   {
     title: "Statistika",
     path: "/dashboard/operator/statistika",

@@ -244,6 +244,7 @@ const UpdateOrder = ({ id }) => {
               <hr />
               {renderAnalyzList}
             </div>
+
           </div>
 
           <div className="right">
@@ -265,14 +266,6 @@ const UpdateOrder = ({ id }) => {
                     className="select w-100"
                     placeholder="Analiz tanlang"
                     options={analiz[id]?.map((item) => {
-                      console.log(
-                        {
-                          value: item?.id,
-                          label: item?.analysisName,
-                        },
-                        analiz,
-                        "valuessss"
-                      );
                       return {
                         value: item?.id,
                         label: item?.analysisName || item?.name,

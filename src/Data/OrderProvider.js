@@ -30,7 +30,10 @@ export default class OrderProvider {
     static async getOrdersById(id) {
         return await client.get(`/order/get/detail/data?orderId=${id}`);
     }
-
+    static async getLaborantStatistika() {
+        return await client.get(`/order/get/laborant-stat/data`);
+    }
+    
     static async deleteOrder(id) {
         return await client.delete(`/order/delete/${id}`);
     }

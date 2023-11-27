@@ -2,20 +2,18 @@ import React, { useEffect, useState } from "react";
 import StatistikaWrapper from "./style";
 import { Card, Col, DatePicker, Row, Statistic } from "antd";
 const { RangePicker } = DatePicker;
-import { DiffOutlined, DollarOutlined } from "@ant-design/icons";
-import EyeSvg from "../../../../Common/Svgs/EyeSvg";
 import PieStatistic from "./PieStatistic";
 import LineCHarts from "./LineCharts";
-import OrderProvider from "../../../../../Data/OrderProvider";
 import PatientProvider from "../../../../../Data/PatientProvider";
+import OrderProvider from "../../../../../Data/OrderProvider";
 
 const Statistika = () => {
-  const [currency, setCurrency] = useState({});
+  const [data, setData] = useState({});
 
   useEffect(() => {
-    PatientProvider.getPatientStatistic()
+    OrderProvider.getLaborantStatistika()
       .then((res) => {
-        setCurrency(res.data.data);
+        setData(res.data.data);
         console.log(res.data.data);
       })
       .catch((err) => {
@@ -40,10 +38,10 @@ const Statistika = () => {
           <Col span={5}>
             <Card bordered={true}>
               <Statistic
-                title="Kunlik bemorlar soni"
+                title="Navbatda"
                 value={
-                  currency.currentPatientCount
-                    ? currency.currentPatientCount
+                  data.inLine
+                    ? data.inLine
                     : "Mavjud emas"
                 }
               />
@@ -52,10 +50,10 @@ const Statistika = () => {
           <Col span={5}>
             <Card bordered={true}>
               <Statistic
-                title="Haftalik bemorlar soni"
+                title="Kutmoqda"
                 value={
-                  currency.currentWeekCount
-                    ? currency.currentWeekCount
+                  data.pending
+                    ? data.pending
                     : "Mavjud emas"
                 }
               />
@@ -64,10 +62,10 @@ const Statistika = () => {
           <Col span={5}>
             <Card bordered={true}>
               <Statistic
-                title="Oylik bemorlar soni"
+                title="Rad etilgan"
                 value={
-                  currency.currentMonthCount
-                    ? currency.currentMonthCount
+                  data.reject
+                    ? data.reject
                     : "Mavjud emas"
                 }
               />
@@ -76,10 +74,10 @@ const Statistika = () => {
           <Col span={5}>
             <Card bordered={true}>
               <Statistic
-                title="Yillik bemorlar soni"
+                title="Tayyor"
                 value={
-                  currency.currentYearCount
-                    ? currency.currentYearCount
+                  data.ready
+                    ? data.ready
                     : "Mavjud emas"
                 }
                 // prefix={<DollarOutlined />}
@@ -89,8 +87,8 @@ const Statistika = () => {
           <Col span={4}>
             <Card bordered={true}>
               <Statistic
-                title="Jami bemorlar soni"
-                value={currency.allCount ? currency.allCount : "Mavjud emas"}
+                title="Bekor qilingan"
+                value={data.failed ? data.failed : "0"}
                 // prefix={<DollarOutlined />}
               />
             </Card>

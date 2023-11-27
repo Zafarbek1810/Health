@@ -1,10 +1,9 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import Select from "react-select";
 import PatientProvider from "../../../../../../Data/PatientProvider";
 import OrderMainWrapper from "./style";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import MinLoader from "../../../../../Common/MinLoader";
 import EditSvg from "../../../../../Common/Svgs/EditSvg";
@@ -14,8 +13,8 @@ import { toast } from "react-toastify";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import moment from "moment";
-import FilterSvg from "../../../../../Common/Svgs/FilterSvg";
-import { Drawer } from "antd";
+import { Drawer, Form, Select, Button} from "antd";
+const { Option } = Select;
 
 const OrdersMain = () => {
   const {
@@ -39,6 +38,7 @@ const OrdersMain = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [validateSelect, setValidateSelect] = useState(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     PatientProvider.getAllPatient("")
@@ -65,21 +65,6 @@ const OrdersMain = () => {
       });
   }, []);
 
-  const handleCreateOrder = () => {
-    if (!patientId) {
-      setError("patient", { type: "focus" }, { shouldFocus: true });
-    }
-
-    OrderProvider.createOrder(patientId)
-      .then((res) => {
-        console.log(res.data.data);
-        router.push(`/dashboard/operator/order-create?id=${res.data.data.id}`);
-      })
-      .catch((err) => {
-        console.log(err);
-        setValidateSelect(true);
-      });
-  };
 
   const handleDeleteOrder = (obj) => {
     confirm({
@@ -106,13 +91,6 @@ const OrdersMain = () => {
     router.push(`/dashboard/operator/order-update?id=${obj.id}`);
   };
 
-  const optionPatient = patient?.map((item) => {
-    return {
-      value: item.id,
-      label: item.first_name + " " + item.last_name,
-    };
-  });
-
   const handleTableRow = (obj) => {
     setLoadingModal(true);
     OrderProvider.getOrdersById(obj.id)
@@ -129,34 +107,60 @@ const OrdersMain = () => {
       });
   };
 
+  const onFinish = (values) => {
+    console.log(values.patient);
+    OrderProvider.createOrder(values.patient)
+      .then((res) => {
+        console.log(res.data.data);
+        router.push(`/dashboard/operator/order-create?id=${res.data.data.id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        setValidateSelect(true);
+      });
+  };
+
   return (
     <>
       <OrderMainWrapper>
         <div className="top">
-          <div className="left">
-            <div style={validateSelect ? { border: "1px solid red" } : {}}>
-              <Select
-                {...register("patient", { required: true })}
-                options={optionPatient}
-                placeholder="Bemorni tanlang"
-                onChange={(e) => {
-                  setPatientId(e.value);
-                  setValidateSelect(false);
-                }}
-              />
-            </div>
-            {validateSelect ? <span className="valid">Bemor tanlang</span> : ""}
-          </div>
-          <div className="right">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCreateOrder}
+        <Form
+          form={form}
+          name="control-hooks"
+          onFinish={onFinish}
+          style={{
+            maxWidth: 600,
+          }}
+        >
+          <Form.Item
+            name="patient"
+            rules={[
+              {
+                required: true,
+                message: "Bemor tanlanishi zarur"
+              },
+            ]}
+          >
+            <Select
+              placeholder="Bemor tanlang"
+              // onChange={onGenderChange}
+              allowClear
             >
-              Buyurtma yaratish
-            </Button>
-          </div>
+              {patient?.map((item) => (
+                <Option key={item.id} value={item.id}>
+                  {item.first_name + " " + item.last_name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Button type="primary" htmlType="submit">
+            Yaratish
+          </Button>
+        </Form>
         </div>
+
+        
 
         <table className="table table-striped table-bordered table-hover">
           <thead>

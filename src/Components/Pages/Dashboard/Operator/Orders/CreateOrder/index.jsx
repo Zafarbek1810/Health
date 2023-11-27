@@ -9,6 +9,7 @@ import OrderProvider from "../../../../../../Data/OrderProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import AnalizPriceProvider from "../../../../../../Data/AnalizPriceProvider";
+import removeDuplicates from "../../../../../../utils/removeDublicateArray";
 
 const CreateOrder = ({ id }) => {
   const router = useRouter();
@@ -21,12 +22,14 @@ const CreateOrder = ({ id }) => {
   const [commonSum, setCommonSum] = useState("");
   const [changeAnaliz, setChangeAnaliz] = useState([]);
   const [newAnaliz, setNewAnaliz] = useState([]);
-
+  
+  console.log(newAnaliz, 'newAnaliz');
+  
   useEffect(() => {
-    AnalizPriceProvider.getAllPrices({ ids: newAnaliz })
+    AnalizPriceProvider.getAllPrices({ ids: Object.values(analizId).flat() })
       .then((res) => {
         setChangeAnaliz(res.data.data.allDTOList);
-        console.log(res.data.data, 'change')
+        console.log(res.data.data, "change");
         setCommonSum(res.data.data.sum);
       })
       .catch((err) => {

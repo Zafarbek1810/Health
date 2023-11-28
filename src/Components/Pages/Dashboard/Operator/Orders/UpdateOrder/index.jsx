@@ -185,7 +185,7 @@ const UpdateOrder = ({ id }) => {
   if (!data?.orderDetailDTOList || !defaultLab || !analiz) {
     return <div>Loading ...</div>;
   }
-
+  console.log('analizObj', analiz);
   return (
     <CreateOrderWrapper>
       {console.log('changeAnaliz', changeAnaliz, defaultLab)}

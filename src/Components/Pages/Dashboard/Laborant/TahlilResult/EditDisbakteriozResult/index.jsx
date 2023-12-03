@@ -8,8 +8,9 @@ import { toast } from "react-toastify";
 import ButtonLoader from "../../../../../Common/ButtonLoader";
 import EditResultMainWrapper from "./style";
 import ParasiteProvider from "../../../../../../Data/ParasiteProvider";
+import BacteriaProvider from "../../../../../../Data/BacteriaProvider";
 
-const EditResultMain = ({ patientId, orderId }) => {
+const EditDisBakteriozResult = ({ patientId, orderId }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [parasitology, setParasitology] = useState([]);
@@ -41,12 +42,12 @@ const EditResultMain = ({ patientId, orderId }) => {
   //3talik
   useEffect(() => {
     setLoading(true);
-    ParasitologyResultProvider.getResultParasiteByPatientId(patientId, orderId)
+    BacteriaProvider.getResulDisbakteriozByPatientId(patientId, orderId)
       .then((res) => {
-        // addUniqueId(res.data.data)
+        console.log(res.data.data);
         const response = res.data.data.map((item)=>{
           return {
-            uniqueId : item.parasite.id,
+            uniqueId : item?.id,
             ...item
           }
         })
@@ -64,15 +65,16 @@ console.log(resultsData, 'resultsData');
   //all parasites
   useEffect(() => {
     setLoading(true);
-    ParasiteProvider.getAllParasite()
+    BacteriaProvider.getAllBacteria()
       .then((res) => {
-        setParasitology(res.data.data.map((item)=>{
+        const response = res.data.data.map((item)=>{
           return{
-            uniqueId : item.id,
-            ...item,
-            id: null 
+            uniqueId : item?.id,
+            ...item
           }
-        }));
+        });
+        setParasitology(response)
+        console.log(response, 'res');
       })
       .catch((err) => {
         console.log(err);
@@ -91,17 +93,14 @@ console.log(resultsData, 'resultsData');
 
   const onSubmit = (data) => {
     const rowData = resultsData.map((row) => ({
-      id: row.id,
+      id: row.resultId,
       patientId: +patientId,
-      parasiteId: +row.uniqueId,
+      bacteriaId: row.id,
       orderDetailId: +orderId,
-      light: row.light || null,
-      medium: row.medium || null,
-      heavy: row.heavy || null,
-      norm: row.norm || "bo'lmaydi",
+      result: row.result || null,
     }));
     
-    ParasitologyResultProvider.updateResultParasite(rowData)
+    BacteriaProvider.createResultDisbakterioz(rowData)
     .then((res) => {
         setLoading2(true);
         console.log(res);
@@ -136,21 +135,15 @@ console.log(resultsData, 'resultsData');
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">
-          <thead>
+        <thead>
             <tr>
-              <th style={{ minWidth: "40%" }} className="col">
-                Tekshirilgan parazit turi
+              <th style={{ minWidth: "20%" }} className="col">
+                Tekshirilgan mikroorganizmlar
               </th>
-              <th style={{ minWidth: "15%" }} className="col">
-                Yengil
+              <th style={{ minWidth: "20%" }} className="col">
+                Aniqlandi
               </th>
-              <th style={{ minWidth: "15%" }} className="col">
-                O`rta
-              </th>
-              <th style={{ minWidth: "15%" }} className="col">
-                Og`ir
-              </th>
-              <th style={{ minWidth: "15%" }} className="col">
+              <th style={{ minWidth: "20%" }} className="col">
                 Me`yor
               </th>
             </tr>
@@ -159,45 +152,24 @@ console.log(resultsData, 'resultsData');
             {!loading ? (
               resultsData.sort(sort_by_id()).map((obj, index) => (
                 <tr key={index}>
-                  <td style={{ minWidth: "40%", fontSize:16 }} className="col">
-                    {index + 1}.
-                    {obj.parasite?.parasite_name || obj.parasite_name}
+                  <td style={{ minWidth: "20%", fontSize:14 }} className="col">
+                    {index + 1}.{obj.bacteria_name || obj.name}
                   </td>
-                  <td style={{ minWidth: "15%" }} className="col">
+                  <td style={{ minWidth: "20%" }} className="col">
                     <input
                       autoComplete="off"
                       className="form-control"
-                      value={obj?.light || ""}
+                      value={obj.result || ""}
                       onChange={(e) =>
-                        handleRowChange(index, "light", e.target.value)
+                        handleRowChange(index, "result", e.target.value)
                       }
                     />
                   </td>
-                  <td style={{ minWidth: "15%" }} className="col">
+                  <td style={{ minWidth: "20%" }} className="col">
                     <input
                       autoComplete="off"
                       className="form-control"
-                      value={obj?.medium || ""}
-                      onChange={(e) =>
-                        handleRowChange(index, "medium", e.target.value)
-                      }
-                    />
-                  </td>
-                  <td style={{ minWidth: "15%" }} className="col">
-                    <input
-                      autoComplete="off"
-                      className="form-control"
-                      value={obj?.heavy || ""}
-                      onChange={(e) =>
-                        handleRowChange(index, "heavy", e.target.value)
-                      }
-                    />
-                  </td>
-                  <td style={{ minWidth: "15%" }} className="col">
-                    <input
-                      autoComplete="off"
-                      className="form-control"
-                      value={obj?.norm || "bo'lmaydi"}
+                      value={obj.norm || ""}
                       onChange={(e) =>
                         handleRowChange(index, "norm", e.target.value)
                       }
@@ -222,4 +194,4 @@ console.log(resultsData, 'resultsData');
   );
 };
 
-export default EditResultMain;
+export default EditDisBakteriozResult;

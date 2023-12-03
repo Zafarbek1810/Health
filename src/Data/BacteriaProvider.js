@@ -16,4 +16,13 @@ export default class BacteriaProvider {
     static async deleteBacteria(id) {
         return await client.delete(`/seo/bacteria/delete/${id}`);
     }
+
+
+    //result
+    static async createResultDisbakterioz (body){
+        return await client.post(`/intestinal/save`, body);
+    }
+    static async getResulDisbakteriozByPatientId(patientId, orderId ) {
+        return await client.get(`/intestinal/get/data?patientId=${patientId}&orderDetailId=${orderId}`);
+    }
 }

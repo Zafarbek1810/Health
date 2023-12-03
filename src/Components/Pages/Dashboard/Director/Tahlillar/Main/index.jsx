@@ -84,11 +84,12 @@ const Tahlillar = () => {
     setDrawerData(obj);
   };
 
+  console.log(drawerData, 'drawerData');
   const getPdfBtn = (drawerData) => {
     AnalizProvider.getPdfAnalysis(
       true,
       drawerData.patientId,
-      drawerData.orderId
+      drawerData.id
     )
       .then((res) => {
         console.log(res);

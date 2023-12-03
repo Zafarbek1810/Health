@@ -16,4 +16,16 @@ export default class AntibioticProvider {
     static async deleteAntibiotic(id) {
         return await client.delete(`/seo/antibiotic/delete/${id}`);
     }
+
+
+    //result
+    static async addAntibioticResult (body){
+        return await client.post("/sensitivity/save", body);
+    }
+
+    static async getAntibioticByPatientId (patientId, orderId){
+        return await client.get(`/sensitivity/get/data?patientId=${patientId}&orderDetailId=${orderId}`);
+    }
+
+
 }

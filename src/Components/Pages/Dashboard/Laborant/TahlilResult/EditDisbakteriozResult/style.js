@@ -1,6 +1,8 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 
-const ParasitologyResultWrapper = styled.div`
+const EditResultMainWrapper = styled.div`
+
+
 .top{
   display: flex;
   gap: 30px;
@@ -68,7 +70,7 @@ const ParasitologyResultWrapper = styled.div`
           display: flex;
           align-items: center;
           justify-content: start;
-          text-align: center;
+          color: rgba(0, 0, 0, 0.7);
           font-family: "Azo sans";
           padding: 5px;
           
@@ -103,66 +105,6 @@ const ParasitologyResultWrapper = styled.div`
     }
   }
 
-  .ant-badge {
-    .ant-badge-status-dot {
-      width: 12px;
-      height: 12px;
-    }
-
-    &.badge_default {
-      .ant-badge-status-processing {
-        background: #EF9B0F;
-
-        &::after {
-          border-color: #EF9B0F;
-          background: #EF9B0F;
-        }
-      }
-    }
-
-    &.badge_danger {
-      .ant-badge-status-processing {
-        background: #c13c3c;
-
-        &::after {
-          border-color: #c13c3c;
-          background: #c13c3c;
-        }
-      }
-    }
-    &.badge_primary {
-      .ant-badge-status-processing {
-        background: #474afc;
-
-        &::after {
-          border-color: #474afc;
-          background: #474afc;
-        }
-      }
-    }
-    &.badge_warning {
-      .ant-badge-status-processing {
-        background: #f1ac03;
-
-        &::after {
-          border-color: #f1ac03;
-          background: #f1ac03;
-        }
-      }
-    }
-    &.badge_success {
-      .ant-badge-status-processing {
-        background: #3cc18a;
-
-        &::after {
-          border-color: #3cc18a;
-          background: #3cc18a;
-        }
-      }
-    }
-  }
-
 `
 
-
-export { ParasitologyResultWrapper }
+export default EditResultMainWrapper;

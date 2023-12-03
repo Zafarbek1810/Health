@@ -90,7 +90,7 @@ const AnalizResultAdd = ({ id, patientId }) => {
             {!loading ? (
               parasitology.map((obj, index) => (
                 <tr key={index}>
-                  <td style={{ minWidth: "20%" }} className="col">
+                  <td style={{ minWidth: "20%", fontSize:14 }} className="col">
                     {index + 1}.{obj.parasite_name}
                   </td>
                   <td style={{ minWidth: "20%" }} className="col">

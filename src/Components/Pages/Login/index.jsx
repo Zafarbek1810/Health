@@ -40,7 +40,7 @@ const Login = () => {
           break;
         }
         case "ROLE_LABORANT": {
-          router.replace("/dashboard/laborant/tahlillar");
+          router.replace("/dashboard/laborant/statistika");
           break;
         }
         case "ROLE_CASHIER": {

@@ -1,8 +1,22 @@
 import * as echarts from "echarts";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import OrderProvider from "../../../../../../Data/OrderProvider";
 
 const PieStatistic = () => {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    OrderProvider.getLaborantStatistika()
+      .then((res) => {
+        setData(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   useEffect(() => {
     const echartElemPie = document.getElementById("echartPie");
 
@@ -11,12 +25,11 @@ const PieStatistic = () => {
 
       const options = {
         color: [
-          "#4290f5",
-          "#4290f5ea",
-          "#408aeb",
-          "#4188e4",
-          "#2e74d1",
-          "#6ca1e7",
+          "#f77f00",
+          "#120a8f",
+          "red",
+          "#4cbb17",
+          "#f15e03",
         ],
         tooltip: {
           show: true,
@@ -24,16 +37,16 @@ const PieStatistic = () => {
         },
         series: [
           {
-            name: "Laboratoriyalardagi bemorlar soni",
+            name: "Bemorlarning natija holatlari",
             type: "pie",
             radius: "60%",
             center: ["50%", "50%"],
             data: [
-                { value: 1, name: "sss" },
-                { value: 2, name: "dd" },
-                { value: 3, name: "ff" },
-                { value: 4, name: "gg" },
-                { value: 5, name: "hh" },
+                { value: data.inLine, name: "Navbatda" },
+                { value: data.pending, name: "Kutmoqda" },
+                { value: data.reject, name: "Rad etilgan" },
+                { value: data.ready, name: "Tayyor" },
+                { value: data.failed, name: "Bekor qilingan" },
             ],
             itemStyle: {
               emphasis: {
@@ -54,7 +67,7 @@ const PieStatistic = () => {
         }, 500);
       });
     }
-  }, []);
+  }, [data]);
 
   return <div id="echartPie" style={{ width: "100%", height: "400px" }} />;
 };

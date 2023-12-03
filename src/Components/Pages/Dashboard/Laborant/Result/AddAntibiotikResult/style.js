@@ -1,26 +1,48 @@
 import styled from "styled-components";
 
-const TahlillarWrapper = styled.div`
- .table {
+const AddAntibioticResultWrapper = styled.div`
+.top{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: start;
+  margin-bottom: 20px;
+
+  h3{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 24px;
+    color: #000000;
+    font-family: "Azo sans";
+    margin-bottom: 0;
+  }
+}
+
+.tables{
+    display: flex;
+    align-items: start;
+}
+.table{
     margin-top: 20px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.06), 0 3px 6px rgba(0,0,0,0.03);
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     /* box-shadow: rgb(20 21 33 / 18%) 0px 2px 10px 0px; */
 
-    thead {
+    thead{
       width: 100%;
-      tr {
+      tr{
         display: flex;
         /* background: #006786; */
         /* border-radius: 6px 6px 0px 0px; */
         border-bottom: 1px solid rgba(159, 160, 184, 0.3);
-
-        th.col {
+        
+        th.col{
           font-style: normal;
-          font-weight: 500;
+          font-weight:500;
           font-size: 14px;
           line-height: 24px;
           color: #000;
@@ -30,22 +52,23 @@ const TahlillarWrapper = styled.div`
           text-align: center;
           font-family: "Azo sans";
           padding: 15px 12px 10px 20px;
+
         }
       }
     }
 
-    tbody {
+    tbody{
       background: #fff;
-      tr {
+      tr{
         display: flex;
         /* border-bottom: 1px solid rgba(159, 160, 184, 0.3); */
         justify-content: space-between;
         cursor: pointer;
-
+        
         td.col {
           font-style: normal;
           font-weight: 400;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 24px;
           display: flex;
           align-items: center;
@@ -53,27 +76,23 @@ const TahlillarWrapper = styled.div`
           color: rgba(0, 0, 0, 0.7);
           font-family: "Azo sans";
           padding: 5px;
+          
         }
-
-        td.col-badge {
+        td.col1 {
           font-style: normal;
           font-weight: 400;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 24px;
           display: flex;
           align-items: center;
-          justify-content: start;
+          justify-content: center;
           color: rgba(0, 0, 0, 0.7);
           font-family: "Azo sans";
           padding: 5px;
-          span{
-            display: flex;
-            gap: 10px;
-            align-items: center;
-          }
+          
         }
 
-        img {
+        img{
           width: 50px;
           height: 50px;
         }
@@ -98,67 +117,9 @@ const TahlillarWrapper = styled.div`
           }
         }
       }
-    }
-  }
 
-  .ant-badge {
-    .ant-badge-status-dot {
-      width: 12px;
-      height: 12px;
-    }
-
-    &.badge_default {
-      .ant-badge-status-processing {
-        background: #EF9B0F;
-
-        &::after {
-          border-color: #EF9B0F;
-          background: #EF9B0F;
-        }
-      }
-    }
-
-    &.badge_danger {
-      .ant-badge-status-processing {
-        background: #c13c3c;
-
-        &::after {
-          border-color: #c13c3c;
-          background: #c13c3c;
-        }
-      }
-    }
-    &.badge_primary {
-      .ant-badge-status-processing {
-        background: #474afc;
-
-        &::after {
-          border-color: #474afc;
-          background: #474afc;
-        }
-      }
-    }
-    &.badge_warning {
-      .ant-badge-status-processing {
-        background: #f1ac03;
-
-        &::after {
-          border-color: #f1ac03;
-          background: #f1ac03;
-        }
-      }
-    }
-    &.badge_success {
-      .ant-badge-status-processing {
-        background: #3cc18a;
-
-        &::after {
-          border-color: #3cc18a;
-          background: #3cc18a;
-        }
-      }
     }
   }
 `
 
-export default TahlillarWrapper;
+export{ AddAntibioticResultWrapper }

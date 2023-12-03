@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import moment from "moment";
-import { Drawer, Form, Select, Button} from "antd";
+import { Drawer, Form, Select, Button, Pagination } from "antd";
 const { Option } = Select;
 
 const OrdersMain = () => {
@@ -39,6 +39,13 @@ const OrdersMain = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [validateSelect, setValidateSelect] = useState(false);
   const [form] = Form.useForm();
+  const [totalElements, setTotalElements] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onChange = (page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     PatientProvider.getAllPatient("")
@@ -52,10 +59,11 @@ const OrdersMain = () => {
 
   useEffect(() => {
     setLoading(true);
-    OrderProvider.getAllOrders(1, 20000)
+    OrderProvider.getAllOrders(currentPage, 100)
       .then((res) => {
         console.log(res.data);
         setOrder(res.data.data);
+        setTotalElements(res.data.recordsTotal);
       })
       .catch((err) => {
         console.log(err);
@@ -63,8 +71,7 @@ const OrdersMain = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
-
+  }, [currentPage]);
 
   const handleDeleteOrder = (obj) => {
     confirm({
@@ -124,43 +131,41 @@ const OrdersMain = () => {
     <>
       <OrderMainWrapper>
         <div className="top">
-        <Form
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
-          style={{
-            maxWidth: 600,
-          }}
-        >
-          <Form.Item
-            name="patient"
-            rules={[
-              {
-                required: true,
-                message: "Bemor tanlanishi zarur"
-              },
-            ]}
+          <Form
+            form={form}
+            name="control-hooks"
+            onFinish={onFinish}
+            style={{
+              maxWidth: 600,
+            }}
           >
-            <Select
-              placeholder="Bemor tanlang"
-              // onChange={onGenderChange}
-              allowClear
+            <Form.Item
+              name="patient"
+              rules={[
+                {
+                  required: true,
+                  message: "Bemor tanlanishi zarur",
+                },
+              ]}
             >
-              {patient?.map((item) => (
-                <Option key={item.id} value={item.id}>
-                  {item.first_name + " " + item.last_name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+              <Select
+                placeholder="Bemor tanlang"
+                // onChange={onGenderChange}
+                allowClear
+              >
+                {patient?.map((item) => (
+                  <Option key={item.id} value={item.id}>
+                    {item.first_name + " " + item.last_name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
 
-          <Button type="primary" htmlType="submit">
-            Yaratish
-          </Button>
-        </Form>
+            <Button type="primary" htmlType="submit">
+              Yaratish
+            </Button>
+          </Form>
         </div>
-
-        
 
         <table className="table table-striped table-bordered table-hover">
           <thead>
@@ -279,6 +284,14 @@ const OrdersMain = () => {
             )}
           </tbody>
         </table>
+        {/* <Pagination
+        style={{textAlign:'right'}}
+        defaultCurrent={currentPage}
+        current={currentPage}
+        total={totalElements}
+        onChange={onChange}
+      /> */}
+      
       </OrderMainWrapper>
 
       <Drawer

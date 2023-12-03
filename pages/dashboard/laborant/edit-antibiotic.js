@@ -1,9 +1,14 @@
 import Head from 'next/head'
 import WithAuthComponent from '../../../src/Hocs/PrivateRoute'
 import DashboardLayout from "../../../src/Components/DashLayout"
-import MainResult from '../../../src/Components/Pages/Dashboard/Operator/Result/MainResult'
+import { useRouter } from 'next/router';
+import EditAntibioticResult from '../../../src/Components/Pages/Dashboard/Laborant/TahlilResult/EditAntibioticResult';
 
 export default function Home() {
+    const router = useRouter();
+    const { patientId } = router.query;
+    const { orderId } = router.query;
+
     return (
         <div>
             <Head>
@@ -13,7 +18,7 @@ export default function Home() {
             </Head>
             <WithAuthComponent>
                 <DashboardLayout>
-                    <MainResult />
+                    <EditAntibioticResult patientId={patientId} orderId={orderId}/>
                 </DashboardLayout>
             </WithAuthComponent>
         </div>

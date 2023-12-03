@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import WithAuthComponent from '../../../src/Hocs/PrivateRoute'
 import DashboardLayout from "../../../src/Components/DashLayout"
-import AnalizResultAdd from '../../../src/Components/Pages/Dashboard/Operator/Result/AddAnalizResult'
 import { useRouter } from 'next/router';
+import AddDisBakteriozResult from '../../../src/Components/Pages/Dashboard/Laborant/Result/AddDisbakteriozResult';
 
 export default function Home() {
     const router = useRouter();
@@ -18,7 +18,7 @@ export default function Home() {
             </Head>
             <WithAuthComponent>
                 <DashboardLayout>
-                    <AnalizResultAdd id={id} patientId={patientId} />
+                    <AddDisBakteriozResult id={id} patientId={patientId} />
                 </DashboardLayout>
             </WithAuthComponent>
         </div>

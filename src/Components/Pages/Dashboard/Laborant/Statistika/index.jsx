@@ -97,7 +97,7 @@ const Statistika = () => {
         <Row gutter={16}>
           <Col span={12}>
             <Card bordered={true}>
-              <div class="card-title">Laboratoriyalardagi bemorlar soni</div>
+              <div class="card-title">Bemorlarning natija holatlari</div>
               <PieStatistic />
             </Card>
           </Col>

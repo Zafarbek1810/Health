@@ -15,6 +15,9 @@ export default class AnalizProvider {
     static async getAllAnalysisByLab(id) {
         return await client.get(`/seo/analysis/get/all/by/lab?laboratoryId=${id}`);
     }
+    static async getShablonId(analysisId) {
+        return await client.get(`/seo/analysis/get/${analysisId}`);
+    }
     static async getAllAnalysisByLabWithPrice(id) {
         return await client.get(`/seo/analysis-price/get/by/${id}`);
     }

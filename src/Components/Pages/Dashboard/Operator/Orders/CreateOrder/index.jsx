@@ -22,6 +22,7 @@ const CreateOrder = ({ id }) => {
   const [commonSum, setCommonSum] = useState("");
   const [changeAnaliz, setChangeAnaliz] = useState([]);
   const [newAnaliz, setNewAnaliz] = useState([]);
+  const [data, setData] = useState([])
   
   console.log(newAnaliz, 'newAnaliz');
   
@@ -98,6 +99,18 @@ const CreateOrder = ({ id }) => {
       });
   };
 
+  useEffect(() => {
+    if (id) {
+      OrderProvider.getOrdersById(id)
+        .then((res) => {
+          setData(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [id]);
+
   return (
     <CreateOrderWrapper>
       <div className="top">Buyurtma yaratish</div>
@@ -140,13 +153,13 @@ const CreateOrder = ({ id }) => {
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <span
                     className="price"
-                    // style={{ textDecoration: "line-through" }}
+                    style={{ textDecoration: "line-through" }}
                   >
                     {commonSum} so`m
                   </span>
-                  {/* <span className="price">
+                  <span className="price">
                     {((100 - data.privilege) * commonSum) / 100} so`m
-                  </span> */}
+                  </span>
                 </div>
               </div>
               <hr />

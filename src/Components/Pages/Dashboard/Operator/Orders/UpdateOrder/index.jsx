@@ -73,7 +73,6 @@ const UpdateOrder = ({ id }) => {
           }
           console.log('res.data.data.orderDetailDTOList', res.data.data);
           getDefaultLab();
-          console.log(res.data.data, "data");
           setLaboratoryId(
             res.data.data.orderDetailDTOList.map((item) => item.laboratoryId)
           );
@@ -96,7 +95,7 @@ const UpdateOrder = ({ id }) => {
           });
       });
     }
-  }, [defaultLab, id]);
+  }, [defaultLab, id, newAnaliz]);
 
   useEffect(() => {
     LabaratoryProvider.getAllLaboratory()
@@ -268,7 +267,7 @@ const UpdateOrder = ({ id }) => {
                     options={analiz[id]?.map((item) => {
                       return {
                         value: item?.id,
-                        label: item?.analysisName || item?.name,
+                        label: item?.analysisName,
                       };
                     })}
                     onChange={(v) => {

@@ -24,9 +24,19 @@ const MainResult = () => {
 
   const handleEditResult = (obj) => {
     console.log(obj);
-    router.push(
-      `/dashboard/laborant/edit-result?patientId=${obj.patientId}&orderId=${obj.id}`
-    );
+    switch(obj.templateId){
+      case 1 : router.push(
+        `/dashboard/laborant/edit-result?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
+      case 2: router.push(
+        `/dashboard/laborant/edit-antibiotic?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
+      case 3: router.push(
+        `/dashboard/laborant/edit-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
+
+      default : router.push(`/dashboard/laborant/tahlil-result`);
+    }
   };
 
   return (
@@ -59,37 +69,67 @@ const MainResult = () => {
             analysisStatus
               .filter(
                 (item) =>
-                  item.analysisStatus === 21 || item.analysisStatus === 41
+                  item.analysisStatus !== 11 
               )
               .map((obj, index) => (
                 <tr key={index}>
                   <td
                     onClick={() => {
-                      router.push(
-                        `/dashboard/laborant/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
-                      );
+                      switch(obj.templateId){
+                        case 1 : router.push(
+                          `/dashboard/laborant/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 2: router.push(
+                          `/dashboard/laborant/list-antibiotic?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 3: router.push(
+                          `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                  
+                        default : router.push(`/dashboard/laborant/tahlil-result`);
+                      }
                     }}
-                    style={{ minWidth: "15%" }}
+                    style={{ minWidth: "15%", fontSize:14 }}
                     className="col"
                   >
                     {index + 1}.{obj.firstName} {obj.lastName}
                   </td>
                   <td
-                    onClick={() => {
-                      router.push(
+                   onClick={() => {
+                    switch(obj.templateId){
+                      case 1 : router.push(
                         `/dashboard/laborant/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
-                      );
-                    }}
-                    style={{ minWidth: "45%" }}
+                      ); break;
+                      case 2: router.push(
+                        `/dashboard/laborant/list-antibiotic?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
+                      case 3: router.push(
+                        `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
+                
+                      default : router.push(`/dashboard/laborant/tahlil-result`);
+                    }
+                  }}
+                    style={{ minWidth: "45%", fontSize:14, textAlign:'left' }}
                     className="col"
                   >
                     {obj.analysisName}
                   </td>
                   <td
                     onClick={() => {
-                      router.push(
-                        `/dashboard/laborant/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
-                      );
+                      switch(obj.templateId){
+                        case 1 : router.push(
+                          `/dashboard/laborant/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 2: router.push(
+                          `/dashboard/laborant/list-antibiotic?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 3: router.push(
+                          `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                  
+                        default : router.push(`/dashboard/laborant/tahlil-result`);
+                      }
                     }}
                     style={{ minWidth: "15%" }}
                     className="col"
@@ -98,9 +138,19 @@ const MainResult = () => {
                   </td>
                   <td
                     onClick={() => {
-                      router.push(
-                        `/dashboard/laborant/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
-                      );
+                      switch(obj.templateId){
+                        case 1 : router.push(
+                          `/dashboard/laborant/list-result?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 2: router.push(
+                          `/dashboard/laborant/list-antibiotic?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 3: router.push(
+                          `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                  
+                        default : router.push(`/dashboard/laborant/tahlil-result`);
+                      }
                     }}
                     style={{ minWidth: "15%" }}
                     className="col"
@@ -148,6 +198,15 @@ const MainResult = () => {
               ))
           ) : (
             <MinLoader />
+          )}
+          {analysisStatus.filter(
+            (item) => item.analysisStatus === 21 || item.analysisStatus === 41
+          ).length === 0 ? (
+            <h3 style={{ textAlign: "center", padding: 10 }}>
+              Natijalar mavjud emas
+            </h3>
+          ) : (
+            ""
           )}
         </tbody>
       </table>

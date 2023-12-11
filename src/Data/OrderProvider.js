@@ -46,6 +46,10 @@ export default class OrderProvider {
         return await client.get(`/order/general/statistics`);
     }
 
+    static async getGeneralData(fromDate, toDate){
+        return await client.get(`/dashboard/get/data?fromDate=${fromDate}&toDate=${toDate}`)
+    }
+
     static async changePaymentStatus (body){
         return await client.post(`/order/change/payment-status` , body);
     }

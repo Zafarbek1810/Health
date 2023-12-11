@@ -121,7 +121,7 @@ const AddAntibioticResult = ({ id, patientId }) => {
               antibiotic.slice( Math.floor(antibiotic.length / 2)).map((obj, index) => (
                 <tr key={index}>
                   <td style={{ minWidth: "10%" }} className="col1">
-                    {index +Math.floor(antibiotic.length / 2) + 1}
+                  {index  + 1}
                   </td>
                   <td style={{ minWidth: "65%" }} className="col">
                     {obj.name}

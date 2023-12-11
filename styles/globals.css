@@ -29,6 +29,10 @@ body {
   --bs-table-bg-type: transparent !important;
 }
 
+.ant-card-bordered{
+  border: 2px solid rgb(18, 179, 236, 0.5)
+}
+
 
 
 @font-face {

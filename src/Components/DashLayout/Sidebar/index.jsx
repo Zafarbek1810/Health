@@ -77,6 +77,19 @@ const NavListMenu = [
   
   
   //admin role
+  {
+    title: "Statistika",
+    path: "/dashboard/admin/statistika",
+    src: <UserCircle />,
+    role: ["ROLE_ADMIN"],
+  },
+  {
+    title: "Tahlillar",
+    path: "/dashboard/admin/tahlillar",
+    src: <UserCircle />,
+    role: ["ROLE_ADMIN"],
+  },
+
   //casheir role
   
   {

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 const TahlillarWrapper = styled.div`
-.top{
-  display: flex;
-  justify-content: space-between;
-  .indicators {
+  .top {
+    display: flex;
+    justify-content: space-between;
+    .indicators {
       display: flex;
       gap: 50px;
       .item {
@@ -16,8 +16,9 @@ const TahlillarWrapper = styled.div`
         }
       }
     }
-}
- .table {
+  }
+  
+  .table {
     margin-top: 20px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.03);
     width: 100%;
@@ -37,7 +38,7 @@ const TahlillarWrapper = styled.div`
         th.col {
           font-style: normal;
           font-weight: 500;
-          font-size: 14px;
+          font-size: 16px;
           line-height: 24px;
           color: #000;
           display: flex;
@@ -61,7 +62,7 @@ const TahlillarWrapper = styled.div`
         td.col {
           font-style: normal;
           font-weight: 400;
-          font-size: 12px;
+          font-size: 14px;
           line-height: 24px;
           display: flex;
           align-items: center;
@@ -82,7 +83,7 @@ const TahlillarWrapper = styled.div`
           text-align: center;
           font-family: "Azo sans";
           padding: 5px;
-          span{
+          span {
             display: flex;
             gap: 10px;
             align-items: center;
@@ -125,11 +126,11 @@ const TahlillarWrapper = styled.div`
 
     &.badge_default {
       .ant-badge-status-processing {
-        background: #BBFF33;
+        background: #bbff33;
 
         &::after {
-          border-color: #BBFF33;
-          background: #BBFF33;
+          border-color: #bbff33;
+          background: #bbff33;
         }
       }
     }
@@ -175,6 +176,6 @@ const TahlillarWrapper = styled.div`
       }
     }
   }
-`
+`;
 
 export default TahlillarWrapper;

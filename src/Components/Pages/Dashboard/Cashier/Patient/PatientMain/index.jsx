@@ -203,7 +203,7 @@ const PatientMain = () => {
         </tbody>
       </table>
       <Pagination
-      style={{textAlign:'right'}}
+        style={{ textAlign: "right" }}
         defaultCurrent={currentPage}
         current={currentPage}
         total={totalElements}

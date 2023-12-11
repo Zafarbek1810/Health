@@ -15,6 +15,7 @@ import { Badge, Drawer } from "antd";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import Select from "react-select";
+import AnalizProvider from "../../../../../../Data/AnalizProvider";
 
 const OrdersMain = () => {
   const {
@@ -38,6 +39,7 @@ const OrdersMain = () => {
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [orderId, setOrderId] = useState(null);
   const [privilage, setPrivilage] = useState(null);
+  const [drawerData, setDrawerData] = useState({});
 
   useEffect(() => {
     PatientProvider.getAllPatient()
@@ -102,6 +104,7 @@ const OrdersMain = () => {
       .then((res) => {
         setModalAnalizData(res.data.data.orderDetailDTOList);
         setPrivilage(res.data.data.privilege);
+        setDrawerData(res.data.data);
         console.log(res.data.data);
         setIsOpen(true);
       })
@@ -120,10 +123,10 @@ const OrdersMain = () => {
   ];
 
   const onchangeStatus = () => {
-    const body ={
+    const body = {
       orderId: orderId,
-      paymentStatus: paymentStatus
-    }
+      paymentStatus: paymentStatus,
+    };
     OrderProvider.changePaymentStatus(body)
       .then((res) => {
         toast.success(res.data.message);
@@ -133,6 +136,29 @@ const OrdersMain = () => {
       .catch((err) => {
         console.log(err);
         toast.error("Xatolik!");
+      });
+  };
+
+  const getCheque = (drawerData) => {
+    AnalizProvider.getChequeAnalysis(true, drawerData.orderId)
+      .then((res) => {
+        console.log(res);
+        const blob = new Blob([res.data], {
+          type: "application/pdf",
+        });
+
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        //no download
+        link.target = "_blank";
+        link.click();
+
+        // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+        // link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err?.response?.data?.message);
       });
   };
 
@@ -331,6 +357,33 @@ const OrdersMain = () => {
               </span>
             </p>
           </div>
+        </div>
+
+        <div className="btns" style={{display:'flex'}}>
+          <button
+            style={{
+              marginTop: 30,
+              width: "100%",
+              background: "transparent",
+              color: "rgb(3, 132, 252)",
+              border: "none",
+            }}
+            onClick={() => getCheque(drawerData)}
+          >
+            Chekni ko`rish
+          </button>
+          <button
+            style={{
+              marginTop: 30,
+              width: "100%",
+              background: "transparent",
+              color: "rgb(3, 132, 252)",
+              border: "none",
+            }}
+            onClick={() => console.log(drawerData)}
+          >
+            Chekni chop etish
+          </button>
         </div>
       </Drawer>
 

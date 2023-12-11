@@ -74,7 +74,8 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
                 ? "CEO"
                 : localStorage.getItem("health-roles") === "ROLE_LABORANT"
                 ? "Laborant"
-                : ""}
+                : localStorage.getItem("health-roles") === "ROLE_ADMIN"
+                ? "Admin":""}
               )
             </h3>
             <button onClick={handleLogout} title="Chiqish">

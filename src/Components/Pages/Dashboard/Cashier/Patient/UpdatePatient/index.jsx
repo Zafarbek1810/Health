@@ -233,7 +233,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               {...register("officeName", { required: false })}
             />
           </div>
-          <div className="label">
+          {/* <div className="label">
             <label>Contract</label>
             <input
               autoComplete="off"
@@ -241,7 +241,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               placeholder={"Contract"}
               {...register("contract", { required: false })}
             />
-          </div>
+          </div> */}
           <div className="label">
             <label>Chegirma</label>
             <input
@@ -252,7 +252,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               {...register("privilege", { required: false })}
             />
           </div>
-          <div className="label">
+          {/* <div className="label">
             <label>Izoh</label>
             <input
               autoComplete="off"
@@ -260,7 +260,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               placeholder={"Izoh"}
               {...register("comment", { required: false })}
             />
-          </div>
+          </div> */}
 
           <button
             type="submit"

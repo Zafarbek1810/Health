@@ -17,7 +17,7 @@ const DashboardLayout = ({ children }) => {
           <DashboardHeader RefObj={RefObj} setIsOpen={setIsOpen} setOpen={setOpen} />
         </div>
         <div className="layout_bottom">
-          <div className="layout__sidebar" style={!open ? {width:220} : {width:0}} >
+          <div className="layout__sidebar" style={!open ? {width:180} : {width:0}} >
             <Sidebar />
           </div>
           <div className="layout__right">

@@ -35,8 +35,6 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
     setResultsData(removeDuplicatesById(antibioticResult, antibiotic));
   }, [antibioticResult, antibiotic]);
 
-  console.log(resultsData, 'resultsData')
-
   useEffect(() => {
     setLoading(true);
     AntibioticProvider.getAllAntibiotic()
@@ -94,11 +92,23 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
       });
   };
 
+  // const handleRowChange = (index, field, value) => {
+  //   console.log(index, field, value)
+  //   const updatedParasitology = removeDuplicatesById(
+  //     antibioticResult,
+  //     antibiotic
+  //   );
+  //   updatedParasitology[index][field] = value;
+  //   setAntibiotic(updatedParasitology);
+  //   console.log(updatedParasitology, "updatedParasitology");
+  // };
+
   const handleRowChange = (index, field, value) => {
-    const updatedParasitology = removeDuplicatesById(antibioticResult, antibiotic);
-    updatedParasitology[index][field] = value;
-    setAntibiotic(updatedParasitology);
-    console.log(updatedParasitology, 'updatedParasitology');
+    setAntibiotic((prevAntibiotic) => {
+      const updatedAntibiotic = [...prevAntibiotic];
+      updatedAntibiotic[index][field] = value;
+      return updatedAntibiotic;
+    });
   };
 
   function sort_by_id() {
@@ -145,7 +155,10 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
                       <td style={{ minWidth: "10%" }} className="col1">
                         {index + 1}
                       </td>
-                      <td style={{ minWidth: "65%", fontSize:18 }} className="col">
+                      <td
+                        style={{ minWidth: "65%", fontSize: 18 }}
+                        className="col"
+                      >
                         {obj.name}
                       </td>
                       <td style={{ minWidth: "25%" }} className="col">
@@ -155,7 +168,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
                           // value={obj?.result || ""}
                           defaultValue={obj?.result || ""}
                           onChange={(e) =>
-                            handleRowChange(index, "result", e.target.value)
+                            handleRowChange(index , "result", e.target.value)
                           }
                         />
                       </td>
@@ -189,7 +202,10 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
                       <td style={{ minWidth: "10%" }} className="col1">
                         {index + Math.floor(resultsData.length / 2) + 1}
                       </td>
-                      <td style={{ minWidth: "65%", fontSize:18 }} className="col">
+                      <td
+                        style={{ minWidth: "65%", fontSize: 18 }}
+                        className="col"
+                      >
                         {obj.name}
                       </td>
                       <td style={{ minWidth: "25%" }} className="col">
@@ -199,7 +215,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
                           value={obj.result || ""}
                           onChange={(e) =>
                             handleRowChange(
-                              index + Math.floor(resultsData.length / 2),
+                              index + Math.floor(resultsData.length / 2) ,
                               "result",
                               e.target.value
                             )

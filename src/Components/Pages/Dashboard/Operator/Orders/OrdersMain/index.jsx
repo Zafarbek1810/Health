@@ -16,6 +16,9 @@ import moment from "moment";
 import { Drawer, Form, Select, Button, Pagination } from "antd";
 const { Option } = Select;
 
+const filterOption = (input, option) =>
+  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+
 const OrdersMain = () => {
   const {
     register,
@@ -41,6 +44,7 @@ const OrdersMain = () => {
   const [form] = Form.useForm();
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
 
   const onChange = (page) => {
     console.log(page);
@@ -48,14 +52,14 @@ const OrdersMain = () => {
   };
 
   useEffect(() => {
-    PatientProvider.getAllPatient("")
+    PatientProvider.getAllPatient(searchText, 0, 10000)
       .then((res) => {
         setPatient(res.data.data.content);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [searchText]);
 
   useEffect(() => {
     setLoading(true);
@@ -127,6 +131,11 @@ const OrdersMain = () => {
       });
   };
 
+  const onSearch = (value) => {
+    console.log("search:", value);
+    setSearchText(value);
+  };
+
   return (
     <>
       <OrderMainWrapper>
@@ -151,14 +160,15 @@ const OrdersMain = () => {
               <Select
                 placeholder="Bemor tanlang"
                 // onChange={onGenderChange}
+                showSearch
                 allowClear
-              >
-                {patient?.map((item) => (
-                  <Option key={item.id} value={item.id}>
-                    {item.first_name + " " + item.last_name}
-                  </Option>
-                ))}
-              </Select>
+                onSearch={onSearch}
+                filterOption={filterOption}
+                options={patient?.map((item) => ({
+                  value: item.id,
+                  label: item.first_name + " " + item.last_name,
+                }))}
+              />
             </Form.Item>
 
             <Button type="primary" htmlType="submit">
@@ -251,6 +261,8 @@ const OrdersMain = () => {
                         <span style={{ color: "red" }}>Qabul qilinmadi</span>
                       ) : obj.state === -1 ? (
                         <span style={{ color: "orange" }}>Bekor qilindi</span>
+                      ) : obj.state === 2 ? (
+                        <span style={{ color: "red" }}>Yangilanishi kerak</span>
                       ) : (
                         <></>
                       )}
@@ -291,7 +303,6 @@ const OrdersMain = () => {
         total={totalElements}
         onChange={onChange}
       /> */}
-      
       </OrderMainWrapper>
 
       <Drawer

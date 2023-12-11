@@ -86,105 +86,129 @@ const Tahlillar = () => {
 
   console.log(drawerData, 'drawerData');
   const getPdfBtn = (drawerData) => {
-    AnalizProvider.getPdfAnalysis(
-      true,
-      drawerData.patientId,
-      drawerData.id
-    )
-      .then((res) => {
-        console.log(res);
-        const blob = new Blob([res.data], {
-          type: "application/pdf",
+    if(drawerData.templateId===1){
+      AnalizProvider.getPdfAnalysis(
+        true,
+        drawerData.patientId,
+        drawerData.id
+      )
+        .then((res) => {
+          console.log(res);
+          const blob = new Blob([res.data], {
+            type: "application/pdf",
+          });
+  
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          //no download 
+          link.target = "_blank";
+          link.click();
+  
+          // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+          // link.click();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.message);
         });
-
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        //no download 
-        link.target = "_blank";
-        link.click();
-
-        // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
-        // link.click();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err?.response?.data?.message);
-      });
+    } else if(drawerData.templateId===2){
+      AnalizProvider.getPdfBacteriology(
+        true,
+        drawerData.patientId,
+        drawerData.id
+      )
+        .then((res) => {
+          console.log(res);
+          const blob = new Blob([res.data], {
+            type: "application/pdf",
+          });
+  
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          //no download 
+          link.target = "_blank";
+          link.click();
+  
+          // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+          // link.click();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.message);
+        });
+    } else if(drawerData.templateId===3){
+      AnalizProvider.getPdfDisbakterioz(
+        true,
+        drawerData.patientId,
+        drawerData.id
+      )
+        .then((res) => {
+          console.log(res);
+          const blob = new Blob([res.data], {
+            type: "application/pdf",
+          });
+  
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          //no download 
+          link.target = "_blank";
+          link.click();
+  
+          // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+          // link.click();
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.message);
+        });
+    }
   };
 
   return (
     <TahlillarWrapper>
       <div className="top">
         <h3>Tahlillar</h3>
-        <div className="indicators">
-          <div className="item">
-            <Badge status="processing" className="badge_default" />
-            <span>Navbatda</span>
-          </div>
-          <div className="item">
-            <Badge status="processing" className="badge_primary" />
-            <span>Nataija kutilmoqda</span>
-          </div>
-          <div className="item">
-            <Badge status="processing" className="badge_danger" />
-            <span>Rad etilgan</span>
-          </div>
-          <div className="item">
-            <Badge status="processing" className="badge_success" />
-            <span>Natija chiqdi</span>
-          </div>
-          <div className="item">
-            <Badge status="processing" className="badge_warning" />
-            <span>Bekor qilingan</span>
-          </div>
-        </div>
       </div>
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th style={{ minWidth: "10%" }} className="col">
+            <th style={{ minWidth: "15%" }} className="col">
               Ismi Familyasi
             </th>
-            <th style={{ minWidth: "35%" }} className="col">
+            <th style={{ minWidth: "25%" }} className="col">
               Analiz Nomi
             </th>
-            <th style={{ minWidth: "10%" }} className="col">
+            <th style={{ minWidth: "15%" }} className="col">
               Yaratilgan sana
             </th>
-            <th style={{ minWidth: "10%" }} className="col">
+            <th style={{ minWidth: "15%" }} className="col">
               Natija chiqqan sana
-            </th>
-            <th style={{ minWidth: "10%" }} className="col">
-              Telefon raqam
             </th>
             <th style={{ minWidth: "15%" }} className="col">
               Natija holati
             </th>
-            <th style={{ minWidth: "10%" }} className="col"></th>
+            <th style={{ minWidth: "5%" }} className="col"></th>
           </tr>
         </thead>
         <tbody>
           {!loading ? (
             analysisStatus.map((obj, index) => (
               <tr key={index}>
-                <td style={{ minWidth: "10%" }} className="col">
+                <td style={{ minWidth: "15%" }} className="col">
                   {index + 1}.{obj.firstName} {obj.lastName}
                 </td>
-                <td style={{ minWidth: "35%" }} className="col">
+                <td style={{ minWidth: "25%" }} className="col">
                   {obj.analysisName}
                 </td>
-                <td style={{ minWidth: "10%" }} className="col">
+                <td style={{ minWidth: "15%" }} className="col">
                   {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                 </td>
-                <td style={{ minWidth: "10%" }} className="col">
+                <td style={{ minWidth: "15%" }} className="col">
                   {obj.resultTime === null
                     ? ""
                     : moment(new Date(obj.resultTime)).format(
                         "DD.MM.YYYY HH:mm"
                       )}
-                </td>
-                <td style={{ minWidth: "10%" }} className="col">
-                  {obj.phoneNumber}
                 </td>
                 <td style={{ minWidth: "15%" }} className="col-badge">
                   {obj.analysisStatus === 11 ? (
@@ -216,7 +240,7 @@ const Tahlillar = () => {
                     <></>
                   )}
                 </td>
-                <td style={{ minWidth: "10%" }} className="col">
+                <td style={{ minWidth: "5%" }} className="col">
                   <IconButton onClick={() => handleEditStatus(obj)}>
                     <EditSvg />
                   </IconButton>
@@ -251,7 +275,7 @@ const Tahlillar = () => {
           <b>Analiz nomi:</b> {drawerData.analysisName}
         </div>
 
-        <StepButton style={{marginTop:30}} onClick={() => getPdfBtn(drawerData)}>Natijani ko`rish</StepButton>
+        <button style={{marginTop:30, width:"100%", background:'transparent', color:'rgb(3, 132, 252)', border:'none'}} onClick={() => getPdfBtn(drawerData)}>Natijani ko`rish</button>
       </Drawer>
 
       <ModalContextProvider

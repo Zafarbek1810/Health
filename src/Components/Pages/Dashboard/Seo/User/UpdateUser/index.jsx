@@ -82,7 +82,7 @@ const UpdateUser = ({ onCloseModal2, editUser }) => {
   };
 
   const options = [
-    // { value: 2, label: "Admin" },
+    { value: 2, label: "Admin" },
     { value: 3, label: "Direktor" },
     { value: 4, label: "Kassir" },
     { value: 5, label: "Laborant" },

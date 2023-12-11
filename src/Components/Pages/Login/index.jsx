@@ -51,6 +51,10 @@ const Login = () => {
           router.replace("/dashboard/director/statistika");
           break;
         }
+        case "ROLE_ADMIN": {
+          router.replace("/dashboard/admin/statistika");
+          break;
+        }
       }
     }
   }, [isAuth, currentUser]);

@@ -14,3 +14,5 @@ function numberFormat(sonlar) {
         return ajratilganSonlar;
     }
 }
+
+export default numberFormat

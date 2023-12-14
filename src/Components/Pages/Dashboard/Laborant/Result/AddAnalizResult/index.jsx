@@ -59,6 +59,18 @@ const AnalizResultAdd = ({ id, patientId }) => {
     console.log(updatedParasitology);
   };
 
+  function sort_by_id() {
+    return function (elem1, elem2) {
+      if (elem1.id < elem2.id) {
+        return -1;
+      } else if (elem1.id > elem2.id) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+  }
+
   return (
     <AnalizResultAddWrapper>
       <div className="top">
@@ -88,7 +100,7 @@ const AnalizResultAdd = ({ id, patientId }) => {
           </thead>
           <tbody>
             {!loading ? (
-              parasitology.map((obj, index) => (
+              parasitology.sort(sort_by_id()).map((obj, index) => (
                 <tr key={index}>
                   <td style={{ minWidth: "20%", fontSize:14 }} className="col">
                     {index + 1}.{obj.parasite_name}

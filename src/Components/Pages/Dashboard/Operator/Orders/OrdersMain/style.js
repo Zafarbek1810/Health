@@ -2,9 +2,10 @@ import { styled } from "styled-components";
 
 const OrderMainWrapper = styled.div`
   .top {
+    display: flex;
+    justify-content: space-between;
     .ant-form{
       display: flex;
-      justify-content: space-between;
       align-items: start;
       gap: 50px;
     }

@@ -73,7 +73,7 @@ const TahlillarWrapper = styled.div`
         td.col-badge {
           font-style: normal;
           font-weight: 400;
-          font-size: 12px;
+          font-size: 14px;
           line-height: 24px;
           display: flex;
           align-items: center;
@@ -84,8 +84,9 @@ const TahlillarWrapper = styled.div`
           padding: 5px;
           span{
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
+            font-size: 14px;
           }
         }
 

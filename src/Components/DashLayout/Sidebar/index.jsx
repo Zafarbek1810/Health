@@ -5,6 +5,10 @@ import UserContext from "../../../Context/UserContext";
 import MyLink from "../../Common/MyLink";
 import UserCircle from "../../Common/Svgs/UserCircle";
 import { SidebarWrapper } from "./Sidebar.style";
+import StatisticSvg from "../../Common/Svgs/StatisticSvg";
+import AnalysisSvg from "../../Common/Svgs/AnalysisSvg";
+import OrderSvg from "../../Common/Svgs/OrderSvg";
+import CompanySvg from "../../Common/Svgs/CompanySvg";
 
 const NavListMenu = [
   //seo role
@@ -17,7 +21,7 @@ const NavListMenu = [
   {
     title: "Kompaniyalar",
     path: "/dashboard/ceo/company",
-    src: <UserCircle />,
+    src: <CompanySvg />,
     role: ["ROLE_SEO"],
   },
   {
@@ -80,13 +84,13 @@ const NavListMenu = [
   {
     title: "Statistika",
     path: "/dashboard/admin/statistika",
-    src: <UserCircle />,
+    src: <StatisticSvg />,
     role: ["ROLE_ADMIN"],
   },
   {
     title: "Tahlillar",
     path: "/dashboard/admin/tahlillar",
-    src: <UserCircle />,
+    src: <AnalysisSvg />,
     role: ["ROLE_ADMIN"],
   },
 
@@ -95,32 +99,32 @@ const NavListMenu = [
   {
     title: "Statistika",
     path: "/dashboard/cashier/statistika",
-    src: <UserCircle />,
+    src: <StatisticSvg />,
     role: ["ROLE_CASHIER"],
   },
   {
     title: "Buyurtmalar",
     path: "/dashboard/cashier/order",
-    src: <UserCircle />,
+    src: <OrderSvg />,
     role: ["ROLE_CASHIER"],
   },
   //director role
   {
     title: "Statistika",
     path: "/dashboard/director/statistika",
-    src: <UserCircle />,
+    src: <StatisticSvg />,
     role: ["ROLE_DIRECTOR"],
   },
   // {
   //   title: "Buyurtmalar",
   //   path: "/dashboard/director/orders",
-  //   src: <UserCircle />,
+  //   src: <OrderSvg />,
   //   role: ["ROLE_DIRECTOR"],
   // },
   {
     title: "Tahlillar",
     path: "/dashboard/director/tahlillar",
-    src: <UserCircle />,
+    src: <AnalysisSvg />,
     role: ["ROLE_DIRECTOR"],
   },
   
@@ -128,26 +132,26 @@ const NavListMenu = [
   {
     title: "Statistika",
     path: "/dashboard/laborant/statistika",
-    src: <UserCircle />,
+    src: <StatisticSvg />,
     role: ["ROLE_LABORANT"],
   },
   {
     title: "Tahlillar",
     path: "/dashboard/laborant/tahlillar",
-    src: <UserCircle />,
+    src: <AnalysisSvg />,
     role: ["ROLE_LABORANT"],
   },
   {
     title: "Tahlil natijalari",
     path: "/dashboard/laborant/tahlil-result",
-    src: <UserCircle />,
+    src: <AnalysisSvg />,
     role: ["ROLE_LABORANT"],
   },
   // operator role
   {
     title: "Statistika",
     path: "/dashboard/operator/statistika",
-    src: <UserCircle />,
+    src: <StatisticSvg />,
     role: ["ROLE_OPERATOR"],
   },
   {
@@ -159,7 +163,7 @@ const NavListMenu = [
   {
     title: "Buyurtmalar",
     path: "/dashboard/operator/order",
-    src: <UserCircle />,
+    src: <OrderSvg />,
     role: ["ROLE_OPERATOR"],
   },
   // {

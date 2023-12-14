@@ -21,11 +21,13 @@ export default class OrderProvider {
         return await client.post(`/order/reject?orderId=${orderId}`);
     }
     
-    static async getAllOrders(pageNum, pageSize) {
-        return await client.get(`/order/get/data?pageNum=${pageNum}&pageSize=${pageSize}`);
+    static async getAllOrders(pageNum = 0, pageSize = 20, keyword, paymentType, paymentStatus) {
+        const params={pageNum, pageSize,  keyword, paymentType, paymentStatus};
+        return await client.get(`/order/get/data`, {params});
     }
-    static async getAllAnalysisStatus(pageNum, pageSize) {
-        return await client.get(`/order/get/all/analysis-status?pageNum=${pageNum}&pageSize=${pageSize}`);
+    static async getAllAnalysisStatus(pageNum = 0, pageSize = 20, keyword, analysisStatus) {
+        const params={pageNum, pageSize,  keyword, analysisStatus};
+        return await client.get(`/order/get/all/analysis-status`, {params});
     }
     static async getOrdersById(id) {
         return await client.get(`/order/get/detail/data?orderId=${id}`);

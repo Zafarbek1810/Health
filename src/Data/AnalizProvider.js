@@ -27,67 +27,75 @@ export default class AnalizProvider {
   }
 
   static async getPdfAnalysis(isCyrillic, patientId, orderDetailId) {
-    return await client
-      .post(
-        `/pdf/get-analysis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
-        {
-          headers: { "Content-Type": "application/pdf" },
-        },
-        { responseType: "blob" }
-      )
-      .then((response) => {
+      try {
+        const response = await client.get(
+          `/pdf/get-analysis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+          {
+            responseType: "blob",
+          }
+        );
+    
         return response;
-      })
-      .catch((err) => {
+      } catch (err) {
         return Promise.reject(err);
-      });
-  }
-  static async getChequeAnalysis(isCyrillic, orderDetailId) {
-    return await client
-      .post(
-        `/pdf/get-cheque-pdf?isCyrillic=${isCyrillic}&orderDetailId=${orderDetailId}`,
-        {
-          headers: { "Content-Type": "application/pdf" },
-        },
-        { responseType: "blob" }
-      )
-      .then((response) => {
-        return response;
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
-  }
-  static async getPdfBacteriology(isCyrillic, patientId, orderDetailId) {
-    return await client
-      .post(
-        `/pdf/get-bacteriology-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
-        {
-          headers: { "Content-Type": "application/pdf" },
-        },
-        { responseType: "blob" }
-      )
-      .then((response) => {
-        return response;
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
+      }
   }
   static async getPdfDisbakterioz(isCyrillic, patientId, orderDetailId) {
-    return await client
-      .post(
+    try {
+      const response = await client.get(
         `/pdf/get-dysbacteriosis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
         {
-          headers: { "Content-Type": "application/pdf" },
-        },
-        { responseType: "blob" }
-      )
-      .then((response) => {
-        return response;
-      })
-      .catch((err) => {
-        return Promise.reject(err);
-      });
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
   }
+  static async getChequeAnalysis(isCyrillic, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-cheque-pdf?isCyrillic=${isCyrillic}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  
+  static async getPdfBacteriology(isCyrillic, patientId, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-bacteriology-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  
+  // static async getPdfDisbakterioz(isCyrillic, patientId, orderDetailId) {
+  //   try {
+  //     const response = await client.get(
+  //       `/pdf/get-dysbacteriosis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+  //       {
+  //         responseType: "blob",
+  //       }
+  //     );
+  
+  //     return response;
+  //   } catch (err) {
+  //     return Promise.reject(err);
+  //   }
+  // }
 }

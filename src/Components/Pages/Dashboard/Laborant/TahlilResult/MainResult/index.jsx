@@ -8,19 +8,28 @@ import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
 import { useRouter } from "next/router";
 import EditSvg from "../../../../../Common/Svgs/EditSvg";
-import { Badge } from "antd";
+import { Badge, Pagination } from "antd";
 
 const MainResult = () => {
   const [loading, setLoading] = useState(false);
   const [analysisStatus, setAnalysisStatus] = useState([]);
   const router = useRouter();
+  const [totalElements, setTotalElements] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onChange = (page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
-    OrderProvider.getAllAnalysisStatus(1, 1000).then((res) => {
+    OrderProvider.getAllAnalysisStatus(currentPage,
+      20).then((res) => {
       console.log(res.data.data);
       setAnalysisStatus(res.data.data);
+      setTotalElements(res.data?.recordsTotal/2);
     });
-  }, []);
+  }, [currentPage]);
 
   const handleEditResult = (obj) => {
     console.log(obj);
@@ -210,6 +219,13 @@ const MainResult = () => {
           )}
         </tbody>
       </table>
+      <Pagination
+        style={{ textAlign: "right" }}
+        defaultCurrent={currentPage}
+        current={currentPage}
+        total={totalElements}
+        onChange={onChange}
+      />
     </ParasitologyResultWrapper>
   );
 };

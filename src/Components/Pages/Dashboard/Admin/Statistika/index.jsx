@@ -7,13 +7,20 @@ import LineCHarts from "./LineCharts";
 import PatientProvider from "../../../../../Data/PatientProvider";
 import OrderProvider from "../../../../../Data/OrderProvider";
 import CountUp from "react-countup";
+import BarChart from "./BarChart";
+import TotalSum from "../../../../Common/Svgs/TotalSum";
+import ReturnCash from "../../../../Common/Svgs/ReturnCash";
+import CardSvg from "../../../../Common/Svgs/CardSvg";
 import CashSvg from "../../../../Common/Svgs/CashSvg";
+import MicroscopeSvg from "../../../../Common/Svgs/MicroscopeSvg";
+import UseHeart from "../../../../Common/Svgs/UseHeart";
+import CashSvg2 from "../../../../Common/Svgs/CashSvg2";
 
 const Statistika = () => {
   const [patient, setPatient] = useState({});
   const [currency, setCurrency] = useState({});
   const [generalData, setGeneralData] = useState({});
-  const formatter = (value) => <CountUp end={value} separator="," />;
+  const formatter = (value) => <CountUp end={value} separator=" " />;
   const [dateString, setDateString] = useState(["", ""]);
 
   useEffect(() => {
@@ -88,16 +95,16 @@ const Statistika = () => {
                 <p>Bemorlar soni:</p>{" "}
                 <span>
                   {patient.currentPatientCount
-                    ? patient.currentPatientCount
-                    : "Mavjud emas"}
+                  ? <CountUp end={(patient.currentPatientCount)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
               <div bordered={true} className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentDayIncome
-                    ? currency.currentDayIncome
-                    : "Mavjud emas"}
+                    ? <CountUp end={(currency.currentDayIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
@@ -109,16 +116,16 @@ const Statistika = () => {
                 <p>Bemorlar soni:</p>{" "}
                 <span>
                   {patient.currentWeekCount
-                    ? patient.currentWeekCount
-                    : "Mavjud emas"}
+                    ? <CountUp end={(patient.currentWeekCount)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
               <div className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentWeekIncome
-                    ? numberFormat(currency.currentWeekIncome)
-                    : "Mavjud emas"}
+                  ? <CountUp end={(currency.currentWeekIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
@@ -130,16 +137,16 @@ const Statistika = () => {
                 <p>Bemorlar soni:</p>{" "}
                 <span>
                   {patient.currentMonthCount
-                    ? numberFormat(patient.currentMonthCount)
-                    : "Mavjud emas"}
+                     ? <CountUp end={(patient.currentMonthCount)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
               <div className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentMonthIncome
-                    ? numberFormat(currency.currentMonthIncome)
-                    : "Mavjud emas"}
+                  ? <CountUp end={(currency.currentMonthIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
@@ -151,67 +158,20 @@ const Statistika = () => {
                 <p>Bemorlar soni:</p>{" "}
                 <span>
                   {patient.currentYearCount
-                    ? patient.currentYearCount
-                    : "Mavjud emas"}
+                   ? <CountUp end={(patient.currentYearCount)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
               <div className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentYearIncome
-                    ? numberFormat(currency.currentYearIncome)
-                    : "Mavjud emas"}
+                   ? <CountUp end={(currency.currentYearIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
           </Col>
-
-          {/* <Col span={5}>
-            <Card bordered={true}>
-              <Statistic
-                title="Haftalik bemorlar soni"
-                value={
-                  currency.currentWeekCount
-                    ? currency.currentWeekCount
-                    : "Mavjud emas"
-                }
-              />
-            </Card>
-          </Col>
-          <Col span={5}>
-            <Card bordered={true}>
-              <Statistic
-                title="Oylik bemorlar soni"
-                value={
-                  currency.currentMonthCount
-                    ? currency.currentMonthCount
-                    : "Mavjud emas"
-                }
-              />
-            </Card>
-          </Col>
-          <Col span={5}>
-            <Card bordered={true}>
-              <Statistic
-                title="Yillik bemorlar soni"
-                value={
-                  currency.currentYearCount
-                    ? currency.currentYearCount
-                    : "Mavjud emas"
-                }
-                // prefix={<DollarOutlined />}
-              />
-            </Card>
-          </Col>
-          <Col span={4}>
-            <Card bordered={true}>
-              <Statistic
-                title="Jami bemorlar soni"
-                value={currency.allCount ? currency.allCount : "Mavjud emas"}
-                // prefix={<DollarOutlined />}
-              />
-            </Card>
-          </Col> */}
         </Row>
         <Row
           gutter={12}
@@ -224,7 +184,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/cash.png" alt="" />
+                <CashSvg/>
               </div>
               <Statistic
                 title="Naqd to'langan miqdor"
@@ -237,11 +197,11 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/credit-card.png" alt="" />
+                <CardSvg/>
               </div>
               <Statistic
                 title="Plastikdan to'langan miqdor"
-                value={generalData?.totalPlasticSum}
+                value={(generalData?.totalPlasticSum)}
                 formatter={formatter}
                 className="stat"
               />
@@ -250,10 +210,10 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/cash-withdraw.png" alt="" />
+                <ReturnCash/>
               </div>
               <Statistic
-                title="Qaytarilgan pul"
+                title="Qaytarilgan miqdor"
                 value={generalData?.totalReturnedSum}
                 formatter={formatter}
                 className="stat"
@@ -263,10 +223,10 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/cash-wallet.png" alt="" />
+                <TotalSum/>
               </div>
               <Statistic
-                title="Jami summa"
+                title="Jami miqdor"
                 value={generalData?.totalSumma}
                 formatter={formatter}
                 className="stat"
@@ -276,7 +236,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/microscope.png" alt="" />
+                <MicroscopeSvg/>
               </div>
               <Statistic
                 title="Analizlar soni"
@@ -289,7 +249,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/patient.png" alt="" />
+                <UseHeart/>
               </div>
               <Statistic
                 title="Bemorlar soni"
@@ -302,7 +262,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/bank-card.png" alt="" />
+                <CardSvg/>
               </div>
               <Statistic
                 title="Plastik orqali to`lov"
@@ -315,7 +275,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/cash-payment.png" alt="" />
+                <CashSvg2/>
               </div>
               <Statistic
                 title="Naqd orqali to`lov"
@@ -327,16 +287,22 @@ const Statistika = () => {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={12} style={{marginBottom:16}}>
             <Card bordered={true}>
-              <div class="card-title">Laboratoriyalardagi bemorlar soni</div>
+              <div class="card-title">Laboratoriyalardagi kirim</div>
               <PieStatistic />
             </Card>
           </Col>
           <Col span={12}>
             <Card bordered={true}>
-              <div class="card-title">Yangi bemorlar statistikasi</div>
+              <div class="card-title">Haftalik kirim</div>
               <LineCHarts />
+            </Card>
+          </Col>
+          <Col span={24}>
+            <Card bordered={true}>
+              <div class="card-title">So`nggi 10 kundagi naqd va plastikdagi tushumlar</div>
+              <BarChart />
             </Card>
           </Col>
         </Row>

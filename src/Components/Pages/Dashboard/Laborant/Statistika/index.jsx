@@ -6,6 +6,7 @@ import PieStatistic from "./PieStatistic";
 import LineCHarts from "./LineCharts";
 import PatientProvider from "../../../../../Data/PatientProvider";
 import OrderProvider from "../../../../../Data/OrderProvider";
+import CountUp from "react-countup";
 
 const Statistika = () => {
   const [data, setData] = useState({});
@@ -25,85 +26,172 @@ const Statistika = () => {
     <StatistikaWrapper>
       <div className="top">
         <h3>Umumiy statistika</h3>
-        <RangePicker
-          size="large"
-          onChange={(date, dateString) => {
-            console.log(date, dateString);
-          }}
-        />
+        
       </div>
 
       <div className="bottom">
-        <Row gutter={16} style={{ marginBottom: 30 }}>
-          <Col span={5}>
+        <div className="roww" style={{ marginBottom: 30, justifyContent:'space-between' }}>
+          <div >
             <Card bordered={true}>
-              <Statistic
-                title="Navbatda"
-                value={
-                  data.inLine
-                    ? data.inLine
-                    : "Mavjud emas"
-                }
-              />
+              <div bordered={true} className="bottom">
+                <p>Navbatda</p>{" "}
+                <span>
+                  {data.inLine ? (
+                    <CountUp end={data.inLine} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
             </Card>
-          </Col>
-          <Col span={5}>
+          </div>
+          <div>
             <Card bordered={true}>
-              <Statistic
-                title="Kutmoqda"
-                value={
-                  data.pending
-                    ? data.pending
-                    : "Mavjud emas"
-                }
-              />
+              <div bordered={true} className="bottom">
+                <p>Kutilmoqda</p>{" "}
+                <span>
+                  {data.pending ? (
+                    <CountUp end={data.pending} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
             </Card>
-          </Col>
-          <Col span={5}>
+          </div>
+          <div>
             <Card bordered={true}>
-              <Statistic
-                title="Rad etilgan"
-                value={
-                  data.reject
-                    ? data.reject
-                    : "Mavjud emas"
-                }
-              />
+              <div bordered={true} className="bottom">
+                <p>Rad etilgan</p>{" "}
+                <span>
+                  {data.reject ? (
+                    <CountUp end={data.reject} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
             </Card>
-          </Col>
-          <Col span={5}>
+          </div>
+          <div>
             <Card bordered={true}>
-              <Statistic
-                title="Tayyor"
-                value={
-                  data.ready
-                    ? data.ready
-                    : "Mavjud emas"
-                }
-                // prefix={<DollarOutlined />}
-              />
+              <div bordered={true} className="bottom">
+                <p>Tayyor</p>{" "}
+                <span>
+                  {data.ready ? (
+                    <CountUp end={data.ready} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
             </Card>
-          </Col>
-          <Col span={4}>
+          </div>
+          <div>
             <Card bordered={true}>
-              <Statistic
-                title="Bekor qilingan"
-                value={data.failed ? data.failed : "0"}
-                // prefix={<DollarOutlined />}
-              />
+              <div bordered={true} className="bottom">
+                <p>Bekor qilingan</p>{" "}
+                <span>
+                  {data.failed ? (
+                    <CountUp end={data.failed} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
             </Card>
-          </Col>
-        </Row>
+          </div>
+        </div>
         <Row gutter={16}>
           <Col span={12}>
-            <Card bordered={true}>
+            <Card bordered={true} style={{ position: "relative" }}>
               <div class="card-title">Bemorlarning natija holatlari</div>
               <PieStatistic />
+              <div
+                className="color-wrap"
+                style={{ position: "absolute", top: "10px", right: "5px" }}
+              >
+                <div
+                  className="colors"
+                  style={{ display: "flex", alignItems: "center", gap: 10 }}
+                >
+                  <span
+                    style={{
+                      padding: 5,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: "#f77f00",
+                      borderRadius: "50%",
+                    }}
+                  ></span>{" "}
+                  Navbatda
+                </div>
+                <div
+                  className="colors"
+                  style={{ display: "flex", alignItems: "center", gap: 10 }}
+                >
+                  <span
+                    style={{
+                      padding: 5,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: "#120a8f",
+                      borderRadius: "50%",
+                    }}
+                  ></span>{" "}
+                  Kutmoqda
+                </div>
+                <div
+                  className="colors"
+                  style={{ display: "flex", alignItems: "center", gap: 10 }}
+                >
+                  <span
+                    style={{
+                      padding: 5,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: "red",
+                      borderRadius: "50%",
+                    }}
+                  ></span>{" "}
+                  Rad etilgan
+                </div>
+                <div
+                  className="colors"
+                  style={{ display: "flex", alignItems: "center", gap: 10 }}
+                >
+                  <span
+                    style={{
+                      padding: 5,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: "#4cbb17",
+                      borderRadius: "50%",
+                    }}
+                  ></span>{" "}
+                  Tayyor
+                </div>
+                <div
+                  className="colors"
+                  style={{ display: "flex", alignItems: "center", gap: 10 }}
+                >
+                  <span
+                    style={{
+                      padding: 5,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: "#f103e5",
+                      borderRadius: "50%",
+                    }}
+                  ></span>{" "}
+                  Bekor qilingan
+                </div>
+              </div>
             </Card>
           </Col>
           <Col span={12}>
             <Card bordered={true}>
-              <div class="card-title">Yangi bemorlar statistikasi</div>
+              <div class="card-title">Oxrgi 10 kunlikdagi tahlillar soni o`zgarish dinamikasi</div>
               <LineCHarts />
             </Card>
           </Col>

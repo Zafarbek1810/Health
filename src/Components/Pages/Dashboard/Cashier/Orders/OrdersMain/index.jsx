@@ -8,14 +8,16 @@ import OrderProvider from "../../../../../../Data/OrderProvider";
 import MinLoader from "../../../../../Common/MinLoader";
 import EditSvg from "../../../../../Common/Svgs/EditSvg";
 import EyeSvg from "../../../../../Common/Svgs/EyeSvg";
-import { useConfirm } from "material-ui-confirm";
 import { toast } from "react-toastify";
 import moment from "moment";
-import { Badge, Drawer } from "antd";
+import { Badge, Input, Drawer, Pagination, Popover, Checkbox, Radio, Space } from "antd";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import Select from "react-select";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
+import numberFormat from "../../../../../../utils/numberFormat";
+import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
+const { Search } = Input;
 
 const OrdersMain = () => {
   const {
@@ -40,6 +42,16 @@ const OrdersMain = () => {
   const [orderId, setOrderId] = useState(null);
   const [privilage, setPrivilage] = useState(null);
   const [drawerData, setDrawerData] = useState({});
+  const [totalElements, setTotalElements] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+  const [paymentType, setPaymentType] = useState(null);
+  const [paymentStatusRadio, setPaymentStatusRadio] = useState(null);
+
+  const onChange = (page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     PatientProvider.getAllPatient()
@@ -53,9 +65,10 @@ const OrdersMain = () => {
 
   useEffect(() => {
     setLoading(true);
-    OrderProvider.getAllOrders(1, 20000)
+    OrderProvider.getAllOrders(currentPage, 20, keyword, paymentType, paymentStatusRadio)
       .then((res) => {
-        console.log(res.data.data);
+        setTotalElements(res.data.recordsTotal);
+        console.log(res.data);
         setOrder(res.data.data);
       })
       .catch((err) => {
@@ -64,11 +77,11 @@ const OrdersMain = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [currentPage, keyword, paymentType, paymentStatusRadio]);
 
   const render = () => {
     setLoading(true);
-    OrderProvider.getAllOrders(1, 20000)
+    OrderProvider.getAllOrders(currentPage, 20, keyword, paymentType, paymentStatusRadio)
       .then((res) => {
         console.log(res.data.data);
         setOrder(res.data.data);
@@ -139,6 +152,11 @@ const OrdersMain = () => {
       });
   };
 
+  const onSearch = (e) => {
+    console.log(e.target.value);
+    setKeyword(e.target.value);
+  };
+
   const getCheque = (drawerData) => {
     AnalizProvider.getChequeAnalysis(true, drawerData.orderId)
       .then((res) => {
@@ -162,9 +180,54 @@ const OrdersMain = () => {
       });
   };
 
+  const onChangeCheck = (e) => {
+    console.log("checked = ", e.target.value);
+    setPaymentType(e.target.value)
+  };
+  const onChangePaymentStatus = (e) => {
+    console.log("checked = ", e.target.value);
+    setPaymentStatusRadio(e.target.value)
+  };
+
+  const content = (
+    <div>
+      <Radio.Group onChange={onChangeCheck} value={paymentType}>
+      <Space direction="vertical">
+        <Radio value={null}>Barchasi</Radio>
+        <Radio value={10}>Naqd</Radio>
+        <Radio value={20}>Plastik</Radio>
+      </Space>
+    </Radio.Group>
+    </div>
+  );
+  const content2 = (
+    <div>
+      <Radio.Group onChange={onChangePaymentStatus} value={paymentStatusRadio}>
+      <Space direction="vertical">
+        <Radio value={null}>Barchasi</Radio>
+        <Radio value={0}>To`lanmagan</Radio>
+        <Radio value={1}>To`langan</Radio>
+        <Radio value={-1}>Qaytarilgan</Radio>
+      </Space>
+    </Radio.Group>
+    </div>
+  );
+
   return (
     <>
       <OrderMainWrapper>
+        <div className="top">
+          <h3 className="col-1">Buyurtmalar</h3>
+
+          <Search
+            placeholder="Qidirish"
+            allowClear
+            enterButton="Qidirish"
+            className="col-4"
+            size="large"
+            onChange={onSearch}
+          />
+        </div>
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
@@ -177,17 +240,24 @@ const OrdersMain = () => {
               <th style={{ minWidth: "15%" }} className="col">
                 Yaratilgan sana
               </th>
-              {/* <th style={{ minWidth: "15%" }} className="col">
-                Buyurtma holati
-              </th> */}
               <th style={{ minWidth: "10%" }} className="col">
-                To`lov turi
+                To`lov turi{" "}
+                <Popover className="pop" content={content} title="Filterlash" trigger="click">
+                  <button>
+                    <FilterIconSvg />
+                  </button>
+                </Popover>
               </th>
               <th style={{ minWidth: "10%" }} className="col">
                 Narxi
               </th>
               <th style={{ minWidth: "10%" }} className="col">
                 To`lov holati
+                <Popover className="pop" content={content2} title="Filterlash" trigger="click">
+                  <button>
+                    <FilterIconSvg />
+                  </button>
+                </Popover>
               </th>
               <th style={{ minWidth: "10%" }} className="col">
                 Amallar
@@ -199,7 +269,8 @@ const OrdersMain = () => {
               order.map((obj, index) => (
                 <tr key={index}>
                   <td style={{ minWidth: "15%" }} className="col">
-                    {index + 1}.{obj.firstName} {obj.lastName}
+                    {index + (currentPage - 1) * 20 + 1}.{obj.firstName}{" "}
+                    {obj.lastName}
                   </td>
                   <td style={{ minWidth: "15%" }} className="col">
                     {obj.phoneNumber}
@@ -208,15 +279,6 @@ const OrdersMain = () => {
                     {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                   </td>
 
-                  {/* <td style={{ minWidth: "15%" }} className="col">
-                    {obj.confirm === "1" ? (
-                      <span style={{ color: "green" }}>Tasdiqlangan</span>
-                    ) : obj.confirm === "0" ? (
-                      <span style={{ color: "red" }}>Rad etilgan</span>
-                    ) : (
-                      <span style={{ color: "orange" }}>Tasdiqlanmagan</span>
-                    )}
-                  </td> */}
                   <td style={{ minWidth: "10%" }} className="col">
                     {+obj.paymentType === 10
                       ? "Naqd"
@@ -227,7 +289,7 @@ const OrdersMain = () => {
                       : "Bunday to'lov turi yo'q"}
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
-                    {obj.price.toLocaleString().replace(/,/g, " ")}
+                    {numberFormat(obj.price)}
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
                     {obj.paymentStatus === 1 ? (
@@ -243,7 +305,7 @@ const OrdersMain = () => {
                     ) : (
                       <span>
                         <Badge status="processing" className="badge_danger" />{" "}
-                        Qaytarilgan
+                          Qaytarilgan
                       </span>
                     )}
                   </td>
@@ -264,6 +326,14 @@ const OrdersMain = () => {
             )}
           </tbody>
         </table>
+        <Pagination
+          style={{ textAlign: "right" }}
+          defaultCurrent={currentPage}
+          defaultPageSize={20}
+          current={currentPage}
+          total={totalElements}
+          onChange={onChange}
+        />
       </OrderMainWrapper>
 
       <Drawer
@@ -359,7 +429,7 @@ const OrdersMain = () => {
           </div>
         </div>
 
-        <div className="btns" style={{display:'flex'}}>
+        <div className="btns" style={{ display: "flex" }}>
           <button
             style={{
               marginTop: 30,

@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { ModalContent, ModalHeader, AddViloyatWrapper } from '../AddViloyat/style';
-import CloseIconSvg from '../../../../../Common/Svgs/CloseIconSvg';
-import ButtonLoader from '../../../../../Common/ButtonLoader';
-import { useForm } from 'react-hook-form';
-import RegionProvider from '../../../../../../Data/RegionProvider';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import {
+  ModalContent,
+  ModalHeader,
+  AddViloyatWrapper,
+} from "../AddViloyat/style";
+import CloseIconSvg from "../../../../../Common/Svgs/CloseIconSvg";
+import ButtonLoader from "../../../../../Common/ButtonLoader";
+import { useForm } from "react-hook-form";
+import RegionProvider from "../../../../../../Data/RegionProvider";
+import { toast } from "react-toastify";
 
-const EditViloyat = ({onCloseModal2, editViloyat}) => {
-    const { register, handleSubmit, control, reset, setValue } = useForm();
+const EditViloyat = ({ onCloseModal2, editViloyat }) => {
+  const { register, handleSubmit, control, reset, setValue } = useForm();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setValue("regionName", editViloyat.name);
-    }, [editViloyat]);
+  }, [editViloyat]);
 
   const onSubmitRegion = async (values) => {
     const body = {};
@@ -35,8 +39,8 @@ const EditViloyat = ({onCloseModal2, editViloyat}) => {
       });
   };
 
-    return (
-        <AddViloyatWrapper>
+  return (
+    <AddViloyatWrapper>
       <ModalHeader className="modal-header">
         <h2 className="title">Viloyat o`zgartirish</h2>
         <button className="closeSvg" onClick={onCloseModal2}>
@@ -60,7 +64,7 @@ const EditViloyat = ({onCloseModal2, editViloyat}) => {
           </div>
           <button
             type="submit"
-            className="btn btn-success btn-rounded m-1"
+            className="btn btn-primary btn-rounded m-1"
             style={{ display: "flex" }}
           >
             O`zgartirish {loading && <ButtonLoader />}
@@ -68,7 +72,7 @@ const EditViloyat = ({onCloseModal2, editViloyat}) => {
         </form>
       </ModalContent>
     </AddViloyatWrapper>
-    );
+  );
 };
 
 export default EditViloyat;

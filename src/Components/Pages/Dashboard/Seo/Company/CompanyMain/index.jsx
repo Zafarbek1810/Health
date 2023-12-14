@@ -77,7 +77,7 @@ const CompanyMain = () => {
         <h3 className="col-2">Companylar</h3>
 
         <Button
-          class="col-2 btn btn-success btn-rounded"
+          class="col-2 btn btn-primary btn-rounded"
           variant="contained"
           onClick={() => openModal()}
         >

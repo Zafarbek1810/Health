@@ -16,4 +16,20 @@ export default class LabaratoryProvider {
     static async deleteLaboratory(id) {
         return await client.delete(`/seo/laboratory/delete/${id}`);
     }
+
+    static async getAllSumm() {
+        return await client.get(`/dashboard/get/all/sum`);
+    }
+    static async getSummSevenDay() {
+        return await client.get(`/dashboard/get/last/seven-day`);
+    }
+    static async getSummTenDay() {
+        return await client.get(`/dashboard/get/last/ten-day`);
+    }
+    static async getSummTenDayAnalysis() {
+        return await client.get(`/dashboard/get/last/ten-day/analysis`);
+    }
+    static async getSummTenDayPatient() {
+        return await client.get(`/dashboard/get/last/ten-day/patient`);
+    }
 }

@@ -27,24 +27,22 @@ const UpdateOrder = ({ id }) => {
   const [laboratoryId, setLaboratoryId] = useState([]);
   const [data, setData] = useState(null);
   const [newAnaliz, setNewAnaliz] = useState({});
-  const [defaultResult, setDefaultResult] = useState([]);
-
-
+  const [forRender, setForRender] = useState(null);
 
   useEffect(() => {
     if (defaultLab && defaultLab.length > 0) {
-      let allAnaliz = []
+      let allAnaliz = [];
       defaultLab.map((id) => {
         if (newAnaliz[id]) {
-          allAnaliz = [...allAnaliz, ...newAnaliz[id]]
+          allAnaliz = [...allAnaliz, ...newAnaliz[id]];
         }
-      })
-      allAnaliz = removeDuplicates(allAnaliz)
+      });
+      allAnaliz = removeDuplicates(allAnaliz);
       AnalizPriceProvider.getAllPrices({ ids: allAnaliz })
         .then((res) => {
           if (res.data.success) {
             setChangeAnaliz(res.data.data.allDTOList);
-            console.log('newAnaliz', res.data.data.allDTOList);
+            console.log("newAnaliz", res.data.data.allDTOList);
             setCommonSum(res.data.data.sum);
           } else {
             console.log(err);
@@ -54,13 +52,10 @@ const UpdateOrder = ({ id }) => {
           console.log(err);
         });
     } else if (!defaultLab || defaultLab.length === 0) {
-      setChangeAnaliz([])
-      setData(prev => ({ ...prev, orderDetailMap: {} }))
+      setChangeAnaliz([]);
+      setData((prev) => ({ ...prev, orderDetailMap: {} }));
     }
-
   }, [newAnaliz, defaultLab]);
-
-
 
   useEffect(() => {
     if (id) {
@@ -68,10 +63,15 @@ const UpdateOrder = ({ id }) => {
         .then((res) => {
           setData(res.data.data);
           setPaymentId(res.data.data?.paymentType);
-          for (const [key, value] of Object.entries(res.data.data.orderDetailMap)) {
-            setNewAnaliz(prev => ({ ...prev, [key]: value.map(obj => obj.analysisId) }));
+          for (const [key, value] of Object.entries(
+            res.data.data.orderDetailMap
+          )) {
+            setNewAnaliz((prev) => ({
+              ...prev,
+              [key]: value.map((obj) => obj.analysisId),
+            }));
           }
-          console.log('res.data.data.orderDetailDTOList', res.data.data);
+          console.log("res.data.data.orderDetailDTOList", res.data.data);
           getDefaultLab();
           setLaboratoryId(
             res.data.data.orderDetailDTOList.map((item) => item.laboratoryId)
@@ -83,24 +83,46 @@ const UpdateOrder = ({ id }) => {
     }
   }, [id]);
 
+  // useEffect(() => {
+  //   if (defaultLab) {
+  //     defaultLab.map((id) => {
+  //       AnalizProvider.getAllAnalysisByLabWithPrice(id)
+  //         .then((res) => {
+  //           setAnaliz({ ...analiz, [id]: res.data.data });
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //     });
+  //   }
+    
+  // }, [defaultLab, id, analiz]);
+  
   useEffect(() => {
     if (defaultLab) {
-      defaultLab.map((id) => {
-        AnalizProvider.getAllAnalysisByLabWithPrice(id)
-          .then((res) => {
-            setAnaliz({ ...analiz, [id]: res.data.data });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      defaultLab.forEach((id) => {
+        // Check if analiz[id] is already set
+        if (!analiz || !analiz[id]) {
+          AnalizProvider.getAllAnalysisByLabWithPrice(id)
+            .then((res) => {
+              setAnaliz((prevAnaliz) => ({
+                ...prevAnaliz,
+                [id]: res.data.data,
+              }));
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       });
     }
-  }, [defaultLab, id, newAnaliz]);
+  }, [defaultLab, id, analiz]);
 
   useEffect(() => {
     LabaratoryProvider.getAllLaboratory()
       .then((res) => {
         setLaboratory(res.data.data);
+
       })
       .catch((err) => {
         console.log(err);
@@ -121,18 +143,17 @@ const UpdateOrder = ({ id }) => {
   ];
 
   const onSubmit = (val) => {
-
-    let allAnaliz = []
+    let allAnaliz = [];
     defaultLab.map((id) => {
       if (newAnaliz[id]) {
-        allAnaliz = [...allAnaliz, ...newAnaliz[id]]
+        allAnaliz = [...allAnaliz, ...newAnaliz[id]];
       }
-    })
-    allAnaliz = removeDuplicates(allAnaliz)
+    });
+    allAnaliz = removeDuplicates(allAnaliz);
 
     const body = {
       formPayment: paymentId,
-      analysisIds: allAnaliz
+      analysisIds: allAnaliz,
     };
 
     body.orderId = +id;
@@ -179,7 +200,7 @@ const UpdateOrder = ({ id }) => {
           );
         })}
     </div>
-  )
+  );
 
   if (!data?.orderDetailDTOList || !defaultLab || !analiz) {
     return <div>Loading ...</div>;
@@ -187,7 +208,6 @@ const UpdateOrder = ({ id }) => {
   console.log('analizObj', analiz);
   return (
     <CreateOrderWrapper>
-      {console.log('changeAnaliz', changeAnaliz, defaultLab)}
       <div className="top">Buyurtma o`zgartirish</div>
       <div className="wrapper">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -243,7 +263,7 @@ const UpdateOrder = ({ id }) => {
               <hr />
               {renderAnalyzList}
             </div>
-
+            
           </div>
 
           <div className="right">

@@ -1,8 +1,22 @@
 import * as echarts from "echarts";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 
 const PieStatistic = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(()=>{
+    LabaratoryProvider.getAllSumm()
+    .then(res=>{
+      setData(res.data.data)
+      console.log(res.data.data);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  }, [])
+
   useEffect(() => {
     const echartElemPie = document.getElementById("echartPie");
 
@@ -11,12 +25,11 @@ const PieStatistic = () => {
 
       const options = {
         color: [
-          "#4290f5",
-          "#4290f5ea",
-          "#408aeb",
-          "#4188e4",
-          "#2e74d1",
-          "#6ca1e7",
+          "#f19d02",
+          "#b80b4d",
+          "#15b660",
+          // "#408aeb",
+          // "#4188e4",
         ],
         tooltip: {
           show: true,
@@ -24,17 +37,23 @@ const PieStatistic = () => {
         },
         series: [
           {
-            name: "Laboratoriyalardagi bemorlar soni",
+            name: "Laboratoriyalardagi kirim",
             type: "pie",
             radius: "60%",
             center: ["50%", "50%"],
-            data: [
-                { value: 1, name: "sss" },
-                { value: 2, name: "dd" },
-                { value: 3, name: "ff" },
-                { value: 4, name: "gg" },
-                { value: 5, name: "hh" },
-            ],
+            // data: [
+            //     { value: 1, name: "sss" },
+            //     { value: 2, name: "dd" },
+            //     { value: 3, name: "ff" },
+            //     { value: 4, name: "gg" },
+            //     { value: 5, name: "hh" },
+            // ],
+            data : data.map((i, index) => {
+              return {
+                value: i.totalSum,
+                name: i.name,
+              };
+            }),
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -54,7 +73,7 @@ const PieStatistic = () => {
         }, 500);
       });
     }
-  }, []);
+  }, [data]);
 
   return <div id="echartPie" style={{ width: "100%", height: "400px" }} />;
 };

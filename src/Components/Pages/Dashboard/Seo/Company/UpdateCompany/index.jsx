@@ -61,7 +61,7 @@ const UpdateCompany = ({onCloseModal2, editCompany}) => {
           </div>
           <button
             type="submit"
-            className="btn btn-success btn-rounded m-1"
+            className="btn btn-primary btn-rounded m-1"
             style={{ display: "flex" }}
           >
             O`zgartirish {loading && <ButtonLoader />}

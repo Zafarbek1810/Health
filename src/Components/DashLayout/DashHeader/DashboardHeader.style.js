@@ -3,7 +3,6 @@ import styled from "styled-components";
 const DashboardHeaderWrapper = styled.div`
   background: #fff;
 
-  
   .top {
     padding: 10px 30px;
   }
@@ -41,8 +40,15 @@ const DashboardHeaderWrapper = styled.div`
     .right {
       display: flex;
       align-items: center;
+
+      .pop{
+        display: flex;
+        cursor: pointer;
+
+        
+      }
       h3 {
-        font-size: 20px;
+        font-size: 16px;
         margin-right: 20px;
         margin-bottom: 0;
       }
@@ -59,7 +65,7 @@ const DashboardHeaderWrapper = styled.div`
         }
       }
 
-      button {
+      /* button {
         background: transparent;
         border: none;
         color: #000;
@@ -71,7 +77,7 @@ const DashboardHeaderWrapper = styled.div`
         img{
           width: 20px;
         }
-      }
+      } */
 
       svg {
         width: 20px;

@@ -29,7 +29,7 @@ const PieStatistic = () => {
           "#120a8f",
           "red",
           "#4cbb17",
-          "#f15e03",
+          "#f103e5",
         ],
         tooltip: {
           show: true,

@@ -13,11 +13,12 @@ import { toast } from "react-toastify";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import moment from "moment";
-import { Drawer, Form, Select, Button, Pagination } from "antd";
-const { Option } = Select;
+import { Drawer, Form, Select, Input, Button, Pagination } from "antd";
+import numberFormat from "../../../../../../utils/numberFormat";
+const { Search } = Input;
 
 const filterOption = (input, option) =>
-  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+  (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
 const OrdersMain = () => {
   const {
@@ -45,6 +46,7 @@ const OrdersMain = () => {
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+  const [keyword, setKeyword] = useState("")
 
   const onChange = (page) => {
     console.log(page);
@@ -63,7 +65,7 @@ const OrdersMain = () => {
 
   useEffect(() => {
     setLoading(true);
-    OrderProvider.getAllOrders(currentPage, 100)
+    OrderProvider.getAllOrders(currentPage, 20, keyword)
       .then((res) => {
         console.log(res.data);
         setOrder(res.data.data);
@@ -75,7 +77,7 @@ const OrdersMain = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [currentPage]);
+  }, [currentPage, keyword]);
 
   const handleDeleteOrder = (obj) => {
     confirm({
@@ -135,6 +137,10 @@ const OrdersMain = () => {
     console.log("search:", value);
     setSearchText(value);
   };
+  const onSearchOrder = (e) => {
+    setKeyword(e.target.value);
+  };
+
 
   return (
     <>
@@ -145,7 +151,7 @@ const OrdersMain = () => {
             name="control-hooks"
             onFinish={onFinish}
             style={{
-              maxWidth: 600,
+              width: '50%'
             }}
           >
             <Form.Item
@@ -161,6 +167,7 @@ const OrdersMain = () => {
                 placeholder="Bemor tanlang"
                 // onChange={onGenderChange}
                 showSearch
+                size="large"
                 allowClear
                 onSearch={onSearch}
                 filterOption={filterOption}
@@ -171,10 +178,19 @@ const OrdersMain = () => {
               />
             </Form.Item>
 
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" size="large">
               Yaratish
             </Button>
           </Form>
+
+          <Search
+            placeholder="Qidirish"
+            allowClear
+            enterButton="Qidirish"
+            className="col-4"
+            size="large"
+            onChange={onSearchOrder}
+          />
         </div>
 
         <table className="table table-striped table-bordered table-hover">
@@ -277,7 +293,7 @@ const OrdersMain = () => {
                         : "Bunday to'lov turi yo'q"}
                     </td>
                     <td style={{ minWidth: "10%" }} className="col">
-                      {obj.price.toLocaleString().replace(/,/g, " ")}
+                      {numberFormat(obj.price)}
                     </td>
                     <td style={{ minWidth: "10%" }} className="col">
                       <div className="btns">

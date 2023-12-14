@@ -4,10 +4,11 @@ import MinLoader from "../../../../../Common/MinLoader";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { Badge, Button } from "antd";
+import { Badge, Button, Input, Pagination } from "antd";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
+const { Search } = Input;
 
 const Tahlillar = () => {
   const [loading, setLoading] = useState(false);
@@ -17,13 +18,25 @@ const Tahlillar = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [detailObj, setDetailObj] = useState({})
   const [analysisId, setAnalysisId] = useState(null)
+  const [totalElements, setTotalElements] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
+
+  const onChange = (page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+
 
   useEffect(() => {
-    OrderProvider.getAllAnalysisStatus(1, 1000).then((res) => {
+    OrderProvider.getAllAnalysisStatus(currentPage,
+      20,
+      keyword).then((res) => {
       console.log(res.data);
       setAnalysisStatus(res.data.data);
+      setTotalElements(res.data?.recordsTotal/2)
     });
-  }, []);
+  }, [keyword, currentPage]);
 
   useEffect(()=>{
     AnalizProvider.getShablonId(analysisId)
@@ -48,11 +61,23 @@ const Tahlillar = () => {
       console.log(err);
     })
   }, [analysisId])
+
+  const onSearchOrder = (e) => {
+    setKeyword(e.target.value);
+  };
   
   return (
     <TahlillarWrapper>
       <div className="top">
         <h3>Tahlillar</h3>
+        <Search
+          placeholder="Qidirish"
+          allowClear
+          enterButton="Qidirish"
+          className="col-4"
+          size="large"
+          onChange={onSearchOrder}
+        />
       </div>
       <table className="table table-striped table-bordered table-hover">
         <thead>
@@ -73,6 +98,7 @@ const Tahlillar = () => {
         </thead>
         <tbody>
           {!loading ? (
+            analysisStatus.length ?
             analysisStatus.filter(item=>item.analysisStatus===11).map((obj, index) => (
               <tr
                 key={index}
@@ -121,12 +147,20 @@ const Tahlillar = () => {
                   )}
                 </td>
               </tr>
-            ))
+            )) : <h3 style={{textAlign:'center', margin: '20px 0'}}>Mavjud emas</h3>
           ) : (
             <MinLoader />
           )}
         </tbody>
       </table>
+
+      <Pagination
+        style={{ textAlign: "right" }}
+        defaultCurrent={currentPage}
+        current={currentPage}
+        total={totalElements}
+        onChange={onChange}
+      />
 
       <ModalContextProvider
         RefObj={RefObj}

@@ -57,7 +57,7 @@ const PatientMain = () => {
 
   useEffect(() => {
     setLoading(true);
-    PatientProvider.getAllPatient(keyword, currentPage - 1, 10)
+    PatientProvider.getAllPatient(keyword, currentPage - 1, 20)
       .then((res) => {
         setPatient(res.data.data.content);
         setTotalElements(res.data.data?.totalElements);
@@ -145,7 +145,8 @@ const PatientMain = () => {
               patient.map((obj, index) => (
                 <tr key={index}>
                   <td style={{ minWidth: "14%" }} className="col">
-                    {index + 1}.{obj.first_name} {obj.last_name}
+                    {index + (currentPage - 1) * 20 + 1}.{obj.first_name}{" "}
+                    {obj.last_name}
                   </td>
                   <td style={{ minWidth: "6%" }} className="col">
                     {obj.district?.name}
@@ -205,6 +206,7 @@ const PatientMain = () => {
       <Pagination
         style={{ textAlign: "right" }}
         defaultCurrent={currentPage}
+        defaultPageSize={20}
         current={currentPage}
         total={totalElements}
         onChange={onChange}

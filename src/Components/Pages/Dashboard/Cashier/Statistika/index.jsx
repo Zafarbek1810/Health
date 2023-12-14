@@ -8,12 +8,15 @@ import PatientProvider from "../../../../../Data/PatientProvider";
 import OrderProvider from "../../../../../Data/OrderProvider";
 import CountUp from "react-countup";
 import CashSvg from "../../../../Common/Svgs/CashSvg";
+import CardSvg from "../../../../Common/Svgs/CardSvg";
+import ReturnCash from "../../../../Common/Svgs/ReturnCash";
+import TotalSum from "../../../../Common/Svgs/TotalSum";
 
 const Statistika = () => {
   const [patient, setPatient] = useState({});
   const [currency, setCurrency] = useState({});
   const [generalData, setGeneralData] = useState({});
-  const formatter = (value) => <CountUp end={value} separator="," />;
+  const formatter = (value) => <CountUp end={value} separator=" " />;
   const [dateString, setDateString] = useState(["", ""]);
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const Statistika = () => {
       });
   }, []);
 
-  function numberFormat(sonlar) {
+   function numberFormat(sonlar) {
     const sonlarStr = sonlar.toString();
 
     if (sonlarStr.length <= 3) {
@@ -88,8 +91,8 @@ const Statistika = () => {
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentDayIncome
-                    ? currency.currentDayIncome
-                    : "Mavjud emas"}
+                    ? <CountUp end={(currency.currentDayIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
@@ -101,8 +104,8 @@ const Statistika = () => {
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentWeekIncome
-                    ? numberFormat(currency.currentWeekIncome)
-                    : "Mavjud emas"}
+                    ? <CountUp end={(currency.currentWeekIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
@@ -115,8 +118,8 @@ const Statistika = () => {
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentMonthIncome
-                    ? numberFormat(currency.currentMonthIncome)
-                    : "Mavjud emas"}
+                    ? <CountUp end={(currency.currentMonthIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
@@ -128,8 +131,8 @@ const Statistika = () => {
                 <p>Kirim:</p>{" "}
                 <span>
                   {currency.currentYearIncome
-                    ? numberFormat(currency.currentYearIncome)
-                    : "Mavjud emas"}
+                    ? <CountUp end={(currency.currentYearIncome)} separator=" "/> 
+                    : "0"}
                 </span>
               </div>
             </Card>
@@ -147,7 +150,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/cash.png" alt="" />
+                <CashSvg/>
               </div>
               <Statistic
                 title="Naqd to'langan miqdor"
@@ -160,11 +163,11 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/credit-card.png" alt="" />
+                <CardSvg/>
               </div>
               <Statistic
                 title="Plastikdan to'langan miqdor"
-                value={generalData?.totalPlasticSum}
+                value={(generalData?.totalPlasticSum)}
                 formatter={formatter}
                 className="stat"
               />
@@ -173,10 +176,10 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/cash-withdraw.png" alt="" />
+                <ReturnCash/>
               </div>
               <Statistic
-                title="Qaytarilgan pul"
+                title="Qaytarilgan miqdor"
                 value={generalData?.totalReturnedSum}
                 formatter={formatter}
                 className="stat"
@@ -186,10 +189,10 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <img src="/images/cash-wallet.png" alt="" />
+                <TotalSum/>
               </div>
               <Statistic
-                title="Jami summa"
+                title="Jami miqdor"
                 value={generalData?.totalSumma}
                 formatter={formatter}
                 className="stat"
@@ -198,18 +201,19 @@ const Statistika = () => {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={12} style={{marginBottom:16}}>
             <Card bordered={true}>
-              <div class="card-title">Laboratoriyalardagi bemorlar soni</div>
+              <div class="card-title">Laboratoriyalardagi kirim</div>
               <PieStatistic />
             </Card>
           </Col>
-          <Col span={12}>
+          <Col span={12} style={{marginBottom:16}}>
             <Card bordered={true}>
-              <div class="card-title">Yangi bemorlar statistikasi</div>
+              <div class="card-title">Haftalik kirim</div>
               <LineCHarts />
             </Card>
           </Col>
+          
         </Row>
       </div>
     </StatistikaWrapper>

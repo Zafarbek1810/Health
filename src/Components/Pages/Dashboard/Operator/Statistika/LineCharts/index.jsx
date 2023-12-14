@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import * as echarts from 'echarts';
+import LabaratoryProvider from '../../../../../../Data/LabaratoryProvider';
 
 const LineCHarts = () => {
     const [names, setNames] = useState({
@@ -21,24 +22,23 @@ const LineCHarts = () => {
       })
     
     
-    //   useLayoutEffect(() => {
-    //     SeoProvider.getAllGroup(1, 20)
-    //       .then((res) => {
-    //         console.log("asas", res.data.data);
-    //         setForRender(Math.random());
-    //         setNames({
-    //             data: res.data.data.map((item) => item.name),
-    //         });
-    //         setSeries(
-    //           {
-    //             data: res.data.data.map((item) => item.totalBalance),
-    //           },
-    //         );
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       });
-    //   }, []);
+      useLayoutEffect(() => {
+        LabaratoryProvider.getSummTenDayPatient()
+          .then((res) => {
+            console.log("asas", res.data.data);
+            setNames({
+                data: res.data.data.map((item) => item.date.slice(5)),
+            });
+            setSeries(
+              {
+                data: res.data.data.map((item) => item.patientCount),
+              },
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, []);
     
       useEffect(() => {
         const echartElem3 = document.getElementById("echart3");
@@ -63,13 +63,13 @@ const LineCHarts = () => {
             },
             grid: {
               top: "10%",
-              left: "40",
-              right: "40",
+              left: "70",
+              right: "10",
               bottom: "40",
             },
             xAxis: {
               type: "category",
-              // data: names.data,
+              data: names.data,
             },
             yAxis: {
               type: "value",
@@ -103,7 +103,7 @@ const LineCHarts = () => {
             }, 500);
           });
         }
-      }, []);
+      }, [names, series]);
     
       return <div id="echart3" style={{ width: "100%", height: "400px" }} />;
 };

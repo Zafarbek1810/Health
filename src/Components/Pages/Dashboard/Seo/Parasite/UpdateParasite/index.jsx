@@ -102,7 +102,7 @@ const UpdateParasite = ({ onCloseModal2, editParasite }) => {
           </div>
           <button
             type="submit"
-            className="btn btn-success btn-rounded m-1"
+            className="btn btn-primary btn-rounded m-1"
             style={{ display: "flex" }}
           >
             O`zgartirish {loading && <ButtonLoader />}

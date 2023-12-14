@@ -46,7 +46,7 @@ const AnalizMain = () => {
 
   useEffect(() => {
     setLoading(true);
-    AnalizProvider.getAllAnalysis()
+    AnalizProvider.getAllAnalysis(0, 10000)
       .then((res) => {
         setAnaliz(res.data.data.content);
         console.log(res.data);
@@ -74,7 +74,7 @@ const AnalizMain = () => {
             <div className="top">
           <h3 className="col-2">Analizlar</h3>
           <Button
-            class="col-2 btn btn-success btn-rounded"
+            class="col-2 btn btn-primary btn-rounded"
             variant="contained"
             onClick={() => openModal()}
           >

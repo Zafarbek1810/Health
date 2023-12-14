@@ -9,8 +9,8 @@ export default class AnalizPriceProvider {
         return await client.put("/seo/analysis-price/update", body);
     }
     
-    static async getAllAnalysisPrice() {
-        return await client.get(`/seo/analysis-price/get/all`);
+    static async getAllAnalysisPrice(pageNum, pageSize) {
+        return await client.get(`/seo/analysis-price/get/all?pageNum=${pageNum}&pageSize=${pageSize}`);
     }
     
     static async deleteAnalysisPrice(id) {

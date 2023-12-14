@@ -4,8 +4,14 @@ import MinLoader from "../../../../../Common/MinLoader";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { Badge, Drawer } from "antd";
-import { Button, ButtonBase, ButtonGroup, IconButton, StepButton } from "@mui/material";
+import { Badge, Drawer, Popover, Radio, Space } from "antd";
+import {
+  Button,
+  ButtonBase,
+  ButtonGroup,
+  IconButton,
+  StepButton,
+} from "@mui/material";
 import EditSvg from "../../../../../Common/Svgs/EditSvg";
 import EyeSvg from "../../../../../Common/Svgs/EyeSvg";
 import { Controller, useForm } from "react-hook-form";
@@ -15,6 +21,9 @@ import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import { toast } from "react-toastify";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
+import { Input } from "antd";
+import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
+const { Search } = Input;
 
 const Tahlillar = () => {
   const { control, handleSubmit, setValue } = useForm();
@@ -26,6 +35,10 @@ const Tahlillar = () => {
   const [modalIsOpenModal, setIsOpenModal] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [drawerData, setDrawerData] = useState({});
+  const [totalElements, setTotalElements] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [analysiStatusFilter, setAnalysisStatusFilter] = useState(null);
+  const [keyword, setKeyword] = useState("");
 
   const handleEditStatus = (obj) => {
     console.log(obj);
@@ -51,11 +64,16 @@ const Tahlillar = () => {
   };
 
   useEffect(() => {
-    OrderProvider.getAllAnalysisStatus(1, 1000).then((res) => {
+    OrderProvider.getAllAnalysisStatus(
+      currentPage,
+      20,
+      keyword,
+      analysiStatusFilter
+    ).then((res) => {
       console.log(res.data.data);
       setAnalysisStatus(res.data.data);
     });
-  }, [modalIsOpenModal]);
+  }, [modalIsOpenModal, keyword, currentPage, analysiStatusFilter]);
 
   const analizStatus = [
     // { value: 11, label: "Navbatda" },
@@ -84,90 +102,126 @@ const Tahlillar = () => {
     setDrawerData(obj);
   };
 
-  console.log(drawerData, 'drawerData');
+  console.log(drawerData, "drawerData");
   const getPdfBtn = (drawerData) => {
-    if(drawerData.templateId===1){
-      AnalizProvider.getPdfAnalysis(
-        true,
-        drawerData.patientId,
-        drawerData.id
-      )
-        .then((res) => {
-          console.log(res);
-          const blob = new Blob([res.data], {
-            type: "application/pdf",
+    switch (drawerData.templateId) {
+      case 1:
+        AnalizProvider.getPdfAnalysis(true, drawerData.patientId, drawerData.id)
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
           });
-  
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          //no download 
-          link.target = "_blank";
-          link.click();
-  
-          // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
-          // link.click();
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error(err?.response?.data?.message);
-        });
-    } else if(drawerData.templateId===2){
-      AnalizProvider.getPdfBacteriology(
-        true,
-        drawerData.patientId,
-        drawerData.id
-      )
-        .then((res) => {
-          console.log(res);
-          const blob = new Blob([res.data], {
-            type: "application/pdf",
+        break;
+
+      case 2:
+        AnalizProvider.getPdfBacteriology(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
           });
-  
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          //no download 
-          link.target = "_blank";
-          link.click();
-  
-          // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
-          // link.click();
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error(err?.response?.data?.message);
-        });
-    } else if(drawerData.templateId===3){
-      AnalizProvider.getPdfDisbakterioz(
-        true,
-        drawerData.patientId,
-        drawerData.id
-      )
-        .then((res) => {
-          console.log(res);
-          const blob = new Blob([res.data], {
-            type: "application/pdf",
+        break;
+
+      case 3:
+        AnalizProvider.getPdfDisbakterioz(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
           });
-  
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          //no download 
-          link.target = "_blank";
-          link.click();
-  
-          // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
-          // link.click();
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error(err?.response?.data?.message);
-        });
+        break;
     }
   };
+
+  const onSearchOrder = (e) => {
+    setKeyword(e.target.value);
+  };
+
+  const onChangeAnalysisStatus = (e) => {
+    console.log("checked = ", e.target.value);
+    setAnalysisStatusFilter(e.target.value);
+  };
+
+  const content = (
+    <div>
+      <Radio.Group
+        onChange={onChangeAnalysisStatus}
+        value={analysiStatusFilter}
+      >
+        <Space direction="vertical">
+          <Radio value={null}>Barchasi</Radio>
+          <Radio value={21}>Natija kutilmoqda</Radio>
+          <Radio value={31}>Rad etilgan</Radio>
+          <Radio value={41}>Natija chiqdi</Radio>
+          <Radio value={51}>Bekor qilingan</Radio>
+        </Space>
+      </Radio.Group>
+    </div>
+  );
 
   return (
     <TahlillarWrapper>
       <div className="top">
         <h3>Tahlillar</h3>
+        <Search
+          placeholder="Qidirish"
+          allowClear
+          enterButton="Qidirish"
+          className="col-4"
+          size="large"
+          onChange={onSearchOrder}
+        />
       </div>
       <table className="table table-striped table-bordered table-hover">
         <thead>
@@ -185,7 +239,17 @@ const Tahlillar = () => {
               Natija chiqqan sana
             </th>
             <th style={{ minWidth: "15%" }} className="col">
-              Natija holati
+              Natija holati{" "}
+              <Popover
+                className="pop"
+                content={content}
+                title="Filterlash"
+                trigger="click"
+              >
+                <button style={{ background: "transparent", border: "none" }}>
+                  <FilterIconSvg />
+                </button>
+              </Popover>
             </th>
             <th style={{ minWidth: "5%" }} className="col"></th>
           </tr>
@@ -264,18 +328,29 @@ const Tahlillar = () => {
         visible={openDrawer}
         width={700}
       >
-        <div style={{fontSize:18}}>
+        <div style={{ fontSize: 18 }}>
           <b>Bemor ism-familyasi:</b> {drawerData.firstName}{" "}
           {drawerData.lastName}
         </div>
-        <div style={{fontSize:18}}>
+        <div style={{ fontSize: 18 }}>
           <b>Bemor telefon raqami:</b> {drawerData.phoneNumber}{" "}
         </div>
-        <div style={{fontSize:18}}>
+        <div style={{ fontSize: 18 }}>
           <b>Analiz nomi:</b> {drawerData.analysisName}
         </div>
 
-        <button style={{marginTop:30, width:"100%", background:'transparent', color:'rgb(3, 132, 252)', border:'none'}} onClick={() => getPdfBtn(drawerData)}>Natijani ko`rish</button>
+        <button
+          style={{
+            marginTop: 30,
+            width: "100%",
+            background: "transparent",
+            color: "rgb(3, 132, 252)",
+            border: "none",
+          }}
+          onClick={() => getPdfBtn(drawerData)}
+        >
+          Natijani ko`rish
+        </button>
       </Drawer>
 
       <ModalContextProvider

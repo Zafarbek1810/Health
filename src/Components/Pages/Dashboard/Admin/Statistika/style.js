@@ -18,6 +18,18 @@ const StatistikaWrapper = styled.div`
       display: flex;
       justify-content: space-between;
     }
+
+    h3{
+      color: rgba(0, 0, 0, 0.5);
+
+    }
+
+    p, span{
+      font-size: 20px;
+    }
+    p{
+      color: rgba(0, 0, 0, 0.5) !important; 
+    }
   }
 
   .topCards1 {
@@ -25,10 +37,16 @@ const StatistikaWrapper = styled.div`
     .ant-card-body {
       display: flex !important;
       justify-content: space-between;
+      align-items: center;
     }
 
     .svg {
       width: 30%;
+
+      svg{
+        width: 60px;
+        stroke-width: 0.75 !important;
+      }
 
       img {
         width: 60px;

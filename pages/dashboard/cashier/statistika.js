@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Foydalanuvchi yaratish</title>
+        <title>Statistika</title>
         <meta name="description" content="Sog`liqni saqlash vazirligi" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

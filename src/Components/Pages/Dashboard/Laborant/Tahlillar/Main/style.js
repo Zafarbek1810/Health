@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 const TahlillarWrapper = styled.div`
+.top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
  .table {
     margin-top: 20px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06), 0 3px 6px rgba(0, 0, 0, 0.03);

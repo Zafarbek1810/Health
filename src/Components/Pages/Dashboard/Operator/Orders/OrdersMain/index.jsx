@@ -48,7 +48,7 @@ const OrdersMain = () => {
   const [searchText, setSearchText] = useState("");
   const [keyword, setKeyword] = useState("")
 
-  const onChange = (page) => {
+  const onChangePagination = (page) => {
     console.log(page);
     setCurrentPage(page);
   };
@@ -69,7 +69,7 @@ const OrdersMain = () => {
       .then((res) => {
         console.log(res.data);
         setOrder(res.data.data);
-        setTotalElements(res.data.recordsTotal);
+        setTotalElements(Math.floor(res.data?.recordsTotal / 2));
       })
       .catch((err) => {
         console.log(err);
@@ -312,13 +312,13 @@ const OrdersMain = () => {
             )}
           </tbody>
         </table>
-        {/* <Pagination
-        style={{textAlign:'right'}}
+        <Pagination
+        style={{ textAlign: "right" }}
         defaultCurrent={currentPage}
         current={currentPage}
         total={totalElements}
-        onChange={onChange}
-      /> */}
+        onChange={onChangePagination}
+      />
       </OrderMainWrapper>
 
       <Drawer

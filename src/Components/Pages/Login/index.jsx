@@ -32,7 +32,7 @@ const Login = () => {
     if (isAuth && currentUser) {
       switch (currentUser.roles) {
         case "ROLE_SEO": {
-          router.replace("/dashboard/ceo/statistika");
+          router.replace("/dashboard/ceo/users");
           break;
         }
         case "ROLE_OPERATOR": {

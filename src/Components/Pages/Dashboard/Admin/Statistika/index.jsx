@@ -22,6 +22,7 @@ const Statistika = () => {
   const [generalData, setGeneralData] = useState({});
   const formatter = (value) => <CountUp end={value} separator=" " />;
   const [dateString, setDateString] = useState(["", ""]);
+  const [data, setData] = useState({});
 
   useEffect(() => {
     OrderProvider.getCurrencyDashboard()
@@ -33,6 +34,17 @@ const Statistika = () => {
         console.log(err);
       });
   }, []);
+
+  // useEffect(() => {
+  //   OrderProvider.getLaborantStatistika()
+  //     .then((res) => {
+  //       setData(res.data.data);
+  //       console.log(res.data.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   function numberFormat(sonlar) {
     const sonlarStr = sonlar.toString();
@@ -87,6 +99,81 @@ const Statistika = () => {
       </div>
 
       <div className="bottom">
+      {/* <div
+          className="roww"
+          style={{ marginBottom: 16, justifyContent: "space-between" }}
+        >
+          <div>
+            <Card bordered={true}>
+              <div bordered={true} className="bottom">
+                <p>Navbatda</p>{" "}
+                <span>
+                  {data.inLine ? (
+                    <CountUp end={data.inLine} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
+            </Card>
+          </div>
+          <div>
+            <Card bordered={true}>
+              <div bordered={true} className="bottom">
+                <p>Kutilmoqda</p>{" "}
+                <span>
+                  {data.pending ? (
+                    <CountUp end={data.pending} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
+            </Card>
+          </div>
+          <div>
+            <Card bordered={true}>
+              <div bordered={true} className="bottom">
+                <p>Rad etilgan</p>{" "}
+                <span>
+                  {data.reject ? (
+                    <CountUp end={data.reject} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
+            </Card>
+          </div>
+          <div>
+            <Card bordered={true}>
+              <div bordered={true} className="bottom">
+                <p>Tayyor</p>{" "}
+                <span>
+                  {data.ready ? (
+                    <CountUp end={data.ready} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
+            </Card>
+          </div>
+          <div>
+            <Card bordered={true}>
+              <div bordered={true} className="bottom">
+                <p>Bekor qilingan</p>{" "}
+                <span>
+                  {data.failed ? (
+                    <CountUp end={data.failed} separator=" " />
+                  ) : (
+                    "0"
+                  )}
+                </span>
+              </div>
+            </Card>
+          </div>
+        </div> */}
         <Row gutter={12} style={{ marginBottom: 30 }}>
           <Col span={6}>
             <Card bordered={true} className="topCards">
@@ -290,7 +377,7 @@ const Statistika = () => {
           <Col span={12} style={{marginBottom:16}}>
             <Card bordered={true}>
               <div class="card-title">Laboratoriyalardagi kirim</div>
-              <PieStatistic />
+              <PieStatistic dateString={dateString}/>
             </Card>
           </Col>
           <Col span={12}>

@@ -3,19 +3,19 @@ import * as echarts from "echarts";
 import React, { useEffect, useState } from "react";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 
-const PieStatistic = () => {
+const PieStatistic = ({dateString}) => {
   const [data, setData] = useState([]);
 
   useEffect(()=>{
-    LabaratoryProvider.getAllSumm()
+    LabaratoryProvider.getAllSumm(dateString[0], dateString[1])
     .then(res=>{
       setData(res.data.data)
-      console.log(res.data.data);
+      console.log(res.data);
     })
     .catch(err=>{
       console.log(err);
     })
-  }, [])
+  }, [dateString])
 
   useEffect(() => {
     const echartElemPie = document.getElementById("echartPie");
@@ -26,10 +26,10 @@ const PieStatistic = () => {
       const options = {
         color: [
           "#38ef75",
-          // "#4290f5ea",
+          "#3073ca",
+          "#ebcb37",
           // "#408aeb",
           // "#4188e4",
-          "#3073ca",
         ],
         tooltip: {
           show: true,
@@ -48,7 +48,7 @@ const PieStatistic = () => {
             //     { value: 4, name: "gg" },
             //     { value: 5, name: "hh" },
             // ],
-            data : data.map((i, index) => {
+            data : data?.map((i, index) => {
               return {
                 value: i.totalSum,
                 name: i.name,
@@ -73,7 +73,7 @@ const PieStatistic = () => {
         }, 500);
       });
     }
-  }, [data]);
+  }, [data, dateString]);
 
   return <div id="echartPie" style={{ width: "100%", height: "400px" }} />;
 };

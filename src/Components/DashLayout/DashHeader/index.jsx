@@ -51,7 +51,7 @@ const DashboardHeader = ({ RefObj, setIsOpen, setOpen }) => {
                   : localStorage.getItem("health-roles") === "ROLE_CASHIER"
                   ? "/dashboard/cashier/statistika"
                   : localStorage.getItem("health-roles") === "ROLE_SEO"
-                  ? "/dashboard/ceo/statistika"
+                  ? "/dashboard/ceo/users"
                   : ""
               }
               className="logo"

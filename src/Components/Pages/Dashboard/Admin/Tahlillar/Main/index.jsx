@@ -3,9 +3,10 @@ import TahlillarWrapper from "./style";
 import MinLoader from "../../../../../Common/MinLoader";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
-import { Badge, Input, Pagination, Popover, Radio, Space } from "antd";
+import { Badge, Input, Pagination, Popover, Radio, Space, DatePicker } from "antd";
 import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 const Tahlillar = () => {
   const [loading, setLoading] = useState(false);
@@ -14,8 +15,9 @@ const Tahlillar = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [analysiStatusFilter, setAnalysisStatusFilter] = useState(null);
   const [keyword, setKeyword] = useState("");
+  const [dateString, setDateString] = useState(["", ""]);
 
-  const onChange = (page) => {
+  const onChangePagination = (page) => {
     console.log(page);
     setCurrentPage(page);
   };
@@ -23,19 +25,24 @@ const Tahlillar = () => {
 
   useEffect(() => {
     setLoading(true)
-    OrderProvider.getAllAnalysisStatus(currentPage,
-      20,
-      keyword,
-      analysiStatusFilter).then((res) => {
+    const body = {};
+    body.keyword = keyword || null;
+    body.analysisStatus = analysiStatusFilter || null;
+    body.fromDate = dateString[0] || null;
+    body.toDate = dateString[1] || null;
+    body.pageNum = currentPage;
+    body.laboratoryId = null;
+    body.pageSize = 20;
+    OrderProvider.getAllAnalysisStatus(body).then((res) => {
       console.log(res.data);
       setAnalysisStatus(res.data.data);
-      setTotalElements(res.data?.recordsTotal/2)
+      setTotalElements(Math.floor(res.data?.recordsTotal / 2));
     }).catch(err=>{
       console.log(err);
     }).finally(()=>{
       setLoading(false)
     })
-  }, [ keyword, currentPage, analysiStatusFilter]);
+  }, [ keyword, currentPage, analysiStatusFilter, dateString]);
 
   const onSearchOrder = (e) => {
     setKeyword(e.target.value);
@@ -72,6 +79,12 @@ const Tahlillar = () => {
           className="col-4"
           size="large"
           onChange={onSearchOrder}
+        />
+        <RangePicker
+          onChange={(date, dateString) => {
+            setDateString(dateString);
+            console.log(dateString);
+          }}
         />
       </div>
       <table className="table table-striped table-bordered table-hover">
@@ -112,7 +125,7 @@ const Tahlillar = () => {
             analysisStatus?.length ? analysisStatus?.map((obj, index) => (
               <tr key={index}>
                 <td style={{ minWidth: "10%" }} className="col">
-                  {index+ (currentPage-1)*10 + 1}.{obj.firstName} {obj.lastName}
+                  {index+ (currentPage-1)*20 + 1}.{obj.firstName} {obj.lastName}
                 </td>
                 <td style={{ minWidth: "35%" }} className="col">
                   {obj.analysisName}
@@ -173,7 +186,7 @@ const Tahlillar = () => {
         defaultCurrent={currentPage}
         current={currentPage}
         total={totalElements}
-        onChange={onChange}
+        onChange={onChangePagination}
       />
     </TahlillarWrapper>
   );

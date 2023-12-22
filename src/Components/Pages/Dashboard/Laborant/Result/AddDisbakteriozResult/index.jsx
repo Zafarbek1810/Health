@@ -28,13 +28,36 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
       });
   }, []);
 
+  const toHtml = (yozuv) => {
+    var indexOfCaret = yozuv?.indexOf("^");
+    if (yozuv?.indexOf("^") !== -1) {
+      return (
+        yozuv?.slice(0, indexOfCaret) +
+        "<sup>" +
+        yozuv?.slice(indexOfCaret + 1) +
+        "</sup>"
+      );
+    } else {
+      return console.log(yozuv);
+    }
+  };
+
   const onSubmit = () => {
-    const rowData = disbakterioz.map((row) => ({
-      patientId: +patientId,
-      bacteriaId: row.id,
-      orderDetailId: +id,
-      result: row.result || null,
-    }));
+    const rowData = disbakterioz.map((row) =>
+      row.result?.indexOf("^") !== -1
+        ? {
+            patientId: +patientId,
+            bacteriaId: row.id,
+            orderDetailId: +id,
+            result: (row.result && toHtml(row.result)) || null,
+          }
+        : {
+            patientId: +patientId,
+            bacteriaId: row.id,
+            orderDetailId: +id,
+            result: row.result || null,
+          }
+    );
 
     BacteriaProvider.createResultDisbakterioz(rowData)
       .then((res) => {
@@ -45,6 +68,10 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const createMarkup = (htmlString) => {
+    return { __html: htmlString };
   };
 
   const handleRowChange = (index, field, value) => {
@@ -78,7 +105,7 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
             {!loading ? (
               disbakterioz.map((obj, index) => (
                 <tr key={index}>
-                  <td style={{ minWidth: "20%", fontSize:14 }} className="col">
+                  <td style={{ minWidth: "20%", fontSize: 14 }} className="col">
                     {index + 1}.{obj.bacteria_name}
                   </td>
                   <td style={{ minWidth: "20%" }} className="col">
@@ -92,14 +119,15 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
                     />
                   </td>
                   <td style={{ minWidth: "20%" }} className="col">
-                    <input
+                    {/* <input
                       autoComplete="off"
                       className="form-control"
                       value={obj.norm || ""}
                       onChange={(e) =>
                         handleRowChange(index, "norm", e.target.value)
                       }
-                    />
+                    /> */}
+                    <div dangerouslySetInnerHTML={createMarkup(obj.norm)} />
                   </td>
                 </tr>
               ))

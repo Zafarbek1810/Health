@@ -32,6 +32,14 @@ const StatistikaWrapper = styled.div`
     }
   }
 
+  .roww {
+    display: flex;
+    gap: 16px;
+    div {
+      width: 100%;
+    }
+  }
+
   .topCards1 {
     min-height: 120px;
     .ant-card-body {

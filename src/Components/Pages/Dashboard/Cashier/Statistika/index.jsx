@@ -204,7 +204,7 @@ const Statistika = () => {
           <Col span={12} style={{marginBottom:16}}>
             <Card bordered={true}>
               <div class="card-title">Laboratoriyalardagi kirim</div>
-              <PieStatistic />
+              <PieStatistic dateString={dateString} />
             </Card>
           </Col>
           <Col span={12} style={{marginBottom:16}}>

@@ -17,8 +17,9 @@ export default class LabaratoryProvider {
         return await client.delete(`/seo/laboratory/delete/${id}`);
     }
 
-    static async getAllSumm() {
-        return await client.get(`/dashboard/get/all/sum`);
+    static async getAllSumm(fromDate, toDate) {
+        const params={fromDate, toDate};
+        return await client.get(`/dashboard/get/all/sum`, {params});
     }
     static async getSummSevenDay() {
         return await client.get(`/dashboard/get/last/seven-day`);

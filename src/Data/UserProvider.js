@@ -20,4 +20,7 @@ export default class UserProvider {
     static async deleteUser(id) {
         return await client.delete(`/seo/user/delete/${id}`);
     }
+    static async blockUser(userId, type) {
+        return await client.post(`/seo/user/block/unblock?userId=${userId}&type=${type}`);
+    }
 }

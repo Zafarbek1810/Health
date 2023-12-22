@@ -4,11 +4,12 @@ import MinLoader from "../../../../../Common/MinLoader";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { Badge, Button, Input, Pagination } from "antd";
+import { Badge, Button, Input, Pagination, DatePicker } from "antd";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 const Tahlillar = () => {
   const [loading, setLoading] = useState(false);
@@ -21,6 +22,8 @@ const Tahlillar = () => {
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [keyword, setKeyword] = useState("");
+  const [dateString, setDateString] = useState(["", ""]);
+
 
   const onChange = (page) => {
     console.log(page);
@@ -29,14 +32,20 @@ const Tahlillar = () => {
 
 
   useEffect(() => {
-    OrderProvider.getAllAnalysisStatus(currentPage,
-      20,
-      keyword).then((res) => {
+    const body = {};
+    body.keyword = keyword || null;
+    body.analysisStatus = null;
+    body.fromDate = dateString[0] || null;
+    body.toDate = dateString[1] || null;
+    body.pageNum = currentPage;
+    body.laboratoryId = null;
+    body.pageSize = 20;
+    OrderProvider.getAllAnalysisStatus(body).then((res) => {
       console.log(res.data);
       setAnalysisStatus(res.data.data);
       setTotalElements(res.data?.recordsTotal/2)
     });
-  }, [keyword, currentPage]);
+  }, [keyword, currentPage, dateString]);
 
   useEffect(()=>{
     AnalizProvider.getShablonId(analysisId)
@@ -51,6 +60,12 @@ const Tahlillar = () => {
         ); break;
         case 3: router.push(
           `/dashboard/laborant/disbakterioz-result-add?id=${detailObj.id}&patientId=${detailObj.patientId}`
+        ); break;
+        case 4: router.push(
+          `/dashboard/laborant/blood-purity-add?id=${detailObj.id}&patientId=${detailObj.patientId}`
+        ); break;
+        case 5: router.push(
+          `/dashboard/laborant/add-breast-milk?id=${detailObj.id}&patientId=${detailObj.patientId}`
         ); break;
 
         default : router.push(`/dashboard/laborant/tahlillar`);
@@ -77,6 +92,12 @@ const Tahlillar = () => {
           className="col-4"
           size="large"
           onChange={onSearchOrder}
+        />
+        <RangePicker
+          onChange={(date, dateString) => {
+            setDateString(dateString);
+            console.log(dateString);
+          }}
         />
       </div>
       <table className="table table-striped table-bordered table-hover">

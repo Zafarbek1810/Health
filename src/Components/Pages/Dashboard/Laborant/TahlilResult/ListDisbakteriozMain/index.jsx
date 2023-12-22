@@ -21,6 +21,11 @@ const ListDisbakteriozMain = ({ patientId, orderId }) => {
         setLoading(false);
       });
   }, [patientId]);
+
+  const createMarkup = (htmlString) => {
+    return { __html: htmlString };
+  };
+
   return (
     <MainResultListWrapper>
       <table className="table table-striped table-bordered table-hover">
@@ -47,10 +52,10 @@ const ListDisbakteriozMain = ({ patientId, orderId }) => {
                       {obj.name}
                     </td>
                     <td style={{ minWidth: "10%" }} className="col">
-                      {obj.result}
+                      <div dangerouslySetInnerHTML={createMarkup(obj.result)} />
                     </td>
                     <td style={{ minWidth: "10%" }} className="col">
-                      {obj.norm}
+                    <div dangerouslySetInnerHTML={createMarkup(obj.norm)} />
                     </td>
                   </tr>
                 </>

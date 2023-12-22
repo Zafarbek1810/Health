@@ -25,4 +25,17 @@ export default class BacteriaProvider {
     static async getResulDisbakteriozByPatientId(patientId, orderId ) {
         return await client.get(`/intestinal/get/data?patientId=${patientId}&orderDetailId=${orderId}`);
     }
+
+    static async createResultBloodPurity (body){
+        return await client.post(`/blood-purity/save`, body);
+    }
+    static async getResulBloodPurityByPatientId(patientId, orderId ) {
+        return await client.get(`/blood-purity/get/data?patientId=${patientId}&orderDetailId=${orderId}`);
+    }
+    static async createResultBreastMilk (body){
+        return await client.post(`/breast-milk/save`, body);
+    }
+    static async getResulBreastMilkByPatientId(patientId, orderId ) {
+        return await client.get(`/breast-milk/get/data?patientId=${patientId}&orderDetailId=${orderId}`);
+    }
 }

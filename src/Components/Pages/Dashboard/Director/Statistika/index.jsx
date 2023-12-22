@@ -182,13 +182,13 @@ const Statistika = () => {
           </Col>
         </Row>
         <Row gutter={16}>
-          {/* <Col span={12}>
+          <Col span={12}>
             <Card bordered={true}>
               <div class="card-title">Laboratoriyalardagi bemorlar soni</div>
               <PieStatistic />
             </Card>
-          </Col> */}
-          <Col span={24}>
+          </Col>
+          <Col span={12}>
             <Card bordered={true}>
               <div class="card-title">Oxrgi 10 kunlikdagi tahlillar soni o`zgarish dinamikasi</div>
               <LineCHarts />

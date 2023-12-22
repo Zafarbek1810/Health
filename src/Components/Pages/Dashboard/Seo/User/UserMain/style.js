@@ -56,7 +56,7 @@ const UserMainWrapper = styled.div`
           line-height: 24px;
           display: flex;
           align-items: center;
-          justify-content: start;
+          justify-content: space-between;
           text-align: center;
           font-family: "Azo sans";
           padding: 5px;

@@ -4,7 +4,7 @@ import MinLoader from "../../../../../Common/MinLoader";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { Badge, Drawer, Popover, Radio, Space } from "antd";
+import { Badge, Drawer, Pagination, Popover, Radio, Space } from "antd";
 import {
   Button,
   ButtonBase,
@@ -21,9 +21,10 @@ import { ModalContextProvider } from "../../../../../../Context/ModalContext";
 import ConfirmModal from "../../../../../Common/ConfirmModal";
 import { toast } from "react-toastify";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
-import { Input } from "antd";
+import { Input, DatePicker } from "antd";
 import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
 const { Search } = Input;
+const { RangePicker } = DatePicker;
 
 const Tahlillar = () => {
   const { control, handleSubmit, setValue } = useForm();
@@ -39,6 +40,8 @@ const Tahlillar = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [analysiStatusFilter, setAnalysisStatusFilter] = useState(null);
   const [keyword, setKeyword] = useState("");
+  const [dateString, setDateString] = useState(["", ""]);
+
 
   const handleEditStatus = (obj) => {
     console.log(obj);
@@ -63,17 +66,26 @@ const Tahlillar = () => {
     setOrderDetailId(obj.id);
   };
 
+  const onChangePagination = (page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+
   useEffect(() => {
-    OrderProvider.getAllAnalysisStatus(
-      currentPage,
-      20,
-      keyword,
-      analysiStatusFilter
-    ).then((res) => {
+    const body = {};
+    body.keyword = keyword || null;
+    body.analysisStatus = analysiStatusFilter || null;
+    body.fromDate = dateString[0] || null;
+    body.toDate = dateString[1] || null;
+    body.pageNum = currentPage;
+    body.laboratoryId = null;
+    body.pageSize = 20;
+    OrderProvider.getAllAnalysisStatus(body).then((res) => {
       console.log(res.data.data);
       setAnalysisStatus(res.data.data);
+      setTotalElements(Math.floor(res.data?.recordsTotal / 2));
     });
-  }, [modalIsOpenModal, keyword, currentPage, analysiStatusFilter]);
+  }, [modalIsOpenModal, keyword, currentPage, analysiStatusFilter, dateString]);
 
   const analizStatus = [
     // { value: 11, label: "Navbatda" },
@@ -102,7 +114,6 @@ const Tahlillar = () => {
     setDrawerData(obj);
   };
 
-  console.log(drawerData, "drawerData");
   const getPdfBtn = (drawerData) => {
     switch (drawerData.templateId) {
       case 1:
@@ -222,6 +233,12 @@ const Tahlillar = () => {
           size="large"
           onChange={onSearchOrder}
         />
+        <RangePicker
+          onChange={(date, dateString) => {
+            setDateString(dateString);
+            console.log(dateString);
+          }}
+        />
       </div>
       <table className="table table-striped table-bordered table-hover">
         <thead>
@@ -259,7 +276,7 @@ const Tahlillar = () => {
             analysisStatus.map((obj, index) => (
               <tr key={index}>
                 <td style={{ minWidth: "15%" }} className="col">
-                  {index + 1}.{obj.firstName} {obj.lastName}
+                {index + (currentPage - 1) * 20 + 1}.{obj.firstName} {obj.lastName}
                 </td>
                 <td style={{ minWidth: "25%" }} className="col">
                   {obj.analysisName}
@@ -319,6 +336,14 @@ const Tahlillar = () => {
           )}
         </tbody>
       </table>
+
+      <Pagination
+        style={{ textAlign: "right" }}
+        defaultCurrent={currentPage}
+        current={currentPage}
+        total={totalElements}
+        onChange={onChangePagination}
+      />
 
       <Drawer
         title="Buyurtma"

@@ -25,9 +25,8 @@ export default class OrderProvider {
         const params={pageNum, pageSize,  keyword, paymentType, paymentStatus};
         return await client.get(`/order/get/data`, {params});
     }
-    static async getAllAnalysisStatus(pageNum = 0, pageSize = 20, keyword, analysisStatus) {
-        const params={pageNum, pageSize,  keyword, analysisStatus};
-        return await client.get(`/order/get/all/analysis-status`, {params});
+    static async getAllAnalysisStatus(orderInfoFilterDTO) {
+        return await client.post(`/order/get/all/analysis-status`, orderInfoFilterDTO);
     }
     static async getOrdersById(id) {
         return await client.get(`/order/get/detail/data?orderId=${id}`);
@@ -58,5 +57,25 @@ export default class OrderProvider {
 
     static async changeAnalizStatus (orderDetailId, analysisStatus){
         return await client.post(`/order/change/analysis-result-status?orderDetailId=${orderDetailId}&analysisStatus=${analysisStatus}`);
+    }
+
+
+    // static async downloadExcel (body){
+    //     return await client.post(`/order/export-to-excel`, body);
+    // }
+
+    static async downloadExcel(body) {
+        try {
+          const response = await client.post(
+            `/order/export-to-excel`, body ,
+            {
+              responseType: "blob",
+            }
+          );
+      
+          return response;
+        } catch (err) {
+          return Promise.reject(err);
+        }
     }
 }

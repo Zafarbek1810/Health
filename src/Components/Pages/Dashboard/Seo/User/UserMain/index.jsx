@@ -9,6 +9,10 @@ import EditSvg from "../../../../../Common/Svgs/EditSvg";
 import DeleteSvg from "../../../../../Common/Svgs/DeleteSvg";
 import { useConfirm } from "material-ui-confirm";
 import { toast } from "react-toastify";
+import LockSvg from "../../../../../Common/Svgs/LockSvg";
+import { Input, Popover, Radio, Space, Tooltip } from "antd";
+import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
+const { Search } = Input;
 
 const UserMain = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -17,6 +21,9 @@ const UserMain = () => {
   const [users, setUsers] = useState([]);
   const confirm = useConfirm();
   const [editUser, setEditUser] = useState({});
+  const [render, setRender] = useState(null)
+  const [keyword, setKeyword] = useState("");
+  const [roleType, setRoleType] = useState(null)
 
   const handleDeleteUser = (obj) => {
     confirm({ title: "Rostan ham o'chirishni xohlaysizmi?", confirmationText: "Ha", cancellationText: "Yo'q" })
@@ -33,6 +40,33 @@ const UserMain = () => {
         console.log(err);
         toast.error(err?.response?.data?.message);
       });
+  };
+  const handleBlockUser = (obj) => {
+    if(obj.isActive){
+
+    confirm({ title: "Rostan ham bloklashni xohlaysizmi?", confirmationText: "Ha", cancellationText: "Yo'q" })
+      .then(async () => {
+        await UserProvider.blockUser(obj.id, 0);
+        setRender(Math.random())
+        toast.success("Bloklandi!")
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err?.response?.data?.message);
+      });
+    } else{
+      confirm({ title: "Bloklashdan ochishni xohlaysizmi?", confirmationText: "Ha", cancellationText: "Yo'q" })
+      .then(async () => {
+        await UserProvider.blockUser(obj.id, 1);
+        setRender(Math.random())
+        toast.success("Blokdan ochildi!")
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err?.response?.data?.message);
+      });
+    }
+
   };
 
   const handleEditUser = (obj) => {
@@ -55,7 +89,7 @@ const UserMain = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [isOpenModal, isOpenModal2]);
+  }, [isOpenModal, isOpenModal2, render]);
 
   const openModal = () => {
     setIsOpenModal(true);
@@ -68,11 +102,41 @@ const UserMain = () => {
     setIsOpenModal2(false);
   };
 
+
+  const content = (
+    <div>
+      <Radio.Group
+        onChange={(e)=>setRoleType(e.target.value)}
+        value={roleType}
+      >
+        <Space direction="vertical">
+          <Radio value={null}>Admin</Radio>
+          <Radio value={21}>Direktor</Radio>
+          <Radio value={31}>Kassir</Radio>
+          <Radio value={41}>Operator</Radio>
+          <Radio value={51}>Laborant</Radio>
+        </Space>
+      </Radio.Group>
+    </div>
+  );
+
+
+  const onSearchUser = (e) => {
+    setKeyword(e.target.value);
+  };
+
   return (
     <UserMainWrapper>
       <div className="top">
         <h3 className="col-2">Foydalanuvchilar</h3>
-
+        <Search
+          placeholder="Qidirish"
+          allowClear
+          enterButton="Qidirish"
+          className="col-4"
+          size="large"
+          onChange={onSearchUser}
+        />
         <Button
           class="col-2 btn btn-primary btn-rounded"
           variant="contained"
@@ -85,7 +149,7 @@ const UserMain = () => {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th style={{ minWidth: "25%" }} className="col">
+            <th style={{ minWidth: "20%" }} className="col">
              Ismi Familyasi
             </th>
             <th style={{ minWidth: "15%" }} className="col">
@@ -93,6 +157,16 @@ const UserMain = () => {
             </th>
             <th style={{ minWidth: "10%" }} className="col">
               Lavozimi
+              <Popover
+                className="pop"
+                content={content}
+                title="Filterlash"
+                trigger="click"
+              >
+                <button style={{ background: "transparent", border: "none" }}>
+                  <FilterIconSvg />
+                </button>
+              </Popover>
             </th>
             <th style={{ minWidth: "15%" }} className="col">
               Telefon
@@ -103,7 +177,7 @@ const UserMain = () => {
             <th style={{ minWidth: "15%" }} className="col">
               Telegram username
             </th>
-            <th style={{ minWidth: "10%" }} className="col">
+            <th style={{ minWidth: "15%" }} className="col">
               Amallar
             </th>
           </tr>
@@ -112,8 +186,8 @@ const UserMain = () => {
           {!loading ? (
             users.map((obj, index) => (
               <tr key={index}>
-                <td style={{ minWidth: "25%" }} className="col">
-                  {index + 1}. {obj.lastName} {obj.firstName}
+                <td style={{ minWidth: "20%" }} className="col">
+                  {index + 1}. {obj.lastName} {obj.firstName} {obj.isActive===false && <span style={{fontSize:10, color:'#fff', background:'red', padding:'0 5px'}}>Bloklangan</span>}  
                 </td>
                 <td style={{ minWidth: "15%" }} className="col">
                   {obj.username}
@@ -131,21 +205,29 @@ const UserMain = () => {
                   {obj.telegramUsername}
                 </td>
 
-                <td style={{ minWidth: "10%" }} className="col">
+                <td style={{ minWidth: "15%" }} className="col">
                   <div className="btns">
-                    <a class="text-success mr-2" href="#">
-                      <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                    </a>
+                    <Tooltip title="Taxrirlash">
                     <IconButton
                     onClick={() => handleEditUser(obj)}
                     >
                       <EditSvg />
                     </IconButton>
+                      </Tooltip>
+                      <Tooltip title="O'chirish">
                     <IconButton
                     onClick={() => handleDeleteUser(obj)}
                     >
                       <DeleteSvg />
                     </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Bloklash">
+                    <IconButton
+                    onClick={() => handleBlockUser(obj)}
+                    >
+                      <LockSvg />
+                    </IconButton>
+                    </Tooltip>
                   </div>
                 </td>
               </tr>

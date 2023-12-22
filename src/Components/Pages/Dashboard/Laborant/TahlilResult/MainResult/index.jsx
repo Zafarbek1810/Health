@@ -23,8 +23,15 @@ const MainResult = () => {
   };
 
   useEffect(() => {
-    OrderProvider.getAllAnalysisStatus(currentPage,
-      20).then((res) => {
+    const body = {};
+    body.keyword = null;
+    body.analysisStatus = null;
+    body.fromDate =null;
+    body.toDate = null;
+    body.pageNum = currentPage;
+    body.laboratoryId = null;
+    body.pageSize = 20;
+    OrderProvider.getAllAnalysisStatus(body).then((res) => {
       console.log(res.data.data);
       setAnalysisStatus(res.data.data);
       setTotalElements(res.data?.recordsTotal/2);
@@ -42,6 +49,12 @@ const MainResult = () => {
       ); break;
       case 3: router.push(
         `/dashboard/laborant/edit-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
+      case 4: router.push(
+        `/dashboard/laborant/edit-blood-purity?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
+      case 5: router.push(
+        `/dashboard/laborant/edit-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
       ); break;
 
       default : router.push(`/dashboard/laborant/tahlil-result`);
@@ -94,6 +107,12 @@ const MainResult = () => {
                         case 3: router.push(
                           `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
+                        case 4: router.push(
+                          `/dashboard/laborant/list-blood-purity?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 5: router.push(
+                          `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
                   
                         default : router.push(`/dashboard/laborant/tahlil-result`);
                       }
@@ -114,6 +133,12 @@ const MainResult = () => {
                       ); break;
                       case 3: router.push(
                         `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
+                      case 4: router.push(
+                        `/dashboard/laborant/list-blood-purity?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
+                      case 5: router.push(
+                        `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
                       ); break;
                 
                       default : router.push(`/dashboard/laborant/tahlil-result`);
@@ -136,6 +161,12 @@ const MainResult = () => {
                         case 3: router.push(
                           `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
+                        case 4: router.push(
+                          `/dashboard/laborant/list-blood-purity?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 5: router.push(
+                          `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
                   
                         default : router.push(`/dashboard/laborant/tahlil-result`);
                       }
@@ -156,6 +187,12 @@ const MainResult = () => {
                         ); break;
                         case 3: router.push(
                           `/dashboard/laborant/list-disbakterioz?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 4: router.push(
+                          `/dashboard/laborant/list-blood-purity?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 5: router.push(
+                          `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
                   
                         default : router.push(`/dashboard/laborant/tahlil-result`);

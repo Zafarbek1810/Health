@@ -42,6 +42,8 @@ const SidebarWrapper = styled.div`
       justify-content: space-between !important;
     }
     .link {
+      display: flex;
+      flex-direction: column;
       font-style: normal;
       font-weight: 600;
       font-size: 15px;
@@ -108,6 +110,8 @@ const SidebarWrapper = styled.div`
       margin-bottom: 7px;
     }
     .activelink {
+      display: flex;
+      flex-direction: column;
       font-style: normal;
       font-weight: 600;
       font-size: 15px;

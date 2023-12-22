@@ -218,7 +218,7 @@ const AddUser = ({ onCloseModal }) => {
               )}
             />
           </div>
-          {roleType.value === 6 || roleType.value === 3 ? (
+          {roleType.value === 6 || roleType.value === 3 || roleType.value === 2 ? (
             <div className="label">
               <label>Labaratoriya</label>
               <Controller

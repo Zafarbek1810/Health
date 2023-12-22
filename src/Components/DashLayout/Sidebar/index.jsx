@@ -108,6 +108,12 @@ const NavListMenu = [
     src: <OrderSvg />,
     role: ["ROLE_CASHIER"],
   },
+  {
+    title: "Tahlillar",
+    path: "/dashboard/cashier/tahlillar",
+    src: <AnalysisSvg />,
+    role: ["ROLE_CASHIER"],
+  },
   //director role
   {
     title: "Statistika",

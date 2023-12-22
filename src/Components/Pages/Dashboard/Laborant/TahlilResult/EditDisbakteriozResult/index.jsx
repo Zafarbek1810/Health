@@ -19,25 +19,29 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
   const [loading2, setLoading2] = useState(false);
   const [resultsData, setResultsData] = useState([]);
 
+  const createMarkup = (htmlString) => {
+    return { __html: htmlString };
+  };
+
   function removeDuplicatesById(array1, array2) {
     const concatenatedArray = array1.concat(array2);
     const uniqueArray = [];
-  
-    concatenatedArray.forEach(obj => {
+
+    concatenatedArray.forEach((obj) => {
       const id = obj.uniqueId;
-      const isDuplicate = uniqueArray.some(item => item.uniqueId === id);
-  
+      const isDuplicate = uniqueArray.some((item) => item.uniqueId === id);
+
       if (!isDuplicate) {
         uniqueArray.push(obj);
       }
     });
-  
+
     return uniqueArray;
   }
 
-  useEffect(()=>{
-      setResultsData(removeDuplicatesById(parasitologyResult, parasitology))
-  }, [parasitology, parasitologyResult])
+  useEffect(() => {
+    setResultsData(removeDuplicatesById(parasitologyResult, parasitology));
+  }, [parasitology, parasitologyResult]);
 
   //3talik
   useEffect(() => {
@@ -45,36 +49,34 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
     BacteriaProvider.getResulDisbakteriozByPatientId(patientId, orderId)
       .then((res) => {
         console.log(res.data.data);
-        const response = res.data.data.map((item)=>{
+        const response = res.data.data.map((item) => {
           return {
-            uniqueId : item?.id,
-            ...item
-          }
-        })
+            uniqueId: item?.id,
+            ...item,
+          };
+        });
 
         setParasitologyResult(response);
-        console.log(response, 'results');
+        console.log(response, "results");
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-
-    
   }, [patientId, orderId]);
 
-console.log(resultsData, 'resultsData');
+  console.log(resultsData, "resultsData");
   //all parasites
   useEffect(() => {
     setLoading(true);
     BacteriaProvider.getAllBacteria()
       .then((res) => {
-        const response = res.data.data.map((item)=>{
-          return{
-            uniqueId : item?.id,
-            ...item
-          }
+        const response = res.data.data.map((item) => {
+          return {
+            uniqueId: item?.id,
+            ...item,
+          };
         });
-        setParasitology(response)
-        console.log(response, 'res');
+        setParasitology(response);
+        console.log(response, "res");
       })
       .catch((err) => {
         console.log(err);
@@ -83,7 +85,6 @@ console.log(resultsData, 'resultsData');
         setLoading(false);
       });
   }, []);
-
 
   const handleRowChange = (index, name, value) => {
     const list = [...resultsData];
@@ -99,9 +100,9 @@ console.log(resultsData, 'resultsData');
       orderDetailId: +orderId,
       result: row.result || null,
     }));
-    
+
     BacteriaProvider.createResultDisbakterioz(rowData)
-    .then((res) => {
+      .then((res) => {
         setLoading2(true);
         console.log(res);
         toast.success(res.data.message);
@@ -126,7 +127,6 @@ console.log(resultsData, 'resultsData');
     };
   }
 
-
   return (
     <EditResultMainWrapper>
       <div className="top">
@@ -135,7 +135,7 @@ console.log(resultsData, 'resultsData');
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">
-        <thead>
+          <thead>
             <tr>
               <th style={{ minWidth: "20%" }} className="col">
                 Tekshirilgan mikroorganizmlar
@@ -152,7 +152,7 @@ console.log(resultsData, 'resultsData');
             {!loading ? (
               resultsData.sort(sort_by_id()).map((obj, index) => (
                 <tr key={index}>
-                  <td style={{ minWidth: "20%", fontSize:14 }} className="col">
+                  <td style={{ minWidth: "20%", fontSize: 14 }} className="col">
                     {index + 1}.{obj.bacteria_name || obj.name}
                   </td>
                   <td style={{ minWidth: "20%" }} className="col">
@@ -166,14 +166,15 @@ console.log(resultsData, 'resultsData');
                     />
                   </td>
                   <td style={{ minWidth: "20%" }} className="col">
-                    <input
+                    {/* <input
                       autoComplete="off"
                       className="form-control"
                       value={obj.norm || ""}
                       onChange={(e) =>
                         handleRowChange(index, "norm", e.target.value)
                       }
-                    />
+                    /> */}
+                    <div dangerouslySetInnerHTML={createMarkup(obj.norm)} />
                   </td>
                 </tr>
               ))

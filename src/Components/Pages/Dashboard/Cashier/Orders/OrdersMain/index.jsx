@@ -67,7 +67,7 @@ const OrdersMain = () => {
     setLoading(true);
     OrderProvider.getAllOrders(currentPage, 20, keyword, paymentType, paymentStatusRadio)
       .then((res) => {
-        setTotalElements(res.data.recordsTotal);
+        setTotalElements(Math.floor(res.data.recordsTotal / 2));
         console.log(res.data);
         setOrder(res.data.data);
       })

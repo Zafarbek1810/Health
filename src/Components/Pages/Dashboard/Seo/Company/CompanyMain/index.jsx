@@ -88,10 +88,22 @@ const CompanyMain = () => {
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
-            <th style={{ minWidth: "70%" }} className="col">
+            <th style={{ minWidth: "20%" }} className="col">
               Company nomi
             </th>
-            <th style={{ minWidth: "30%" }} className="col">
+            <th style={{ minWidth: "20%" }} className="col">
+              Address
+            </th>
+            <th style={{ minWidth: "20%" }} className="col">
+              Telefon raqami
+            </th>
+            <th style={{ minWidth: "20%" }} className="col">
+              Telegram kanali
+            </th>
+            <th style={{ minWidth: "10%" }} className="col">
+              Website
+            </th>
+            <th style={{ minWidth: "10%" }} className="col">
               Amallar
             </th>
           </tr>
@@ -100,10 +112,22 @@ const CompanyMain = () => {
           {!loading ? (
             company.map((obj, index) => (
               <tr key={index}>
-                <td style={{ minWidth: "70%" }} className="col">
+                <td style={{ minWidth: "20%" }} className="col">
                   {index + 1}. {obj.name}
                 </td>
-                <td style={{ minWidth: "30%" }} className="col">
+                <td style={{ minWidth: "20%" }} className="col">
+                  {obj.address}
+                </td>
+                <td style={{ minWidth: "20%" }} className="col">
+                  {obj.phoneNum}
+                </td>
+                <td style={{ minWidth: "20%" }} className="col">
+                  {obj.telegramCanal}
+                </td>
+                <td style={{ minWidth: "10%" }} className="col">
+                  {obj.website}
+                </td>
+                <td style={{ minWidth: "10%" }} className="col">
                   <div className="btns">
                     <a class="text-success mr-2" href="#">
                       <i class="nav-icon i-Pen-2 font-weight-bold"></i>

@@ -16,7 +16,7 @@ const EditBloodPurity = ({ patientId, orderId }) => {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [results, setResults] = useState('');
-
+  const [sampleTypeText, setSampleTypeText] = useState("");
 
   //3talik
   useEffect(() => {
@@ -34,7 +34,8 @@ const EditBloodPurity = ({ patientId, orderId }) => {
       id: bloodPurity[0].id,
       patientId: +patientId,
       orderDetailId: +orderId,
-      result: results || null,
+      result: results.length===0 ? bloodPurity[0]?.result : results,
+      sampleType: sampleTypeText.length===0 ? bloodPurity[0]?.sampleType : sampleTypeText,
     };
 
     BacteriaProvider.createResultBloodPurity(rowData)
@@ -56,6 +57,18 @@ const EditBloodPurity = ({ patientId, orderId }) => {
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlil-result">Orqaga</MyLink>
         <h3>Blanka taxrirlash</h3>
+        {bloodPurity.map((obj, index) => (
+          <input
+            key={index}
+            onChange={(e) => setSampleTypeText(e.target.value)}
+            placeholder="Namuna turi"
+            defaultValue={obj.sampleType || ""}
+            type="text"
+            style={{ width: "30%", marginLeft: "auto" }}
+            autoComplete="off"
+            className="form-control"
+          />
+        ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">

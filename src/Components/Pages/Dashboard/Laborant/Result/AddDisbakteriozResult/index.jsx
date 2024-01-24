@@ -12,6 +12,7 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [disbakterioz, setDisbakterioz] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sampleTypeText, setSampleTypeText] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -32,10 +33,12 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
     var indexOfCaret = yozuv?.indexOf("^");
     if (yozuv?.indexOf("^") !== -1) {
       return (
+        "<p>" +
         yozuv?.slice(0, indexOfCaret) +
         "<sup>" +
         yozuv?.slice(indexOfCaret + 1) +
-        "</sup>"
+        "</sup>" +
+        "</p>"
       );
     } else {
       return console.log(yozuv);
@@ -50,12 +53,14 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
             bacteriaId: row.id,
             orderDetailId: +id,
             result: (row.result && toHtml(row.result)) || null,
+            sampleType: sampleTypeText
           }
         : {
             patientId: +patientId,
             bacteriaId: row.id,
             orderDetailId: +id,
             result: row.result || null,
+            sampleType: sampleTypeText
           }
     );
 
@@ -84,7 +89,14 @@ const AddDisBakteriozResult = ({ id, patientId }) => {
     <AnalizResultAddWrapper>
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlillar">Orqaga</MyLink>
-        <h3>Blanka yaratish</h3>
+        <h3>Tahlil natija blankasi</h3>
+        <input
+          onChange={(e) => setSampleTypeText(e.target.value)}
+          placeholder="Namuna turi"
+          type="text"
+          autoComplete="off"
+          className="form-control"
+        />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">

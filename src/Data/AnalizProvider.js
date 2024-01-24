@@ -54,10 +54,12 @@ export default class AnalizProvider {
       return Promise.reject(err);
     }
   }
-  static async getChequeAnalysis(isCyrillic, orderDetailId) {
+
+  
+  static async getPdfBacteriology(isCyrillic, patientId, orderDetailId) {
     try {
       const response = await client.get(
-        `/pdf/get-cheque-pdf?isCyrillic=${isCyrillic}&orderDetailId=${orderDetailId}`,
+        `/pdf/get-bacteriology-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
         {
           responseType: "blob",
         }
@@ -68,11 +70,59 @@ export default class AnalizProvider {
       return Promise.reject(err);
     }
   }
-  
-  static async getPdfBacteriology(isCyrillic, patientId, orderDetailId) {
+
+  static async getPdfBloodPurity(isCyrillic, patientId, orderDetailId) {
     try {
       const response = await client.get(
-        `/pdf/get-bacteriology-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        `/pdf/get-blood-purity-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  static async getPdfBreastMilk(isCyrillic, patientId, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-breast-milk-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  static async getPdfHemoCulture(isCyrillic, patientId, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-hemo-culture-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+
+
+
+
+  static async getChequeAnalysis(isCyrillic, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-cheque-pdf?isCyrillic=${isCyrillic}&orderDetailId=${orderDetailId}`,
         {
           responseType: "blob",
         }

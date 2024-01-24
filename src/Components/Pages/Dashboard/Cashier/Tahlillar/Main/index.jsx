@@ -12,11 +12,16 @@ import {
   Space,
   DatePicker,
   Tooltip,
+  Drawer,
 } from "antd";
 import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import numberFormat from "../../../../../../utils/numberFormat";
+import EditSvg from "../../../../../Common/Svgs/EditSvg";
+import EyeSvg from "../../../../../Common/Svgs/EyeSvg";
+import AnalizProvider from "../../../../../../Data/AnalizProvider";
+import { toast } from "react-toastify";
 const { Search } = Input;
 const { RangePicker } = DatePicker;
 
@@ -30,6 +35,8 @@ const Tahlillar = () => {
   const [labStatusFilter, setLabStatusFilter] = useState(null);
   const [keyword, setKeyword] = useState("");
   const [dateString, setDateString] = useState(["", ""]);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [drawerData, setDrawerData] = useState({});
 
   const date = new Date();
 
@@ -89,6 +96,173 @@ const Tahlillar = () => {
   const onChangeLabStatus = (e) => {
     console.log("checked = ", e.target.value);
     setLabStatusFilter(e.target.value);
+  };
+
+  const handleOpenDrawer = (obj) => {
+    setOpenDrawer(true);
+    setDrawerData(obj);
+  };
+
+  const getPdfBtn = (drawerData) => {
+    switch (drawerData.templateId) {
+      case 1:
+        AnalizProvider.getPdfAnalysis(true, drawerData.patientId, drawerData.id)
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+
+      case 2:
+        AnalizProvider.getPdfBacteriology(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+
+      case 3:
+        AnalizProvider.getPdfDisbakterioz(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+
+      case 4:
+        AnalizProvider.getPdfBloodPurity(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+
+      case 5:
+        AnalizProvider.getPdfBreastMilk(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+
+        case 6:
+        AnalizProvider.getPdfHemoCulture(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+    }
   };
 
   const downloadExcel = () => {
@@ -160,7 +334,7 @@ const Tahlillar = () => {
         <h3 className="col-3">Tahlillar</h3>
         <Tooltip title="Qidirish">
           <Search
-            placeholder="Qidirish"
+            placeholder="F.I.SH"
             classNames="col-4"
             allowClear
             enterButton="Qidirish"
@@ -191,7 +365,7 @@ const Tahlillar = () => {
             <th style={{ minWidth: "15%" }} className="col">
               Ismi Familyasi
             </th>
-            <th style={{ minWidth: "27%" }} className="col">
+            <th style={{ minWidth: "30%" }} className="col">
               Analiz Nomi
             </th>
             <th style={{ minWidth: "15%" }} className="col">
@@ -210,9 +384,7 @@ const Tahlillar = () => {
             <th style={{ minWidth: "10%" }} className="col">
               Yaratilgan sana
             </th>
-            <th style={{ minWidth: "10%" }} className="col">
-              Natija chiqqan sana
-            </th>
+
             {/* <th style={{ minWidth: "10%" }} className="col">
               Telefon raqam
             </th> */}
@@ -232,6 +404,9 @@ const Tahlillar = () => {
             <th style={{ minWidth: "8%" }} className="col">
               Narxi
             </th>
+            <th style={{ minWidth: "7%" }} className="col">
+              Amallar
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -243,7 +418,7 @@ const Tahlillar = () => {
                     {index + (currentPage - 1) * 20 + 1}.{obj.firstName}{" "}
                     {obj.lastName}
                   </td>
-                  <td style={{ minWidth: "27%" }} className="col">
+                  <td style={{ minWidth: "30%" }} className="col">
                     {obj.analysisName}
                   </td>
                   <td style={{ minWidth: "15%" }} className="col">
@@ -252,13 +427,7 @@ const Tahlillar = () => {
                   <td style={{ minWidth: "10%" }} className="col">
                     {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                   </td>
-                  <td style={{ minWidth: "10%" }} className="col">
-                    {obj.resultTime === null
-                      ? ""
-                      : moment(new Date(obj.resultTime)).format(
-                          "DD.MM.YYYY HH:mm"
-                        )}
-                  </td>
+
                   {/* <td style={{ minWidth: "10%" }} className="col">
                     {obj.phoneNumber}
                   </td> */}
@@ -292,8 +461,13 @@ const Tahlillar = () => {
                       <></>
                     )}
                   </td>
-                  <td style={{ minWidth: "8%", justifyContent:'end' }} className="col">
+                  <td style={{ minWidth: "8%" }} className="col">
                     {numberFormat(obj.discountedPrice)}
+                  </td>
+                  <td style={{ minWidth: "7%" }} className="col">
+                    <IconButton onClick={() => handleOpenDrawer(obj)}>
+                      <EyeSvg />
+                    </IconButton>
                   </td>
                 </tr>
               ))
@@ -315,6 +489,39 @@ const Tahlillar = () => {
         total={totalElements}
         onChange={onChangePagination}
       />
+
+      <Drawer
+        title="Buyurtma"
+        placement="right"
+        closable={true}
+        onClose={() => setOpenDrawer(false)}
+        visible={openDrawer}
+        width={700}
+      >
+        <div style={{ fontSize: 18 }}>
+          <b>Bemor ism-familyasi:</b> {drawerData.firstName}{" "}
+          {drawerData.lastName}
+        </div>
+        <div style={{ fontSize: 18 }}>
+          <b>Bemor telefon raqami:</b> {drawerData.phoneNumber}{" "}
+        </div>
+        <div style={{ fontSize: 18 }}>
+          <b>Analiz nomi:</b> {drawerData.analysisName}
+        </div>
+
+        <button
+          style={{
+            marginTop: 30,
+            width: "100%",
+            background: "transparent",
+            color: "rgb(3, 132, 252)",
+            border: "none",
+          }}
+          onClick={() => getPdfBtn(drawerData)}
+        >
+          Natijani ko`rish
+        </button>
+      </Drawer>
     </TahlillarWrapper>
   );
 };

@@ -13,6 +13,10 @@ export default class DistrictProvider {
         return await client.get(`/seo/district/get/all`);
     }
 
+    static async getDistrictByRegionId(id) {
+        return await client.get(`/seo/district/get/district/by-region?regionId=${id}`);
+    }
+
     static async deleteDistrict(id) {
         return await client.delete(`/seo/district/delete/${id}`);
     }

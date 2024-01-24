@@ -33,6 +33,9 @@ const ListAntibioticMain = ({ patientId, orderId }) => {
             <th style={{ minWidth: "10%" }} className="col">
               Result
             </th>
+            <th style={{ minWidth: "10%" }} className="col">
+              Namuna turi
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +52,9 @@ const ListAntibioticMain = ({ patientId, orderId }) => {
                     </td>
                     <td style={{ minWidth: "10%" }} className="col">
                       {obj.result}
+                    </td>
+                    <td style={{ minWidth: "10%" }} className="col">
+                      {obj.sampleType}
                     </td>
                   </tr>
                 </>

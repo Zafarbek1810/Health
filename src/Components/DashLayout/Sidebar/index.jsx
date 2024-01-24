@@ -103,6 +103,18 @@ const NavListMenu = [
     role: ["ROLE_CASHIER"],
   },
   {
+    title: "Bemorlar",
+    path: "/dashboard/operator/patient",
+    src: <UserCircle />,
+    role: ["ROLE_CASHIER"],
+  },
+  {
+    title: "Buyurtma yaratish",
+    path: "/dashboard/operator/order",
+    src: <OrderSvg />,
+    role: ["ROLE_CASHIER"],
+  },
+  {
     title: "Buyurtmalar",
     path: "/dashboard/cashier/order",
     src: <OrderSvg />,
@@ -161,17 +173,12 @@ const NavListMenu = [
     role: ["ROLE_OPERATOR"],
   },
   {
-    title: "Bemorlar",
-    path: "/dashboard/operator/patient",
-    src: <UserCircle />,
-    role: ["ROLE_OPERATOR"],
-  },
-  {
-    title: "Buyurtmalar",
+    title: "Buyurtma yaratish",
     path: "/dashboard/operator/order",
     src: <OrderSvg />,
     role: ["ROLE_OPERATOR"],
   },
+  
   // {
   //   title: "Natijalar",
   //   path: "/dashboard/operator/result",

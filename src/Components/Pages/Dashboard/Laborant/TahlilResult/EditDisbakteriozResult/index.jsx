@@ -18,6 +18,7 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [resultsData, setResultsData] = useState([]);
+  const [sampleTypeText, setSampleTypeText] = useState("");
 
   const createMarkup = (htmlString) => {
     return { __html: htmlString };
@@ -99,6 +100,7 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
       bacteriaId: row.id,
       orderDetailId: +orderId,
       result: row.result || null,
+      sampleType: sampleTypeText.length === 0 ? parasitologyResult[0]?.sampleType : sampleTypeText,
     }));
 
     BacteriaProvider.createResultDisbakterioz(rowData)
@@ -132,6 +134,15 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlil-result">Orqaga</MyLink>
         <h3>Blanka taxrirlash</h3>
+          <input
+            onChange={(e) => setSampleTypeText(e.target.value)}
+            placeholder="Namuna turi"
+            defaultValue={parasitologyResult[0]?.sampleType || ""}
+            type="text"
+            style={{ width: "30%", marginLeft: "auto" }}
+            autoComplete="off"
+            className="form-control"
+          />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">

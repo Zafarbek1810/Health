@@ -220,7 +220,7 @@ const OrdersMain = () => {
           <h3 className="col-1">Buyurtmalar</h3>
 
           <Search
-            placeholder="Qidirish"
+            placeholder="F.I.SH"
             allowClear
             enterButton="Qidirish"
             className="col-4"
@@ -329,7 +329,7 @@ const OrdersMain = () => {
         <Pagination
           style={{ textAlign: "right" }}
           defaultCurrent={currentPage}
-          defaultPageSize={20}
+          // defaultPageSize={20}
           current={currentPage}
           total={totalElements}
           onChange={onChange}

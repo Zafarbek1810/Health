@@ -9,13 +9,20 @@ import RegionProvider from "../../../../../../Data/RegionProvider";
 import DistrictProvider from "../../../../../../Data/DistrictProvider";
 import PatientProvider from "../../../../../../Data/PatientProvider";
 import { toast } from "react-toastify";
+import { Checkbox } from "antd";
 
 const UpdatePatient = ({ onCloseModal2, editPatient }) => {
-  const { register, handleSubmit, control, reset, setValue, getValues } = useForm();
+  const { register, handleSubmit, control, reset, setValue, getValues } =
+    useForm();
   const [patientEdit, setPatientEdit] = useState({});
   const [loading, setLoading] = useState(false);
   const [region, setRegion] = useState([]);
   const [district, setDistrict] = useState([]);
+  const [regionId, setRegionId] = useState({
+    value: editPatient.region?.id,
+    label: editPatient.region?.name,
+  });
+  const [isSendSms, setIsSendSms] = useState(false);
 
   useEffect(() => {
     RegionProvider.getAllRegion()
@@ -28,14 +35,14 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
   }, []);
 
   useEffect(() => {
-    DistrictProvider.getAllDistrict()
+    DistrictProvider.getDistrictByRegionId(regionId.value)
       .then((res) => {
         setDistrict(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [regionId]);
 
   useEffect(() => {
     PatientProvider.getOnePatient(editPatient.id)
@@ -62,12 +69,11 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
       value: editPatient?.region?.id,
       label: editPatient?.region?.name,
     });
-    setValue("district",{
+    setValue("district", {
       value: editPatient?.district?.id,
       label: editPatient?.district?.name,
     });
   }, []);
-
 
   const onSubmitPatient = async (values) => {
     const body = {};
@@ -84,6 +90,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
       body.contract = values.contract;
       body.privilege = values.privilege;
       body.comment = values.comment;
+      body.isSendSms = isSendSms;
     }
 
     setLoading(true);
@@ -161,6 +168,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
                   onBlur={onBlur}
                   onChange={(v) => {
                     onChange(v);
+                    setRegionId(v)
                   }}
                   ref={ref}
                 />
@@ -252,15 +260,12 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               {...register("privilege", { required: false })}
             />
           </div>
-          {/* <div className="label">
-            <label>Izoh</label>
-            <input
-              autoComplete="off"
-              className="form-control"
-              placeholder={"Izoh"}
-              {...register("comment", { required: false })}
-            />
-          </div> */}
+          <div className="label">
+            <label></label>
+            <Checkbox defaultChecked={editPatient.isSendSms} onChange={(e) => setIsSendSms(e.target.checked)}>
+              Sms yuboriladimi?
+            </Checkbox>
+          </div>
 
           <button
             type="submit"

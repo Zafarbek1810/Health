@@ -18,7 +18,7 @@ const EditBreastMilk = ({ patientId, orderId }) => {
   const [results, setResults] = useState('');
   const [leftBreast, setLeftBreast] = useState("");
   const [rightBreast, setRightBreast] = useState("");
-
+  const [sampleTypeText, setSampleTypeText] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -35,8 +35,9 @@ const EditBreastMilk = ({ patientId, orderId }) => {
       id: breastMilk[0].id,
       patientId: +patientId,
       orderDetailId: +orderId,
-      resultLeftBreast: leftBreast || null,
-      resultRightBreast: rightBreast || null,
+      resultLeftBreast: leftBreast.length===0 ? breastMilk[0]?.resultLeftBreast : leftBreast,
+      resultRightBreast:rightBreast.length===0 ? breastMilk[0]?.resultRightBreast : rightBreast ,
+      sampleType: sampleTypeText.length===0 ? breastMilk[0]?.sampleType : sampleTypeText,
     };
 
     BacteriaProvider.createResultBreastMilk(rowData)
@@ -58,6 +59,18 @@ const EditBreastMilk = ({ patientId, orderId }) => {
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlil-result">Orqaga</MyLink>
         <h3>Blanka taxrirlash</h3>
+        {breastMilk.map((obj, index) => (
+          <input
+            key={index}
+            onChange={(e) => setSampleTypeText(e.target.value)}
+            placeholder="Namuna turi"
+            defaultValue={obj.sampleType || ""}
+            type="text"
+            style={{ width: "30%", marginLeft: "auto" }}
+            autoComplete="off"
+            className="form-control"
+          />
+        ))}
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">

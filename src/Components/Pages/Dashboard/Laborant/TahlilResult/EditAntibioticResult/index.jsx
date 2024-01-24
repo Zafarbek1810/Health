@@ -14,6 +14,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
   const [loading, setLoading] = useState(false);
   const [antibioticResult, setAntibioticResult] = useState([]);
   const [resultsData, setResultsData] = useState([]);
+  const [sampleTypeText, setSampleTypeText] = useState('');
 
   function removeDuplicatesById(array1, array2) {
     const concatenatedArray = array1.concat(array2);
@@ -79,6 +80,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
       antibioticId: row.id,
       orderDetailId: +orderId,
       result: row.result || null,
+      sampleType: sampleTypeText,
     }));
 
     AntibioticProvider.addAntibioticResult(rowData)
@@ -128,6 +130,15 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlil-result/">Orqaga</MyLink>
         <h3>Blanka taxrirlash</h3>
+          <input
+            onChange={(e) => setSampleTypeText(e.target.value)}
+            placeholder="Namuna turi"
+            defaultValue={antibioticResult[0]?.sampleType || ""}
+            type="text"
+            style={{ width: "30%", marginLeft: "auto" }}
+            autoComplete="off"
+            className="form-control"
+          />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="tables">

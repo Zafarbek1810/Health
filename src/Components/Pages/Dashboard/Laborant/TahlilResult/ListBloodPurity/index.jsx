@@ -27,11 +27,14 @@ const ListPurityBlood = ({ patientId, orderId }) => {
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th style={{ minWidth: "50%" }} className="col">
+            <th style={{ minWidth: "30%" }} className="col">
+              Analiz nomi
+            </th>
+            <th style={{ minWidth: "30%" }} className="col">
               Tahlil natijasi
             </th>
-            <th style={{ minWidth: "50%" }} className="col">
-              Analiz nomi
+            <th style={{ minWidth: "30%" }} className="col">
+              Namuna turi
             </th>
           </tr>
         </thead>
@@ -41,11 +44,14 @@ const ListPurityBlood = ({ patientId, orderId }) => {
               results.map((obj, index) => (
                 <>
                   <tr key={index}>
-                    <td style={{ minWidth: "50%" }} className="col">
+                    <td style={{ minWidth: "30%" }} className="col">
+                      {obj.name}
+                    </td>
+                    <td style={{ minWidth: "30%" }} className="col">
                       {obj.result}
                     </td>
-                    <td style={{ minWidth: "50%" }} className="col">
-                      {obj.name}
+                    <td style={{ minWidth: "30%" }} className="col">
+                      {obj.sampleType}
                     </td>
                   </tr>
                 </>

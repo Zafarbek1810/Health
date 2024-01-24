@@ -32,6 +32,9 @@ const ModalHeader = styled.header`
 const ModalContent = styled.div`
   border-bottom: 1px solid #f5f6f8;
   background: #fff;
+  .ant-picker-dropdown{
+    z-index: 99999 !important;
+  }
 
   form {
     background: #fff;

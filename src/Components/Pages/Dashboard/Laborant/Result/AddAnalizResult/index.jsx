@@ -13,6 +13,7 @@ const AnalizResultAdd = ({ id, patientId }) => {
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [parasitology, setParasitology] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sampleTypeText, setSampleTypeText] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -39,6 +40,7 @@ const AnalizResultAdd = ({ id, patientId }) => {
       medium: row.medium || null,
       heavy: row.heavy || null,
       norm: row.norm || "bo'lmaydi",
+      sampleType: sampleTypeText
     }));
 
     ParasitologyResultProvider.createResultParasite(rowData)
@@ -75,7 +77,14 @@ const AnalizResultAdd = ({ id, patientId }) => {
     <AnalizResultAddWrapper>
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlillar">Orqaga</MyLink>
-        <h3>Blanka yaratish</h3>
+        <h3>Tahlil natija blankasi</h3>
+        <input
+          onChange={(e) => setSampleTypeText(e.target.value)}
+          placeholder="Namuna turi"
+          type="text"
+          autoComplete="off"
+          className="form-control"
+        />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">

@@ -40,6 +40,9 @@ const ListDisbakteriozMain = ({ patientId, orderId }) => {
             <th style={{ minWidth: "10%" }} className="col">
               Me`yor
             </th>
+            <th style={{ minWidth: "10%" }} className="col">
+            Namuna turi
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -56,6 +59,9 @@ const ListDisbakteriozMain = ({ patientId, orderId }) => {
                     </td>
                     <td style={{ minWidth: "10%" }} className="col">
                     <div dangerouslySetInnerHTML={createMarkup(obj.norm)} />
+                    </td>
+                    <td style={{ minWidth: "15%" }} className="col">
+                      {obj.sampleType}
                     </td>
                   </tr>
                 </>

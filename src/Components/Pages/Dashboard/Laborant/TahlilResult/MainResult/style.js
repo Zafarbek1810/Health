@@ -96,6 +96,15 @@ const ParasitologyResultWrapper = styled.div`
               height: 20px;
               /* fill: rgb(253, 181, 40); */
             }
+
+            &:disabled{
+              svg {
+              fill: none;
+              width: 20px;
+              height: 20px;
+              opacity: 0.5;
+            }
+            }
           }
         }
       }

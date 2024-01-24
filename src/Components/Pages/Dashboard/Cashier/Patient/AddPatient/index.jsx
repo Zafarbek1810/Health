@@ -9,7 +9,7 @@ import { PatternFormat } from "react-number-format";
 import Select from "react-select";
 import ButtonLoader from "../../../../../Common/ButtonLoader";
 import { toast } from "react-toastify";
-import moment from "moment";
+import { Checkbox, DatePicker } from "antd";
 
 const AddPatient = ({ onCloseModal }) => {
   const {
@@ -24,6 +24,14 @@ const AddPatient = ({ onCloseModal }) => {
   const [districtId, setDistrictId] = useState({});
   const [region, setRegion] = useState([]);
   const [district, setDistrict] = useState([]);
+  const [birthday, setBirthday] = useState("");
+  const [isSendSms, setIsSendSms] = useState(false);
+
+  const onChange = (date, dateString) => {
+    setBirthday(dateString);
+  };
+
+
 
   useEffect(() => {
     RegionProvider.getAllRegion()
@@ -35,15 +43,16 @@ const AddPatient = ({ onCloseModal }) => {
       });
   }, []);
 
+
   useEffect(() => {
-    DistrictProvider.getAllDistrict()
+    DistrictProvider.getDistrictByRegionId(regionId.value)
       .then((res) => {
         setDistrict(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [regionId]);
 
   const onSubmitUser = async (values) => {
     const body = {};
@@ -53,17 +62,18 @@ const AddPatient = ({ onCloseModal }) => {
     body.phoneNumber = values.phoneNumber.replace(/\s/g, "");
     body.regionId = regionId.value;
     body.districtId = districtId.value;
-    body.birthDay = values.birthDay;
+    body.birthDay = birthday;
     body.address = values.address;
     body.officeName = values.officeName;
     body.privilege = values.privilege;
+    body.isSendSms = isSendSms;
 
     console.log("body", body);
     setLoading(true);
+    onCloseModal();
     PatientProvider.createPatient(body)
       .then((res) => {
         toast.success(res.data?.message);
-        onCloseModal();
         reset();
       })
       .catch((err) => {
@@ -104,7 +114,9 @@ const AddPatient = ({ onCloseModal }) => {
         >
           <div className="label">
             <label>Ismi</label>
-            {errors.firstName && <span className="err-text">Majburiy maydon</span>}
+            {errors.firstName && (
+              <span className="err-text">Majburiy maydon</span>
+            )}
             <input
               autoComplete="off"
               className="form-control"
@@ -115,7 +127,9 @@ const AddPatient = ({ onCloseModal }) => {
           </div>
           <div className="label">
             <label>Familyasi</label>
-            {errors.lastName && <span className="err-text">Majburiy maydon</span>}
+            {errors.lastName && (
+              <span className="err-text">Majburiy maydon</span>
+            )}
             <input
               autoComplete="off"
               className="form-control"
@@ -168,12 +182,7 @@ const AddPatient = ({ onCloseModal }) => {
           </div>
           <div className="label">
             <label>Tug`ilgan kun</label>
-            <input
-              type="date"
-              className="form-control"
-              placeholder={"Tug`ilgan kun"}
-              {...register("birthDay")}
-            />
+            <DatePicker size="small" onChange={onChange} />
           </div>
           <div className="label">
             <label>Telefon raqami</label>
@@ -214,16 +223,22 @@ const AddPatient = ({ onCloseModal }) => {
           </div>
 
           <div className="label">
-            <label>Chegirma</label>
+            <label>Chegirma(%)</label>
             <input
               autoComplete="off"
               className="form-control"
               type="number"
               max={100}
               min={0}
-              placeholder={"Chegirma"}
+              placeholder={"Chegirma (%)"}
               {...register("privilege", { required: false })}
             />
+          </div>
+          <div className="label">
+            <label></label>
+            <Checkbox onChange={(e) => setIsSendSms(e.target.checked)}>
+              Sms yuboriladimi?
+            </Checkbox>
           </div>
 
           <button

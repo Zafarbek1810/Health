@@ -44,6 +44,7 @@ const SidebarWrapper = styled.div`
     .link {
       display: flex;
       flex-direction: column;
+      text-align: center;
       font-style: normal;
       font-weight: 600;
       font-size: 15px;
@@ -112,6 +113,7 @@ const SidebarWrapper = styled.div`
     .activelink {
       display: flex;
       flex-direction: column;
+      text-align: center;
       font-style: normal;
       font-weight: 600;
       font-size: 15px;

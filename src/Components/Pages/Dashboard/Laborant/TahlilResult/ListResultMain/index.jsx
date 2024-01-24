@@ -45,9 +45,9 @@ const ListResultMain = ({ patientId, orderId }) => {
             <th style={{ minWidth: "10%" }} className="col">
               Me`yor
             </th>
-            {/* <th style={{ minWidth: "15%" }} className="col">
-              Yaratilgan sana
-            </th> */}
+            <th style={{ minWidth: "15%" }} className="col">
+            Namuna turi
+            </th>
             
           </tr>
         </thead>
@@ -74,6 +74,9 @@ const ListResultMain = ({ patientId, orderId }) => {
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
                     {obj.norm}
+                  </td>
+                  <td style={{ minWidth: "10%" }} className="col">
+                    {obj.sampleType}
                   </td>
                   
                 </tr>

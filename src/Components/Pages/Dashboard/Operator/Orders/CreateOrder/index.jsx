@@ -9,7 +9,6 @@ import OrderProvider from "../../../../../../Data/OrderProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import AnalizPriceProvider from "../../../../../../Data/AnalizPriceProvider";
-import removeDuplicates from "../../../../../../utils/removeDublicateArray";
 
 const CreateOrder = ({ id }) => {
   const router = useRouter();
@@ -22,34 +21,55 @@ const CreateOrder = ({ id }) => {
   const [commonSum, setCommonSum] = useState("");
   const [changeAnaliz, setChangeAnaliz] = useState([]);
   const [newAnaliz, setNewAnaliz] = useState([]);
-  const [data, setData] = useState([])
-  
-  console.log(newAnaliz, 'newAnaliz');
-  
+  const [data, setData] = useState([]);
+
+  console.log(laboratoryId, "laboratoryId");
+  console.log(laboratory, "laboratory");
+
+  function filterByLaboratoryId(dataArray, numbers) {
+    const filteredArray = dataArray.filter(item => numbers.includes(item.laboratoryId));
+    
+    return filteredArray;
+}
+
   useEffect(() => {
     AnalizPriceProvider.getAllPrices({ ids: Object.values(analizId).flat() })
       .then((res) => {
-        setChangeAnaliz(res.data.data.allDTOList);
-        console.log(res.data.data, "change");
+        setChangeAnaliz(
+          filterByLaboratoryId(res.data.data.allDTOList, laboratoryId)
+        );
+        console.log(changeAnaliz, 'change');
+        console.log(res.data.data.allDTOList, 'all');
         setCommonSum(res.data.data.sum);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [newAnaliz]);
+  }, [newAnaliz, laboratoryId]);
+
 
   useEffect(() => {
-    laboratoryId.map((id) => {
-      AnalizProvider.getAllAnalysisByLabWithPrice(id)
-        .then((res) => {
-          setAnaliz({ ...analiz, [id]: res.data.data });
-          console.log(res.data.data, id);
-        })
-        .catch((err) => {
-          console.log(err);
+    const fetchData = async () => {
+      try {
+        const promises = laboratoryId.map(async (id) => {
+          const res = await AnalizProvider.getAllAnalysisByLabWithPrice(id);
+          setAnaliz((prevAnaliz) => ({ ...prevAnaliz, [id]: res.data.data }));
+          console.log(res, 'rererererererer');
         });
-    });
+  
+        await Promise.all(promises);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    fetchData();
   }, [laboratoryId]);
+
+  console.log(analiz, 'analiz')
+
+  
+
 
   useEffect(() => {
     LabaratoryProvider.getAllLaboratory()
@@ -174,6 +194,24 @@ const CreateOrder = ({ id }) => {
                 })}
               </div>
             </div>
+            {/* <div className="result">
+              <div className="result-top">
+                <h3>Umumiy narxi:</h3>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span
+                    className="price"
+                    style={{ textDecoration: "line-through" }}
+                  >
+                    {commonSum} so`m
+                  </span>
+                  <span className="price">
+                    {((100 - data.privilege) * commonSum) / 100} so`m
+                  </span>
+                </div>
+              </div>
+              <hr />
+              {renderAnalyzList}
+            </div> */}
           </div>
 
           <div className="right">
@@ -200,6 +238,7 @@ const CreateOrder = ({ id }) => {
                     })}
                     onChange={(v) => {
                       setAnalizId({ ...analizId, [id]: v });
+                      console.log({ ...analizId, [id]: v }, 'xxxxxxxx')
                       setNewAnaliz(v);
                     }}
                   />

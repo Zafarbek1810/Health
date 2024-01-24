@@ -38,4 +38,11 @@ export default class BacteriaProvider {
     static async getResulBreastMilkByPatientId(patientId, orderId ) {
         return await client.get(`/breast-milk/get/data?patientId=${patientId}&orderDetailId=${orderId}`);
     }
+
+    static async createResultHemoCulture (body){
+        return await client.post(`/hemo-culture/save`, body);
+    }
+    static async getResulHemoCultureByPatientId(patientId, orderId ) {
+        return await client.get(`/hemo-culture/get/data?patientId=${patientId}&orderDetailId=${orderId}`);
+    }
 }

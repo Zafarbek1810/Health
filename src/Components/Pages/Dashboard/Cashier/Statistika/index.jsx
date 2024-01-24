@@ -15,9 +15,21 @@ import TotalSum from "../../../../Common/Svgs/TotalSum";
 const Statistika = () => {
   const [patient, setPatient] = useState({});
   const [currency, setCurrency] = useState({});
+  const [count, setCount] = useState({});
   const [generalData, setGeneralData] = useState({});
   const formatter = (value) => <CountUp end={value} separator=" " />;
   const [dateString, setDateString] = useState(["", ""]);
+
+  useEffect(() => {
+    PatientProvider.getPatientStatistic()
+      .then((res) => {
+        setCount(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     OrderProvider.getCurrencyDashboard()
@@ -196,6 +208,57 @@ const Statistika = () => {
                 value={generalData?.totalSumma}
                 formatter={formatter}
                 className="stat"
+              />
+            </Card>
+          </Col>
+        </Row>
+        <Row gutter={16} style={{ marginBottom: 30 }}>
+          <Col span={6}>
+            <Card bordered={true}>
+              <Statistic
+                title="Kunlik bemorlar soni"
+                value={
+                  count.currentPatientCount
+                    ? count.currentPatientCount
+                    : "0"
+                }
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card bordered={true}>
+              <Statistic
+                title="Haftalik bemorlar soni"
+                value={
+                  count.currentWeekCount
+                    ? count.currentWeekCount
+                    : "0"
+                }
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card bordered={true}>
+              <Statistic
+                title="Oylik bemorlar soni"
+                value={
+                  count.currentMonthCount
+                    ? count.currentMonthCount
+                    : "0"
+                }
+              />
+            </Card>
+          </Col>
+          <Col span={6}>
+            <Card bordered={true}>
+              <Statistic
+                title="Yillik bemorlar soni"
+                value={
+                  count.currentYearCount
+                    ? count.currentYearCount
+                    : "0"
+                }
+                // prefix={<DollarOutlined />}
               />
             </Card>
           </Col>

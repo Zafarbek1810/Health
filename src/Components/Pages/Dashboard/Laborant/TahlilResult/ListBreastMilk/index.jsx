@@ -27,8 +27,11 @@ const ListBreastMilk = ({ patientId, orderId }) => {
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th style={{ minWidth: "50%" }} className="col">
+            <th style={{ minWidth: "80%" }} className="col">
               Tahlil natijasi
+            </th>
+            <th style={{ minWidth: "20%" }} className="col">
+              Namuna turi
             </th>
           </tr>
         </thead>
@@ -38,13 +41,16 @@ const ListBreastMilk = ({ patientId, orderId }) => {
               results.map((obj, index) => (
                 <>
                   <tr key={index}>
-                    <td style={{ minWidth: "50%", display:'flex', flexDirection:'column' }} className="col">
+                    <td style={{ minWidth: "40%", display:'flex', flexDirection:'column' }} className="col">
                       <label>Chap ko`krak</label>
                       {obj.resultLeftBreast}
                     </td>
-                    <td style={{ minWidth: "50%", display:'flex', flexDirection:'column' }} className="col">
+                    <td style={{ minWidth: "40%", display:'flex', flexDirection:'column' }} className="col">
                     <label>O`ng ko`krak</label>
                       {obj.resultRightBreast}
+                    </td>
+                    <td style={{ minWidth: "20%", display:'flex', flexDirection:'column' }} className="col">
+                      {obj.sampleType}
                     </td>
                   </tr>
                 </>

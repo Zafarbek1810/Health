@@ -10,15 +10,17 @@ import { toast } from "react-toastify";
 const AddBloodPurity = ({ id, patientId }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
-  const [bloodPurity, setBloodPurity] = useState('');
+  const [bloodPurity, setBloodPurity] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sampleTypeText, setSampleTypeText] = useState("");
 
   const onSubmit = () => {
     const rowData = {
-            patientId: +patientId,
-            orderDetailId: +id,
-            result: bloodPurity || null,
-          }
+      patientId: +patientId,
+      orderDetailId: +id,
+      result: bloodPurity || null,
+      sampleType : sampleTypeText
+    };
 
     BacteriaProvider.createResultBloodPurity(rowData)
       .then((res) => {
@@ -34,7 +36,14 @@ const AddBloodPurity = ({ id, patientId }) => {
     <AnalizResultAddWrapper>
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlillar">Orqaga</MyLink>
-        <h3>Blanka yaratish</h3>
+        <h3>Tahlil natija blankasi</h3>
+        <input
+          onChange={(e) => setSampleTypeText(e.target.value)}
+          placeholder="Namuna turi"
+          type="text"
+          autoComplete="off"
+          className="form-control"
+        />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">
@@ -47,19 +56,19 @@ const AddBloodPurity = ({ id, patientId }) => {
           </thead>
           <tbody>
             {!loading ? (
-                <tr>
-                  <td style={{ minWidth: "20%" }} className="col">
-                    <input
-                      autoComplete="off"
-                      className="form-control"
-                      // value={obj.result || ""}
-                      onChange={(e) =>
-                        setBloodPurity(e.target.value)
-                        // handleRowChange(index, "result", e.target.value)
-                      }
-                    />
-                  </td>
-                </tr>
+              <tr>
+                <td style={{ minWidth: "20%" }} className="col">
+                  <input
+                    autoComplete="off"
+                    className="form-control"
+                    // value={obj.result || ""}
+                    onChange={
+                      (e) => setBloodPurity(e.target.value)
+                      // handleRowChange(index, "result", e.target.value)
+                    }
+                  />
+                </td>
+              </tr>
             ) : (
               <MinLoader />
             )}

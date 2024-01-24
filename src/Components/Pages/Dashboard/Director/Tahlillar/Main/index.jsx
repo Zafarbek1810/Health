@@ -42,7 +42,6 @@ const Tahlillar = () => {
   const [keyword, setKeyword] = useState("");
   const [dateString, setDateString] = useState(["", ""]);
 
-
   const handleEditStatus = (obj) => {
     console.log(obj);
     setIsOpenModal(true);
@@ -192,6 +191,87 @@ const Tahlillar = () => {
             toast.error(err?.response?.data?.message);
           });
         break;
+
+      case 4:
+        AnalizProvider.getPdfBloodPurity(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+
+      case 5:
+        AnalizProvider.getPdfBreastMilk(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
+
+        case 6:
+        AnalizProvider.getPdfHemoCulture(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          });
+        break;
     }
   };
 
@@ -226,7 +306,7 @@ const Tahlillar = () => {
       <div className="top">
         <h3>Tahlillar</h3>
         <Search
-          placeholder="Qidirish"
+          placeholder="F.I.SH"
           allowClear
           enterButton="Qidirish"
           className="col-4"
@@ -276,7 +356,8 @@ const Tahlillar = () => {
             analysisStatus.map((obj, index) => (
               <tr key={index}>
                 <td style={{ minWidth: "15%" }} className="col">
-                {index + (currentPage - 1) * 20 + 1}.{obj.firstName} {obj.lastName}
+                  {index + (currentPage - 1) * 20 + 1}.{obj.firstName}{" "}
+                  {obj.lastName}
                 </td>
                 <td style={{ minWidth: "25%" }} className="col">
                   {obj.analysisName}

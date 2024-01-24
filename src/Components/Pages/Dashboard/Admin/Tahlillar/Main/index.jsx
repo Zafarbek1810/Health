@@ -73,7 +73,7 @@ const Tahlillar = () => {
       <div className="top">
         <h3>Tahlillar</h3>
         <Search
-          placeholder="Qidirish"
+          placeholder="F.I.SH"
           allowClear
           enterButton="Qidirish"
           className="col-4"

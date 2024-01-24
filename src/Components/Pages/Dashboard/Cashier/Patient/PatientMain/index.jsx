@@ -93,7 +93,7 @@ const PatientMain = () => {
         <h3 className="col-1">Bemorlar</h3>
 
         <Search
-          placeholder="Bemorlar qidirish"
+          placeholder="F.I.SH, Telefon nomer"
           allowClear
           enterButton="Qidirish"
           className="col-4"
@@ -164,7 +164,7 @@ const PatientMain = () => {
                     {obj.office_name}
                   </td>
                   <td style={{ minWidth: "5%" }} className="col">
-                    {obj.privilege}
+                    {obj.privilege && obj.privilege + ' %'} 
                   </td>
 
                   <td style={{ minWidth: "8%" }} className="col">

@@ -56,6 +56,9 @@ const MainResult = () => {
       case 5: router.push(
         `/dashboard/laborant/edit-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
       ); break;
+      case 6: router.push(
+        `/dashboard/laborant/edit-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
 
       default : router.push(`/dashboard/laborant/tahlil-result`);
     }
@@ -113,6 +116,9 @@ const MainResult = () => {
                         case 5: router.push(
                           `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
+                        case 6: router.push(
+                          `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
                   
                         default : router.push(`/dashboard/laborant/tahlil-result`);
                       }
@@ -139,6 +145,9 @@ const MainResult = () => {
                       ); break;
                       case 5: router.push(
                         `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
+                      case 6: router.push(
+                        `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
                       ); break;
                 
                       default : router.push(`/dashboard/laborant/tahlil-result`);
@@ -167,6 +176,9 @@ const MainResult = () => {
                         case 5: router.push(
                           `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
+                        case 6: router.push(
+                          `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
                   
                         default : router.push(`/dashboard/laborant/tahlil-result`);
                       }
@@ -193,6 +205,9 @@ const MainResult = () => {
                         ); break;
                         case 5: router.push(
                           `/dashboard/laborant/list-breast-milk?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 6: router.push(
+                          `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
                   
                         default : router.push(`/dashboard/laborant/tahlil-result`);
@@ -232,7 +247,7 @@ const MainResult = () => {
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
                     <div className="btns">
-                      <IconButton onClick={() => handleEditResult(obj)}>
+                      <IconButton onClick={() => handleEditResult(obj)} disabled={obj.analysisStatus === 41}>
                         <EditSvg />
                       </IconButton>
                       {/* <IconButton onClick={() => handleDeleteResult(obj)}>

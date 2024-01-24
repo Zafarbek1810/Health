@@ -48,6 +48,25 @@ const OrdersMain = () => {
   const [searchText, setSearchText] = useState("");
   const [keyword, setKeyword] = useState("")
 
+  const [submittable, setSubmittable] = React.useState(false);
+
+  // Watch all values
+  const values = Form.useWatch([], form);
+  React.useEffect(() => {
+    form
+      .validateFields({
+        validateOnly: true,
+      })
+      .then(
+        () => {
+          setSubmittable(true);
+        },
+        () => {
+          setSubmittable(false);
+        },
+      );
+  }, [values]);
+
   const onChangePagination = (page) => {
     console.log(page);
     setCurrentPage(page);
@@ -122,6 +141,7 @@ const OrdersMain = () => {
 
   const onFinish = (values) => {
     console.log(values.patient);
+    setSubmittable(false);
     OrderProvider.createOrder(values.patient)
       .then((res) => {
         console.log(res.data.data);
@@ -178,13 +198,13 @@ const OrdersMain = () => {
               />
             </Form.Item>
 
-            <Button type="primary" htmlType="submit" size="large">
+            <Button type="primary" htmlType="submit" size="large" disabled={!submittable}>
               Yaratish
             </Button>
           </Form>
 
           <Search
-            placeholder="Qidirish"
+            placeholder="F.I.SH"
             allowClear
             enterButton="Qidirish"
             className="col-4"

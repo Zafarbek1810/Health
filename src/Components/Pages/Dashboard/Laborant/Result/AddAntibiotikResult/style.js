@@ -17,6 +17,11 @@ const AddAntibioticResultWrapper = styled.div`
     font-family: "Azo sans";
     margin-bottom: 0;
   }
+
+  input{
+    width: 30%;
+    margin-left: auto;
+  }
 }
 
 .tables{

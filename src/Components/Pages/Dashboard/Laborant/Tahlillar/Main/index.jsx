@@ -34,16 +34,15 @@ const Tahlillar = () => {
   useEffect(() => {
     const body = {};
     body.keyword = keyword || null;
-    body.analysisStatus = null;
+    body.analysisStatus = 11;
     body.fromDate = dateString[0] || null;
     body.toDate = dateString[1] || null;
-    body.pageNum = currentPage;
     body.laboratoryId = null;
-    body.pageSize = 20;
+    body.pageNum = currentPage;
+    body.pageSize = 10;
     OrderProvider.getAllAnalysisStatus(body).then((res) => {
-      console.log(res.data);
       setAnalysisStatus(res.data.data);
-      setTotalElements(res.data?.recordsTotal/2)
+      setTotalElements(res.data.recordsTotal)
     });
   }, [keyword, currentPage, dateString]);
 
@@ -67,6 +66,9 @@ const Tahlillar = () => {
         case 5: router.push(
           `/dashboard/laborant/add-breast-milk?id=${detailObj.id}&patientId=${detailObj.patientId}`
         ); break;
+        case 6: router.push(
+          `/dashboard/laborant/hemo-culture?id=${detailObj.id}&patientId=${detailObj.patientId}`
+        ); break;
 
         default : router.push(`/dashboard/laborant/tahlillar`);
       }
@@ -75,7 +77,7 @@ const Tahlillar = () => {
     .catch(err=>{
       console.log(err);
     })
-  }, [analysisId])
+  }, [analysisId,])
 
   const onSearchOrder = (e) => {
     setKeyword(e.target.value);
@@ -86,7 +88,7 @@ const Tahlillar = () => {
       <div className="top">
         <h3>Tahlillar</h3>
         <Search
-          placeholder="Qidirish"
+          placeholder="F.I.SH"
           allowClear
           enterButton="Qidirish"
           className="col-4"
@@ -120,7 +122,7 @@ const Tahlillar = () => {
         <tbody>
           {!loading ? (
             analysisStatus.length ?
-            analysisStatus.filter(item=>item.analysisStatus===11).map((obj, index) => (
+            analysisStatus.map((obj, index) => (
               <tr
                 key={index}
                 onClick={() => {
@@ -180,6 +182,7 @@ const Tahlillar = () => {
         defaultCurrent={currentPage}
         current={currentPage}
         total={totalElements}
+        defaultPageSize={10}
         onChange={onChange}
       />
 

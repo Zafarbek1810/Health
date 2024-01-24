@@ -13,6 +13,8 @@ const AddBreastMilk = ({ id, patientId }) => {
   const [leftBreast, setLeftBreast] = useState("");
   const [rightBreast, setRightBreast] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sampleTypeText, setSampleTypeText] = useState("");
+
 
   const onSubmit = () => {
     const rowData = {
@@ -20,6 +22,7 @@ const AddBreastMilk = ({ id, patientId }) => {
       orderDetailId: +id,
       resultLeftBreast: leftBreast || null,
       resultRightBreast: rightBreast || null,
+      sampleType: sampleTypeText
     };
 
     BacteriaProvider.createResultBreastMilk(rowData)
@@ -36,7 +39,14 @@ const AddBreastMilk = ({ id, patientId }) => {
     <AnalizResultAddWrapper>
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlillar">Orqaga</MyLink>
-        <h3>Blanka yaratish</h3>
+        <h3>Tahlil natija blankasi</h3>
+        <input
+          onChange={(e) => setSampleTypeText(e.target.value)}
+          placeholder="Namuna turi"
+          type="text"
+          autoComplete="off"
+          className="form-control"
+        />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">

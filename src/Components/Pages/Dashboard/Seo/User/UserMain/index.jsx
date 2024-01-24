@@ -130,7 +130,7 @@ const UserMain = () => {
       <div className="top">
         <h3 className="col-2">Foydalanuvchilar</h3>
         <Search
-          placeholder="Qidirish"
+          placeholder="F.I.SH"
           allowClear
           enterButton="Qidirish"
           className="col-4"

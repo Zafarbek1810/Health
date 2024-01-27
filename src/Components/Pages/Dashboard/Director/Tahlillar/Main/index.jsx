@@ -91,7 +91,7 @@ const Tahlillar = () => {
     // { value: 21, label: "Natija kutilmoqda" },
     { value: 31, label: "Rad etish" },
     { value: 41, label: "Natijani tasdiqlash" },
-    { value: 51, label: "Bekor qilish" },
+    // { value: 51, label: "Bekor qilish" },
   ];
 
   const onSubmitChangeStatus = () => {

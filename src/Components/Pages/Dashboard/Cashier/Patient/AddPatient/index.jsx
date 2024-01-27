@@ -182,7 +182,7 @@ const AddPatient = ({ onCloseModal }) => {
           </div>
           <div className="label">
             <label>Tug`ilgan kun</label>
-            <DatePicker size="small" onChange={onChange} />
+            <DatePicker size="small" onChange={onChange} format={'DD.MM.YYYY'}/>
           </div>
           <div className="label">
             <label>Telefon raqami</label>
@@ -191,8 +191,9 @@ const AddPatient = ({ onCloseModal }) => {
               name="phoneNumber"
               render={({ field: { onChange, onBlur, value } }) => (
                 <PatternFormat
-                  format="+998#########"
+                  format="+998(##) ### ## ##"
                   className="form-control"
+                  mask="_" 
                   name="phoneNumber"
                   allowEmptyFormatting
                   value={value}

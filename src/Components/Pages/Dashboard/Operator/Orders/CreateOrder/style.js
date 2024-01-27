@@ -32,6 +32,7 @@ const CreateOrderWrapper = styled.div`
 
     button{
       margin-top: 25px;
+      width: 100%;
     }
   }
 

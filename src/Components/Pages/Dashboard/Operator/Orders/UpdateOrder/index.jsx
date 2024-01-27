@@ -3,8 +3,7 @@ import CreateOrderWrapper from "./style";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import { useForm } from "react-hook-form";
-import { Select } from "antd";
-import { Button } from "@mui/material";
+import { Select, Button } from "antd";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -28,6 +27,7 @@ const UpdateOrder = ({ id }) => {
   const [data, setData] = useState(null);
   const [newAnaliz, setNewAnaliz] = useState({});
   const [forRender, setForRender] = useState(null);
+  const [submittable, setSubmittable] = React.useState(false);
 
   useEffect(() => {
     if (defaultLab && defaultLab.length > 0) {
@@ -157,7 +157,8 @@ const UpdateOrder = ({ id }) => {
     };
 
     body.orderId = +id;
-
+    setSubmittable(true);
+    router.push(`/dashboard/operator/order`);
     OrderProvider.updateOrder(body)
       .then((res) => {
         console.log(res);
@@ -167,7 +168,9 @@ const UpdateOrder = ({ id }) => {
       .catch((err) => {
         console.log(err);
         toast.error("Barcha maydonlarni to'ldiring!");
-      });
+      }).finally(()=>{
+        setSubmittable(false)
+      })
   };
 
   useEffect(() => {
@@ -298,9 +301,10 @@ const UpdateOrder = ({ id }) => {
               );
             })}
             <Button
-              class="col-12 btn btn-primary btn-rounded"
-              variant="contained"
-              type="submit"
+               class="w-100 btn btn-primary btn-rounded"
+               type="primary"
+               htmlType="submit"
+               disabled={changeAnaliz.length === 0 || submittable}
             >
               Buyurtma o`zgartirish
             </Button>

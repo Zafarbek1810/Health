@@ -47,6 +47,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
           };
         });
         setAntibiotic(response);
+        console.log(response, 'response');
       })
       .catch((err) => {
         console.log(err);
@@ -55,6 +56,8 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
         setLoading(false);
       });
   }, []);
+
+  console.log(resultsData, 'resultsData');
 
   useEffect(() => {
     AntibioticProvider.getAntibioticByPatientId(patientId, orderId)
@@ -74,25 +77,46 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
   }, [patientId, orderId]);
 
   const onSubmit = () => {
-    const rowData = antibiotic.map((row) => ({
-      id: row.resultId,
-      patientId: +patientId,
-      antibioticId: row.id,
-      orderDetailId: +orderId,
-      result: row.result || null,
-      sampleType: sampleTypeText,
-    }));
+    const updatedResults = antibiotic.map((row) => {
+      const correspondingResult = antibioticResult.find(i => i.id === row.id);
+      const existingResult = correspondingResult ? correspondingResult.resultId : null;
+      
+      // If there's a result in the input and it's different from the existing result, update it
+      if (row.result && row.result !== existingResult) {
+          return {
+              id: correspondingResult ? correspondingResult.resultId : null,
+              patientId: +patientId,
+              antibioticId: row.id,
+              orderDetailId: +orderId,
+              result: row.result || null,
+              sampleType: sampleTypeText,
+          };
+      } else {
+          // If no new result or the result hasn't changed, keep the existing result
+          return {
+              id: existingResult,
+              patientId: +patientId,
+              antibioticId: row.id,
+              orderDetailId: +orderId,
+              result: existingResult,
+              sampleType: sampleTypeText,
+          };
+      }
+  });
 
-    AntibioticProvider.addAntibioticResult(rowData)
-      .then((res) => {
-        console.log(res);
-        toast.success(res.data.message);
-        router.push(`/dashboard/laborant/tahlil-result`);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+    AntibioticProvider.addAntibioticResult(updatedResults)
+        .then((res) => {
+            console.log(res);
+            toast.success(res.data.message);
+            router.push(`/dashboard/laborant/tahlil-result`);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+  console.log(antibiotic);
+  console.log(antibioticResult);
 
   // const handleRowChange = (index, field, value) => {
   //   console.log(index, field, value)
@@ -160,7 +184,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
               {!loading ? (
                 resultsData
                   .sort(sort_by_id())
-                  .slice(0, Math.floor(resultsData.length / 2))
+                  // .slice(0, Math.floor(resultsData.length / 2))
                   .map((obj, index) => (
                     <tr key={index}>
                       <td style={{ minWidth: "10%" }} className="col1">
@@ -190,7 +214,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
               )}
             </tbody>
           </table>
-          <table className="table table-striped table-bordered table-hover">
+          {/* <table className="table table-striped table-bordered table-hover">
             <thead>
               <tr>
                 <th style={{ minWidth: "10%" }} className="col">
@@ -239,7 +263,7 @@ const EditAntibioticResult = ({ patientId, orderId }) => {
                 <MinLoader />
               )}
             </tbody>
-          </table>
+          </table> */}
         </div>
         <button type="submit" className="btn btn-success btn-rounded m-1">
           Saqlash

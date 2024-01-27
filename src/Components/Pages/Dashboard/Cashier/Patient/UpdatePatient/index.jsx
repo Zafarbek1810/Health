@@ -201,6 +201,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               type="date"
               className="form-control"
               placeholder={"Tug`ilgan kun"}
+              format={'DD.MM.YYYY'}
               {...register("birthDay")}
             />
           </div>
@@ -211,7 +212,8 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               name="phoneNumber"
               render={({ field: { onChange, onBlur, value } }) => (
                 <PatternFormat
-                  format="+998## ### ## ##"
+                format="+998(##) ### ## ##"
+                mask="_" 
                   className="form-control"
                   name="phoneNumber"
                   allowEmptyFormatting

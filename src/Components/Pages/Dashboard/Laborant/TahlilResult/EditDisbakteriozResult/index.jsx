@@ -24,6 +24,20 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
     return { __html: htmlString };
   };
 
+  function parseHTMLToExponential(htmlString) {
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = htmlString;
+    const supElement = tempElement.querySelector("sup");
+    if (supElement) {
+      const supContent = supElement.textContent || supElement.innerText || "";
+      const exponent = parseFloat(supContent);
+      if (!isNaN(exponent)) {
+        return `10^${exponent}`;
+      }
+    }
+    return "";
+  }
+
   function removeDuplicatesById(array1, array2) {
     const concatenatedArray = array1.concat(array2);
     const uniqueArray = [];
@@ -39,6 +53,22 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
 
     return uniqueArray;
   }
+
+  const toHtml = (yozuv) => {
+    var indexOfCaret = yozuv?.indexOf("^");
+    if (yozuv?.indexOf("^") !== -1) {
+      return (
+        "<p>" +
+        yozuv?.slice(0, indexOfCaret) +
+        "<sup>" +
+        yozuv?.slice(indexOfCaret + 1) +
+        "</sup>" +
+        "</p>"
+      );
+    } else {
+      return console.log(yozuv);
+    }
+  };
 
   useEffect(() => {
     setResultsData(removeDuplicatesById(parasitologyResult, parasitology));
@@ -94,14 +124,31 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
   };
 
   const onSubmit = (data) => {
-    const rowData = resultsData.map((row) => ({
-      id: row.resultId,
-      patientId: +patientId,
-      bacteriaId: row.id,
-      orderDetailId: +orderId,
-      result: row.result || null,
-      sampleType: sampleTypeText.length === 0 ? parasitologyResult[0]?.sampleType : sampleTypeText,
-    }));
+    const rowData = resultsData.map((row) =>
+      row.result?.indexOf("^") !== -1
+        ? {
+            id: row.resultId,
+            patientId: +patientId,
+            bacteriaId: row.id,
+            orderDetailId: +orderId,
+            result: (row.result && toHtml(row.result)) || null,
+            sampleType:
+              sampleTypeText.length === 0
+                ? parasitologyResult[0]?.sampleType
+                : sampleTypeText,
+          }
+        : {
+            id: row.resultId,
+            patientId: +patientId,
+            bacteriaId: row.id,
+            orderDetailId: +orderId,
+            result: row.result || null,
+            sampleType:
+              sampleTypeText.length === 0
+                ? parasitologyResult[0]?.sampleType
+                : sampleTypeText,
+          }
+    );
 
     BacteriaProvider.createResultDisbakterioz(rowData)
       .then((res) => {
@@ -134,15 +181,15 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
       <div className="top">
         <MyLink to="/dashboard/laborant/tahlil-result">Orqaga</MyLink>
         <h3>Blanka taxrirlash</h3>
-          <input
-            onChange={(e) => setSampleTypeText(e.target.value)}
-            placeholder="Namuna turi"
-            defaultValue={parasitologyResult[0]?.sampleType || ""}
-            type="text"
-            style={{ width: "30%", marginLeft: "auto" }}
-            autoComplete="off"
-            className="form-control"
-          />
+        <input
+          onChange={(e) => setSampleTypeText(e.target.value)}
+          placeholder="Namuna turi"
+          defaultValue={parasitologyResult[0]?.sampleType || ""}
+          type="text"
+          style={{ width: "30%", marginLeft: "auto" }}
+          autoComplete="off"
+          className="form-control"
+        />
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="table table-striped table-bordered table-hover">
@@ -167,14 +214,25 @@ const EditDisBakteriozResult = ({ patientId, orderId }) => {
                     {index + 1}.{obj.bacteria_name || obj.name}
                   </td>
                   <td style={{ minWidth: "20%" }} className="col">
-                    <input
-                      autoComplete="off"
-                      className="form-control"
-                      value={obj.result || ""}
-                      onChange={(e) =>
-                        handleRowChange(index, "result", e.target.value)
-                      }
-                    />
+                    {obj.result?.startsWith("<p>") ? (
+                      <input
+                        autoComplete="off"
+                        className="form-control"
+                        value={parseHTMLToExponential(obj.result) || ""}
+                        onChange={(e) =>
+                          handleRowChange(index, "result", e.target.value)
+                        }
+                      />
+                    ) : (
+                      <input
+                        autoComplete="off"
+                        className="form-control"
+                        value={obj.result || ""}
+                        onChange={(e) =>
+                          handleRowChange(index, "result", e.target.value)
+                        }
+                      />
+                    )}
                   </td>
                   <td style={{ minWidth: "20%" }} className="col">
                     {/* <input

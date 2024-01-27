@@ -13,7 +13,10 @@ import {
   DatePicker,
   Tooltip,
   Drawer,
+  Spin,
 } from "antd";
+
+
 import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import { Button, IconButton } from "@mui/material";
@@ -27,6 +30,7 @@ const { RangePicker } = DatePicker;
 
 const Tahlillar = () => {
   const [loading, setLoading] = useState(false);
+  const [loadingPdf, setLoadingPdf] = useState(false);
   const [labaratorys, setLabaratorys] = useState([]);
   const [analysisStatus, setAnalysisStatus] = useState([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -104,6 +108,7 @@ const Tahlillar = () => {
   };
 
   const getPdfBtn = (drawerData) => {
+    setLoadingPdf(true);
     switch (drawerData.templateId) {
       case 1:
         AnalizProvider.getPdfAnalysis(true, drawerData.patientId, drawerData.id)
@@ -125,6 +130,9 @@ const Tahlillar = () => {
           .catch((err) => {
             console.log(err);
             toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
           });
         break;
 
@@ -152,6 +160,9 @@ const Tahlillar = () => {
           .catch((err) => {
             console.log(err);
             toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
           });
         break;
 
@@ -179,6 +190,9 @@ const Tahlillar = () => {
           .catch((err) => {
             console.log(err);
             toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
           });
         break;
 
@@ -206,6 +220,9 @@ const Tahlillar = () => {
           .catch((err) => {
             console.log(err);
             toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
           });
         break;
 
@@ -233,10 +250,13 @@ const Tahlillar = () => {
           .catch((err) => {
             console.log(err);
             toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
           });
         break;
 
-        case 6:
+      case 6:
         AnalizProvider.getPdfHemoCulture(
           true,
           drawerData.patientId,
@@ -260,6 +280,9 @@ const Tahlillar = () => {
           .catch((err) => {
             console.log(err);
             toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
           });
         break;
     }
@@ -498,6 +521,7 @@ const Tahlillar = () => {
         visible={openDrawer}
         width={700}
       >
+        <Spin spinning={loadingPdf} tip="Yuklanmoqda...">
         <div style={{ fontSize: 18 }}>
           <b>Bemor ism-familyasi:</b> {drawerData.firstName}{" "}
           {drawerData.lastName}
@@ -521,6 +545,7 @@ const Tahlillar = () => {
         >
           Natijani ko`rish
         </button>
+        </Spin>
       </Drawer>
     </TahlillarWrapper>
   );

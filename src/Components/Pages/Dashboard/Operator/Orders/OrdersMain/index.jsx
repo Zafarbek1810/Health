@@ -317,10 +317,10 @@ const OrdersMain = () => {
                     </td>
                     <td style={{ minWidth: "10%" }} className="col">
                       <div className="btns">
-                        <IconButton onClick={() => handleEditOrder(obj)}>
+                        <IconButton style={obj.state === 1 ? {opacity:0.5}: {}} onClick={() => handleEditOrder(obj)} disabled={obj.state === 1}>
                           <EditSvg />
                         </IconButton>
-                        <IconButton onClick={() => handleDeleteOrder(obj)}>
+                        <IconButton style={obj.state === 1 ? {opacity:0.5}: {}} onClick={() => handleDeleteOrder(obj)} disabled={obj.state === 1}>
                           <DeleteSvg />
                         </IconButton>
                       </div>

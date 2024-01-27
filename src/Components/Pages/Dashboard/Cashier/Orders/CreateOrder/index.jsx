@@ -3,11 +3,11 @@ import CreateOrderWrapper from "./style";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import { Controller, useForm } from "react-hook-form";
-import { Select } from "antd";
-import { Button } from "@mui/material";
+import { Select, Button } from "antd";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import AnalizPriceProvider from "../../../../../../Data/AnalizPriceProvider";
 
 const CreateOrder = ({ id }) => {
   const router = useRouter();
@@ -16,19 +16,62 @@ const CreateOrder = ({ id }) => {
   const [laboratory, setLaboratory] = useState([]);
   const [analizId, setAnalizId] = useState({});
   const [laboratoryId, setLaboratoryId] = useState([]);
-  const [paymentId, setPaymentId] = useState([10]);
+  const [paymentId, setPaymentId] = useState(10);
+  const [commonSum, setCommonSum] = useState("");
+  const [changeAnaliz, setChangeAnaliz] = useState([]);
+  const [newAnaliz, setNewAnaliz] = useState([]);
+  const [data, setData] = useState([]);
+  const [submittable, setSubmittable] = React.useState(false);
+
+  function filterByLaboratoryId(dataArray, numbers) {
+    const filteredArray = dataArray.filter((item) =>
+      numbers.includes(item.laboratoryId)
+    );
+
+    return filteredArray;
+  }
 
   useEffect(() => {
-    laboratoryId.map((id) => {
-      AnalizProvider.getAllAnalysisByLab(id)
+    AnalizPriceProvider.getAllPrices({ ids: Object.values(analizId).flat() })
+      .then((res) => {
+        setChangeAnaliz(
+          filterByLaboratoryId(res.data.data.allDTOList, laboratoryId)
+        );
+        console.log(res.data.data.allDTOList, "all");
+        setCommonSum(res.data.data.sum);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [newAnaliz, laboratoryId, analizId]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const promises = laboratoryId.map(async (id) => {
+  //         const res = await AnalizProvider.getAllAnalysisByLabWithPrice(id);
+  //         setAnaliz((prevAnaliz) => ({ ...prevAnaliz, [id]: res.data.data }));
+  //       });
+
+  //       await Promise.all(promises);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [laboratoryId, analizId]);
+
+  useEffect(() => {
+    laboratoryId.map((id) =>
+      AnalizProvider.getAllAnalysisByLabWithPrice(id)
         .then((res) => {
-          setAnaliz({ ...analiz, [id]: res.data.data });
-          console.log(res.data.data, id);
+          setAnaliz((prevAnaliz) => ({ ...prevAnaliz, [id]: res.data.data }));
         })
         .catch((err) => {
           console.log(err);
-        });
-    });
+        })
+    );
   }, [laboratoryId]);
 
   useEffect(() => {
@@ -63,12 +106,13 @@ const CreateOrder = ({ id }) => {
     body.formPayment = paymentId;
     body.orderId = +id;
 
+    setSubmittable(true);
+    router.push(`/dashboard/operator/order`);
     OrderProvider.saveDetailOrder(body)
       .then((res) => {
         console.log(res);
         if (res.data.success) {
           toast.success(res.data.message);
-          router.push(`/dashboard/operator/order`);
         } else {
           toast.error(res.data.message);
         }
@@ -76,8 +120,23 @@ const CreateOrder = ({ id }) => {
       .catch((err) => {
         console.log(err);
         toast.error("Barcha maydonlarni to'ldiring!");
-      });
+      }).finally(()=>{
+        setSubmittable(false)
+      })
   };
+
+  useEffect(() => {
+    if (id) {
+      OrderProvider.getOrdersById(id)
+        .then((res) => {
+          setData(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [id]);
+
 
   return (
     <CreateOrderWrapper>
@@ -97,6 +156,13 @@ const CreateOrder = ({ id }) => {
                 options={optionLaboratory}
                 onChange={(v) => {
                   setLaboratoryId(v);
+                  setAnalizId((prev) => {
+                    return Object.fromEntries(
+                      Object.entries(prev).filter(([lid, analid]) => {
+                        return v.includes(+lid);
+                      })
+                    );
+                  });
                 }}
               />
             </div>
@@ -106,9 +172,6 @@ const CreateOrder = ({ id }) => {
                 <Select
                   size="large"
                   // status="error"
-                  defaultValue={{
-                    value: 10,
-                  }}
                   className="select w-100"
                   placeholder="To'lov turini tanlang"
                   options={optionPayment}
@@ -121,36 +184,37 @@ const CreateOrder = ({ id }) => {
             <div className="result">
               <div className="result-top">
                 <h3>Umumiy narxi:</h3>
-                <span className="price">0 so`m</span>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <span
+                    className="price"
+                    style={{ textDecoration: "line-through" }}
+                  >
+                    {commonSum} so`m
+                  </span>
+                  <span className="price">
+                    {((100 - data.privilege) * commonSum) / 100} so`m
+                  </span>
+                </div>
               </div>
               <hr />
               <div className="redult-bottom">
-                {Object.values(analizId)
-                  .flat()
-                  .map((id) => {
-                    return (
-                      <div className="analiz-result" key={id}>
-                        <div className="analizName">
-                          {analiz?.[laboratoryId[0]]?.filter(
-                            (i) => i.id === id
-                          )[0]?.name}
-
-                          {analiz?.[laboratoryId[1]]?.filter(
-                            (i) => i.id === id
-                          )[0]?.name}
-                        </div>
-                        <div className="price">0 so`m</div>
-                      </div>
-                    );
-                  })}
+                {changeAnaliz.map((item) => {
+                  return (
+                    <div key={item.id} className="analiz-result">
+                      <div className="name">{item?.name}</div>
+                      <div className="price">{item.price}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
 
           <div className="right">
             {laboratoryId.map((id, index) => {
+              console.log();
               return (
-                <div className="analiz" style={{marginBottom:30}} key={index}>
+                <div className="analiz" style={{ marginBottom: 30 }} key={id}>
                   <div className="analizName">
                     {laboratory.filter((i) => i.id === id)[0].name}
                   </div>
@@ -159,23 +223,26 @@ const CreateOrder = ({ id }) => {
                     mode="multiple"
                     className="select w-100"
                     placeholder="Analiz tanlang"
+                    value={analizId[id] ?? []}
                     options={analiz[id]?.map((item) => {
                       return {
                         value: item.id,
-                        label: item.name,
+                        label: item.analysisName || item.name,
                       };
                     })}
                     onChange={(v) => {
                       setAnalizId({ ...analizId, [id]: v });
+                      setNewAnaliz(v);
                     }}
                   />
                 </div>
               );
             })}
             <Button
-              class="col-12 btn btn-primary btn-rounded"
-              variant="contained"
-              type="submit"
+              class="w-100 btn btn-primary btn-rounded"
+              type="primary"
+              htmlType="submit"
+              disabled={changeAnaliz.length === 0 || submittable}
             >
               Buyurtma yaratish
             </Button>

@@ -1,11 +1,24 @@
 import { styled } from "styled-components";
 
 const CreateOrderWrapper = styled.div`
-  .top {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-size: 20px;
+.top{
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: start;
+  margin-bottom: 20px;
+ 
+
+  h3{
+    margin-left: 33%;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 24px;
+    color: #000000;
+    font-family: "Azo sans";
+    margin-bottom: 0;
+  }
   }
 
   .wrapper {

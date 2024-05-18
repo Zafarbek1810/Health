@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import removeDuplicates from "../../../../../../utils/removeDublicateArray";
 import AnalizPriceProvider from "../../../../../../Data/AnalizPriceProvider";
+import MyLink from "../../../../../Common/MyLink";
 
 const UpdateOrder = ({ id }) => {
   const router = useRouter();
@@ -95,9 +96,9 @@ const UpdateOrder = ({ id }) => {
   //         });
   //     });
   //   }
-    
+
   // }, [defaultLab, id, analiz]);
-  
+
   useEffect(() => {
     if (defaultLab) {
       defaultLab.forEach((id) => {
@@ -122,7 +123,6 @@ const UpdateOrder = ({ id }) => {
     LabaratoryProvider.getAllLaboratory()
       .then((res) => {
         setLaboratory(res.data.data);
-
       })
       .catch((err) => {
         console.log(err);
@@ -168,9 +168,10 @@ const UpdateOrder = ({ id }) => {
       .catch((err) => {
         console.log(err);
         toast.error("Barcha maydonlarni to'ldiring!");
-      }).finally(()=>{
-        setSubmittable(false)
       })
+      .finally(() => {
+        setSubmittable(false);
+      });
   };
 
   useEffect(() => {
@@ -208,10 +209,13 @@ const UpdateOrder = ({ id }) => {
   if (!data?.orderDetailDTOList || !defaultLab || !analiz) {
     return <div>Loading ...</div>;
   }
-  console.log('analizObj', analiz);
+  console.log("analizObj", analiz);
   return (
     <CreateOrderWrapper>
-      <div className="top">Buyurtma o`zgartirish</div>
+      <div className="top">
+        <MyLink to="/dashboard/operator/order/">Orqaga</MyLink>
+        <h3>Buyurtma o`zgartirish</h3>
+      </div>
       <div className="wrapper">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="left">
@@ -266,7 +270,6 @@ const UpdateOrder = ({ id }) => {
               <hr />
               {renderAnalyzList}
             </div>
-            
           </div>
 
           <div className="right">
@@ -301,10 +304,10 @@ const UpdateOrder = ({ id }) => {
               );
             })}
             <Button
-               class="w-100 btn btn-primary btn-rounded"
-               type="primary"
-               htmlType="submit"
-               disabled={changeAnaliz.length === 0 || submittable}
+              class="w-100 btn btn-primary btn-rounded"
+              type="primary"
+              htmlType="submit"
+              disabled={changeAnaliz.length === 0 || submittable}
             >
               Buyurtma o`zgartirish
             </Button>

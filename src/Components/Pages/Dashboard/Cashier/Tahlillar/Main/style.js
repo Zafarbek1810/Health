@@ -118,6 +118,7 @@ const TahlillarWrapper = styled.div`
             transition: 300ms;
             background: transparent;
 
+
             svg {
               fill: none;
               width: 20px;

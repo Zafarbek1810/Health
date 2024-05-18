@@ -108,7 +108,7 @@ const Statistika = () => {
               </div>
             </Card>
           </div>
-          <div>
+          {/* <div>
             <Card bordered={true}>
               <div bordered={true} className="bottom">
                 <p>Bekor qilingan</p>{" "}
@@ -121,7 +121,7 @@ const Statistika = () => {
                 </span>
               </div>
             </Card>
-          </div>
+          </div> */}
         </div>
         <Row gutter={16} style={{ marginBottom: 30 }}>
           <Col span={6}>

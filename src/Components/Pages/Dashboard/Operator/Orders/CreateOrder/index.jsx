@@ -4,6 +4,7 @@ import AnalizProvider from "../../../../../../Data/AnalizProvider";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import { Controller, useForm } from "react-hook-form";
 import { Select, Button } from "antd";
+import MyLink from '../../../../../../Components/Common/MyLink'
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -140,7 +141,10 @@ const CreateOrder = ({ id }) => {
 
   return (
     <CreateOrderWrapper>
-      <div className="top">Buyurtma yaratish</div>
+      <div className="top">
+      <MyLink to="/dashboard/operator/order/">Orqaga</MyLink>
+      <h3>Buyurtma yaratish</h3>
+      </div>
       <div className="wrapper">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="left">

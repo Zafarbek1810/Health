@@ -31,6 +31,7 @@ const Tahlillar = () => {
   const [loading, setLoading] = useState(false);
   const [analysisStatus, setAnalysisStatus] = useState([]);
   const [changeAnalizId, setChangeAnalizId] = useState(null);
+  const [resultStatus, setResultStatus] = useState(null);
   const [orderDetailId, setOrderDetailId] = useState(null);
   const RefObj = useRef({ resolve() {}, reject() {} });
   const [modalIsOpenModal, setIsOpenModal] = useState(false);
@@ -95,7 +96,11 @@ const Tahlillar = () => {
   ];
 
   const onSubmitChangeStatus = () => {
-    OrderProvider.changeAnalizStatus(orderDetailId, changeAnalizId)
+    OrderProvider.changeAnalizStatus(
+      orderDetailId,
+      changeAnalizId,
+      resultStatus
+    )
       .then((res) => {
         console.log(res.data.data);
         toast.success(res.data.message);
@@ -246,7 +251,7 @@ const Tahlillar = () => {
           });
         break;
 
-        case 6:
+      case 6:
         AnalizProvider.getPdfHemoCulture(
           true,
           drawerData.patientId,
@@ -329,11 +334,14 @@ const Tahlillar = () => {
             <th style={{ minWidth: "25%" }} className="col">
               Analiz Nomi
             </th>
-            <th style={{ minWidth: "15%" }} className="col">
+            <th style={{ minWidth: "10%" }} className="col">
               Yaratilgan sana
             </th>
-            <th style={{ minWidth: "15%" }} className="col">
+            <th style={{ minWidth: "10%" }} className="col">
               Natija chiqqan sana
+            </th>
+            <th style={{ minWidth: "10%" }} className="col">
+              Natija
             </th>
             <th style={{ minWidth: "15%" }} className="col">
               Natija holati{" "}
@@ -362,15 +370,29 @@ const Tahlillar = () => {
                 <td style={{ minWidth: "25%" }} className="col">
                   {obj.analysisName}
                 </td>
-                <td style={{ minWidth: "15%" }} className="col">
+                <td style={{ minWidth: "10%" }} className="col">
                   {moment(new Date(obj.createdAt)).format("DD.MM.YYYY HH:mm")}
                 </td>
-                <td style={{ minWidth: "15%" }} className="col">
+                <td style={{ minWidth: "10%" }} className="col">
                   {obj.resultTime === null
                     ? ""
                     : moment(new Date(obj.resultTime)).format(
                         "DD.MM.YYYY HH:mm"
                       )}
+                </td>
+                <td
+                  style={
+                    obj.resultStatus === 17
+                      ? { minWidth: "10%", color: "#3cc18a" }
+                      : { minWidth: "10%", color: "#c13c3c" }
+                  }
+                  className="col"
+                >
+                  {obj.resultStatus === 17
+                    ? "Ijobiy"
+                    : obj.resultStatus === 27
+                    ? "Salbiy"
+                    : ""}
                 </td>
                 <td style={{ minWidth: "15%" }} className="col-badge">
                   {obj.analysisStatus === 11 ? (
@@ -465,7 +487,7 @@ const Tahlillar = () => {
         setIsOpen={setIsOpenModal}
       >
         <ConfirmModal title={"Statusni o'zgartirish"}>
-          <div className="left" style={{ marginBottom: 30 }}>
+          <div className="left" style={{ marginBottom: 0 }}>
             <Controller
               control={control}
               name="analysisStatus"
@@ -484,6 +506,18 @@ const Tahlillar = () => {
                 />
               )}
             />
+            <Radio.Group
+              onChange={(e) => setResultStatus(e.target.value)}
+              value={resultStatus}
+              style={{ marginTop: 30 }}
+            >
+              <Space direction="horizontal">
+                <Radio defaultChecked value={17}>
+                  Ijobiy
+                </Radio>
+                <Radio value={27}>Salbiy</Radio>
+              </Space>
+            </Radio.Group>
           </div>
 
           <div

@@ -59,6 +59,15 @@ const MainResult = () => {
       case 6: router.push(
         `/dashboard/laborant/edit-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
       ); break;
+      case 7: router.push(
+        `/dashboard/laborant/edit-microorganism?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
+      case 8: router.push(
+        `/dashboard/laborant/edit-result-hepatit?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
+      case 9: router.push(
+        `/dashboard/laborant/edit-virusology-analysis?patientId=${obj.patientId}&orderId=${obj.id}`
+      ); break;
 
       default : router.push(`/dashboard/laborant/tahlil-result`);
     }
@@ -119,7 +128,15 @@ const MainResult = () => {
                         case 6: router.push(
                           `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
-                  
+                        case 7: router.push(
+                          `/dashboard/laborant/list-microorganism?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 8: router.push(
+                          `/dashboard/laborant/list-result-hepatit?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 9: router.push(
+                          `/dashboard/laborant/list-virusology-analysis?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
                         default : router.push(`/dashboard/laborant/tahlil-result`);
                       }
                     }}
@@ -149,7 +166,15 @@ const MainResult = () => {
                       case 6: router.push(
                         `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
                       ); break;
-                
+                      case 7: router.push(
+                        `/dashboard/laborant/list-microorganism?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
+                      case 8: router.push(
+                        `/dashboard/laborant/list-result-hepatit?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
+                      case 9: router.push(
+                        `/dashboard/laborant/list-virusology-analysis?patientId=${obj.patientId}&orderId=${obj.id}`
+                      ); break;
                       default : router.push(`/dashboard/laborant/tahlil-result`);
                     }
                   }}
@@ -179,7 +204,15 @@ const MainResult = () => {
                         case 6: router.push(
                           `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
-                  
+                        case 7: router.push(
+                          `/dashboard/laborant/list-microorganism?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 8: router.push(
+                          `/dashboard/laborant/list-result-hepatit?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 9: router.push(
+                          `/dashboard/laborant/list-virusology-analysis?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
                         default : router.push(`/dashboard/laborant/tahlil-result`);
                       }
                     }}
@@ -209,7 +242,15 @@ const MainResult = () => {
                         case 6: router.push(
                           `/dashboard/laborant/list-hemo-culture?patientId=${obj.patientId}&orderId=${obj.id}`
                         ); break;
-                  
+                        case 7: router.push(
+                          `/dashboard/laborant/list-microorganism?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 8: router.push(
+                          `/dashboard/laborant/list-result-hepatit?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
+                        case 9: router.push(
+                          `/dashboard/laborant/list-virusology-analysis?patientId=${obj.patientId}&orderId=${obj.id}`
+                        ); break;
                         default : router.push(`/dashboard/laborant/tahlil-result`);
                       }
                     }}

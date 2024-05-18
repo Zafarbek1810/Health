@@ -9,9 +9,10 @@ import RegionProvider from "../../../../../../Data/RegionProvider";
 import DistrictProvider from "../../../../../../Data/DistrictProvider";
 import PatientProvider from "../../../../../../Data/PatientProvider";
 import { toast } from "react-toastify";
-import { Checkbox } from "antd";
+import { Checkbox, DatePicker } from "antd";
+import dayjs from "dayjs";
 
-const UpdatePatient = ({ onCloseModal2, editPatient }) => {
+const UpdatePatient = ({ onCloseModal2, editPatient, setRender }) => {
   const { register, handleSubmit, control, reset, setValue, getValues } =
     useForm();
   const [patientEdit, setPatientEdit] = useState({});
@@ -75,6 +76,13 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
     });
   }, []);
 
+  console.log(editPatient.birth_day);
+
+  const [birthday, setBirthday] = useState("");
+  const onChange = (date, dateString) => {
+    setBirthday(dateString);
+  };
+
   const onSubmitPatient = async (values) => {
     const body = {};
     if (editPatient) {
@@ -84,7 +92,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
       body.phoneNumber = values.phoneNumber;
       body.regionId = editPatient?.region?.id;
       body.districtId = editPatient?.district?.id;
-      body.birthDay = values.birthDay;
+      body.birthDay = birthday;
       body.address = values.address;
       body.officeName = values.officeName;
       body.contract = values.contract;
@@ -99,6 +107,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
         toast.success("Muvaffaqiyatli o`zgartirildi");
         onCloseModal2();
         reset();
+        setRender(Math.random());
       })
       .catch((err) => {
         console.log(err);
@@ -168,7 +177,7 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
                   onBlur={onBlur}
                   onChange={(v) => {
                     onChange(v);
-                    setRegionId(v)
+                    setRegionId(v);
                   }}
                   ref={ref}
                 />
@@ -197,13 +206,27 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
           </div>
           <div className="label">
             <label>Tug`ilgan kun</label>
-            <input
+            {/* <input
               type="date"
               className="form-control"
               placeholder={"Tug`ilgan kun"}
               format={'DD.MM.YYYY'}
               {...register("birthDay")}
-            />
+            /> */}
+            {editPatient.birth_day ? (
+              <DatePicker
+                defaultValue={dayjs(editPatient.birth_day, "YYYY-MM-DD")}
+                size="small"
+                onChange={onChange}
+                format={"DD.MM.YYYY"}
+              />
+            ) : (
+              <DatePicker
+                size="small"
+                onChange={onChange}
+                format={"DD.MM.YYYY"}
+              />
+            )}
           </div>
           <div className="label">
             <label>Telefon raqami</label>
@@ -212,8 +235,8 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
               name="phoneNumber"
               render={({ field: { onChange, onBlur, value } }) => (
                 <PatternFormat
-                format="+998(##) ### ## ##"
-                mask="_" 
+                  format="+998(##) ### ## ##"
+                  mask="_"
                   className="form-control"
                   name="phoneNumber"
                   allowEmptyFormatting
@@ -264,7 +287,10 @@ const UpdatePatient = ({ onCloseModal2, editPatient }) => {
           </div>
           <div className="label">
             <label></label>
-            <Checkbox defaultChecked={editPatient.isSendSms} onChange={(e) => setIsSendSms(e.target.checked)}>
+            <Checkbox
+              defaultChecked={editPatient.isSendSms}
+              onChange={(e) => setIsSendSms(e.target.checked)}
+            >
               Sms yuboriladimi?
             </Checkbox>
           </div>

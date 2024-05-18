@@ -11,7 +11,7 @@ import ButtonLoader from "../../../../../Common/ButtonLoader";
 import { toast } from "react-toastify";
 import { Checkbox, DatePicker } from "antd";
 
-const AddPatient = ({ onCloseModal }) => {
+const AddPatient = ({ onCloseModal, setRender }) => {
   const {
     register,
     formState: { errors },
@@ -75,6 +75,7 @@ const AddPatient = ({ onCloseModal }) => {
       .then((res) => {
         toast.success(res.data?.message);
         reset();
+        setRender(Math.random())
       })
       .catch((err) => {
         console.log(err);

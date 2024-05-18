@@ -31,7 +31,6 @@ const OrdersMain = () => {
   } = useForm();
   const [patient, setPatient] = useState([]);
   const [modalAnalizData, setModalAnalizData] = useState([]); // modal analiz data
-  const [patientId, setPatientId] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
   const [order, setOrder] = useState([]);
@@ -47,6 +46,7 @@ const OrdersMain = () => {
   const [keyword, setKeyword] = useState("");
   const [paymentType, setPaymentType] = useState(null);
   const [paymentStatusRadio, setPaymentStatusRadio] = useState(null);
+  const [forrender, setForrender] = useState(null);
 
   const onChange = (page) => {
     console.log(page);
@@ -77,7 +77,7 @@ const OrdersMain = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [currentPage, keyword, paymentType, paymentStatusRadio]);
+  }, [currentPage, keyword, paymentType, paymentStatusRadio, forrender]);
 
   const render = () => {
     setLoading(true);

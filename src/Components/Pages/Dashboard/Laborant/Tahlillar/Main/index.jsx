@@ -69,6 +69,15 @@ const Tahlillar = () => {
         case 6: router.push(
           `/dashboard/laborant/hemo-culture?id=${detailObj.id}&patientId=${detailObj.patientId}`
         ); break;
+        case 7: router.push(
+          `/dashboard/laborant/microbiology-examination?id=${detailObj.id}&patientId=${detailObj.patientId}`
+        ); break;
+        case 8: router.push(
+          `/dashboard/laborant/add-result-hepatits?id=${detailObj.id}&patientId=${detailObj.patientId}`
+        ); break;
+        case 9: router.push(
+          `/dashboard/laborant/add-virusology-analysis?id=${detailObj.id}&patientId=${detailObj.patientId}`
+        ); break;
 
         default : router.push(`/dashboard/laborant/tahlillar`);
       }

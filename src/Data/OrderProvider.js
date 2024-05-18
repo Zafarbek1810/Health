@@ -55,8 +55,8 @@ export default class OrderProvider {
         return await client.post(`/order/change/payment-status` , body);
     }
 
-    static async changeAnalizStatus (orderDetailId, analysisStatus){
-        return await client.post(`/order/change/analysis-result-status?orderDetailId=${orderDetailId}&analysisStatus=${analysisStatus}`);
+    static async changeAnalizStatus (orderDetailId, analysisStatus, resultStatus){
+        return await client.post(`/order/change/analysis-result-status?orderDetailId=${orderDetailId}&analysisStatus=${analysisStatus}&resultStatus=${resultStatus}`);
     }
 
 

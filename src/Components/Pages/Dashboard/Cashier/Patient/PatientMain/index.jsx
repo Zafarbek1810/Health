@@ -22,6 +22,7 @@ const PatientMain = () => {
   const [keyword, setKeyword] = useState("");
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [render, setRender] = useState(null)
 
   const onChange = (page) => {
     console.log(page);
@@ -69,7 +70,7 @@ const PatientMain = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [isOpenModal, isOpenModal2, keyword, currentPage]);
+  }, [isOpenModal, isOpenModal2, keyword, currentPage, render]);
 
   const openModal = () => {
     setIsOpenModal(true);
@@ -219,7 +220,7 @@ const PatientMain = () => {
           onCloseModal();
         }}
       >
-        <AddPatient onCloseModal={onCloseModal} />
+        <AddPatient onCloseModal={onCloseModal} setRender={setRender}/>
       </Drawer>
       <Drawer
         anchor={"right"}
@@ -231,6 +232,7 @@ const PatientMain = () => {
         <UpdatePatient
           onCloseModal2={onCloseModal2}
           editPatient={editPatient}
+          setRender={setRender}
         />
       </Drawer>
     </PatientMainWrapper>

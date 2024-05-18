@@ -4,16 +4,19 @@ import ButtonLoader from "../../../../../Common/ButtonLoader";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { AddParasiteWrapper } from "./style";
-import { ModalContent, ModalHeader } from "../AddParasite/style"
+import { ModalContent, ModalHeader } from "../AddParasite/style";
 import Select from "react-select";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import ParasiteProvider from "../../../../../../Data/ParasiteProvider";
+import AnalizProvider from "../../../../../../Data/AnalizProvider";
 
 const AddParasite = ({ onCloseModal }) => {
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [loading, setLoading] = useState(false);
   const [labaratoryId, setLabaratoryId] = useState(null);
+  const [analizId, setAnalizId] = useState(null);
   const [labaratory, setLabaratory] = useState([]);
+  const [analiz, setAnaliz] = useState([]);
 
   useEffect(() => {
     LabaratoryProvider.getAllLaboratory()
@@ -25,7 +28,27 @@ const AddParasite = ({ onCloseModal }) => {
       });
   }, []);
 
+  useEffect(() => {
+    if (labaratoryId) {
+      AnalizProvider.getAllAnalysisByLab(labaratoryId)
+        .then((res) => {
+          setAnaliz(res.data.data);
+          console.log(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [labaratoryId]);
+
   const optionLabaratory = labaratory?.map((item) => {
+    return {
+      value: item.id,
+      label: item.name,
+    };
+  });
+
+  const optionAnaliz = analiz?.map((item) => {
     return {
       value: item.id,
       label: item.name,
@@ -35,7 +58,7 @@ const AddParasite = ({ onCloseModal }) => {
   const onSubmitParasite = async (values) => {
     const body = {};
     body.parasiteName = values.parasiteName;
-    body.laboratoryId = labaratoryId;
+    body.analysisId = analizId;
 
     setLoading(true);
     ParasiteProvider.createParasite(body)
@@ -71,7 +94,7 @@ const AddParasite = ({ onCloseModal }) => {
             <label>Laboratory</label>
             <Controller
               control={control}
-              name="region"
+              name="labaratory"
               render={({ field: { onChange, onBlur, value, name, ref } }) => (
                 <Select
                   className="select col-3 w-100"
@@ -82,6 +105,27 @@ const AddParasite = ({ onCloseModal }) => {
                   onChange={(v) => {
                     onChange(v);
                     setLabaratoryId(v.value);
+                  }}
+                  ref={ref}
+                />
+              )}
+            />
+          </div>
+          <div className="label">
+            <label>Analiz</label>
+            <Controller
+              control={control}
+              name="analysis"
+              render={({ field: { onChange, onBlur, value, name, ref } }) => (
+                <Select
+                  className="select col-3 w-100"
+                  value={value}
+                  placeholder="Analizni tanlang"
+                  options={optionAnaliz}
+                  onBlur={onBlur}
+                  onChange={(v) => {
+                    onChange(v);
+                    setAnalizId(v.value);
                   }}
                   ref={ref}
                 />

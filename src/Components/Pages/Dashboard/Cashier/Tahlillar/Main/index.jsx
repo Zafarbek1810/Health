@@ -488,7 +488,7 @@ const Tahlillar = () => {
                     {numberFormat(obj.discountedPrice)}
                   </td>
                   <td style={{ minWidth: "7%" }} className="col">
-                    <IconButton onClick={() => handleOpenDrawer(obj)}>
+                    <IconButton onClick={() => handleOpenDrawer(obj)} style={obj.analysisStatus === 11 ?{opacity:0.5}: {opacity:1}} disabled={obj.analysisStatus === 11}>
                       <EyeSvg />
                     </IconButton>
                   </td>

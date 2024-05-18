@@ -105,7 +105,7 @@ const ParasiteMain = () => {
                   {index + 1}. {obj.parasite_name}
                 </td>
                 <td style={{ minWidth: "35%" }} className="col">
-                   {obj.laboratory?.name}
+                   {obj.analysis?.laboratory?.name}
                 </td>
                 <td style={{ minWidth: "30%" }} className="col">
                   <div className="btns">

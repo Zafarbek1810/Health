@@ -27,9 +27,9 @@ const PieStatistic = ({dateString}) => {
         color: [
           "#66f89c",
           "#408aeb",
-          "#15b693",
-          // "#408aeb",
-          // "#4188e4",
+          "#b315b6",
+          "#e8eb40",
+          "#b63015",
         ],
         tooltip: {
           show: true,

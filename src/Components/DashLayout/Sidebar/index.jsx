@@ -78,6 +78,18 @@ const NavListMenu = [
     src: <UserCircle />,
     role: ["ROLE_SEO"],
   },
+  {
+    title: "Mikroorganizm",
+    path: "/dashboard/ceo/microorganism",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
+  {
+    title: "Gepatit",
+    path: "/dashboard/ceo/hepatit",
+    src: <UserCircle />,
+    role: ["ROLE_SEO"],
+  },
   
   
   //admin role
@@ -123,6 +135,18 @@ const NavListMenu = [
   {
     title: "Tahlillar",
     path: "/dashboard/cashier/tahlillar",
+    src: <AnalysisSvg />,
+    role: ["ROLE_CASHIER"],
+  },
+  {
+    title: "Shartnomalar",
+    path: "/dashboard/cashier/contract",
+    src: <AnalysisSvg />,
+    role: ["ROLE_CASHIER"],
+  },
+  {
+    title: "San Min",
+    path: "/dashboard/cashier/san-min",
     src: <AnalysisSvg />,
     role: ["ROLE_CASHIER"],
   },

@@ -21,7 +21,6 @@ import FilterIconSvg from "../../../../../Common/Svgs/FilterIconSvg";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import { Button, IconButton } from "@mui/material";
 import numberFormat from "../../../../../../utils/numberFormat";
-import EditSvg from "../../../../../Common/Svgs/EditSvg";
 import EyeSvg from "../../../../../Common/Svgs/EyeSvg";
 import AnalizProvider from "../../../../../../Data/AnalizProvider";
 import { toast } from "react-toastify";
@@ -258,6 +257,93 @@ const Tahlillar = () => {
 
       case 6:
         AnalizProvider.getPdfHemoCulture(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
+          });
+        break;
+      case 7:
+        AnalizProvider.getPdfMicrobiological(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
+          });
+        break;
+      case 8:
+        AnalizProvider.getPdfHepatits(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
+          });
+        break;
+      case 9:
+        AnalizProvider.getVirusologyAnalysis(
           true,
           drawerData.patientId,
           drawerData.id

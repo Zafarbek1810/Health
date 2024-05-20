@@ -114,6 +114,48 @@ export default class AnalizProvider {
       return Promise.reject(err);
     }
   }
+  static async getPdfMicrobiological(isCyrillic, patientId, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-microbiological-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  static async getPdfHepatits(isCyrillic, patientId, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-hepatitis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+  static async getVirusologyAnalysis(isCyrillic, patientId, orderDetailId) {
+    try {
+      const response = await client.get(
+        `/pdf/get-virology-analysis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        {
+          responseType: "blob",
+        }
+      );
+  
+      return response;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
 
 
 

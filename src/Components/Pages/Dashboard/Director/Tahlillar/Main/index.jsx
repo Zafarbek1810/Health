@@ -4,7 +4,7 @@ import MinLoader from "../../../../../Common/MinLoader";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { Badge, Drawer, Pagination, Popover, Radio, Space } from "antd";
+import { Badge, Drawer, Pagination, Popover, Radio, Space, Spin } from "antd";
 import {
   Button,
   ButtonBase,
@@ -40,8 +40,10 @@ const Tahlillar = () => {
   const [totalElements, setTotalElements] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [analysiStatusFilter, setAnalysisStatusFilter] = useState(null);
+  const [resultStatusFilter, setResultStatusFilter] = useState(null);
   const [keyword, setKeyword] = useState("");
   const [dateString, setDateString] = useState(["", ""]);
+  const [loadingPdf, setLoadingPdf] = useState(false);
 
   const handleEditStatus = (obj) => {
     console.log(obj);
@@ -75,6 +77,7 @@ const Tahlillar = () => {
     const body = {};
     body.keyword = keyword || null;
     body.analysisStatus = analysiStatusFilter || null;
+    body.resultStatus = resultStatusFilter || null;
     body.fromDate = dateString[0] || null;
     body.toDate = dateString[1] || null;
     body.pageNum = currentPage;
@@ -85,7 +88,7 @@ const Tahlillar = () => {
       setAnalysisStatus(res.data.data);
       setTotalElements(Math.floor(res.data?.recordsTotal / 2));
     });
-  }, [modalIsOpenModal, keyword, currentPage, analysiStatusFilter, dateString]);
+  }, [modalIsOpenModal, keyword, currentPage, analysiStatusFilter,resultStatusFilter, dateString]);
 
   const analizStatus = [
     // { value: 11, label: "Navbatda" },
@@ -119,6 +122,7 @@ const Tahlillar = () => {
   };
 
   const getPdfBtn = (drawerData) => {
+    setLoadingPdf(true);
     switch (drawerData.templateId) {
       case 1:
         AnalizProvider.getPdfAnalysis(true, drawerData.patientId, drawerData.id)
@@ -277,6 +281,94 @@ const Tahlillar = () => {
             toast.error(err?.response?.data?.message);
           });
         break;
+
+        case 7:
+        AnalizProvider.getPdfMicrobiological(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
+          });
+        break;
+      case 8:
+        AnalizProvider.getPdfHepatits(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
+          });
+        break;
+      case 9:
+        AnalizProvider.getVirusologyAnalysis(
+          true,
+          drawerData.patientId,
+          drawerData.id
+        )
+          .then((res) => {
+            console.log(res);
+            const blob = new Blob([res.data], {
+              type: "application/pdf",
+            });
+
+            const link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            //no download
+            link.target = "_blank";
+            link.click();
+
+            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+            // link.click();
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err?.response?.data?.message);
+          })
+          .finally(() => {
+            setLoadingPdf(false);
+          });
+        break;
     }
   };
 
@@ -287,6 +379,10 @@ const Tahlillar = () => {
   const onChangeAnalysisStatus = (e) => {
     console.log("checked = ", e.target.value);
     setAnalysisStatusFilter(e.target.value);
+  };
+  const onChangeResultStatus = (e) => {
+    console.log("checked = ", e.target.value);
+    setResultStatusFilter(e.target.value);
   };
 
   const content = (
@@ -301,6 +397,20 @@ const Tahlillar = () => {
           <Radio value={31}>Rad etilgan</Radio>
           <Radio value={41}>Natija chiqdi</Radio>
           <Radio value={51}>Bekor qilingan</Radio>
+        </Space>
+      </Radio.Group>
+    </div>
+  );
+  const content2 = (
+    <div>
+      <Radio.Group
+        onChange={onChangeResultStatus}
+        value={resultStatusFilter}
+      >
+        <Space direction="vertical">
+          <Radio value={null}>Barchasi</Radio>
+          <Radio value={17}>Ijobiy</Radio>
+          <Radio value={27}>Salbiy</Radio>
         </Space>
       </Radio.Group>
     </div>
@@ -341,7 +451,17 @@ const Tahlillar = () => {
               Natija chiqqan sana
             </th>
             <th style={{ minWidth: "10%" }} className="col">
-              Natija
+              Natija{" "}
+              <Popover
+                className="pop"
+                content={content2}
+                title="Filterlash"
+                trigger="click"
+              >
+                <button style={{ background: "transparent", border: "none" }}>
+                  <FilterIconSvg />
+                </button>
+              </Popover>
             </th>
             <th style={{ minWidth: "15%" }} className="col">
               Natija holati{" "}
@@ -456,6 +576,7 @@ const Tahlillar = () => {
         visible={openDrawer}
         width={700}
       >
+        <Spin spinning={loadingPdf} tip="Yuklanmoqda...">
         <div style={{ fontSize: 18 }}>
           <b>Bemor ism-familyasi:</b> {drawerData.firstName}{" "}
           {drawerData.lastName}
@@ -479,6 +600,7 @@ const Tahlillar = () => {
         >
           Natijani ko`rish
         </button>
+        </Spin>
       </Drawer>
 
       <ModalContextProvider

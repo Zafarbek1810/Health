@@ -41,25 +41,17 @@ const ListMicroorganism = ({ patientId, orderId }) => {
         </thead>
         <tbody>
           {!loading ? (
-            results.length ? (
-              results.map((obj, index) => (
-                <>
-                  <tr key={index}>
+                  <tr >
                     <td style={{ minWidth: "30%" }} className="col">
-                      {obj.name}
+                      {results.name}
                     </td>
                     <td style={{ minWidth: "30%" }} className="col">
-                      {obj.result}
+                      {results.result}
                     </td>
                     <td style={{ minWidth: "30%" }} className="col">
-                      {obj.sampleType}
+                      {results.sampleType}
                     </td>
                   </tr>
-                </>
-              ))
-            ) : (
-              <h3 className="noItem">Natijalar mavjud emas</h3>
-            )
           ) : (
             <MinLoader />
           )}

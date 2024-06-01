@@ -311,10 +311,10 @@ const OrdersMain = () => {
                   </td>
                   <td style={{ minWidth: "10%" }} className="col">
                     <div className="btns">
-                      <IconButton onClick={() => handleEditStatus(obj)}>
+                      <IconButton disabled={obj.paymentStatus === 1} onClick={() => handleEditStatus(obj)}>
                         <EditSvg />
                       </IconButton>
-                      <IconButton onClick={() => handleTableRow(obj)}>
+                      <IconButton disabled={obj.paymentStatus === 1} onClick={() => handleTableRow(obj)}>
                         <EyeSvg />
                       </IconButton>
                     </div>

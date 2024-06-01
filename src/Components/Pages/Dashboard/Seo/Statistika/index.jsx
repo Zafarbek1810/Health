@@ -7,8 +7,10 @@ import EyeSvg from "../../../../Common/Svgs/EyeSvg"
 import PieStatistic from "./PieStatistic";
 import LineCHarts from "./LineCharts";
 import OrderProvider from "../../../../../Data/OrderProvider";
+import { useRouter } from "next/router";
 
 const Statistika = () => {
+  const router = useRouter();
   const [currency, setCurrency] = useState({});
 
   useEffect(() => {
@@ -18,7 +20,11 @@ const Statistika = () => {
         console.log(res.data.data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status === 403) {
+          router.push("/login");
+        } else {
+          console.log(err);
+        }
       });
   }, []);
 

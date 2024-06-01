@@ -8,6 +8,7 @@ export default function Home() {
     const router = useRouter();
     const { patientId } = router.query;
     const { orderId } = router.query;
+   
 
     return (
         <div>
@@ -18,7 +19,7 @@ export default function Home() {
             </Head>
             <WithAuthComponent>
                 <DashboardLayout>
-                    <ListMicroorganism patientId={patientId} orderId={orderId}/>
+                    <ListMicroorganism patientId={patientId} orderId={orderId} />
                 </DashboardLayout>
             </WithAuthComponent>
         </div>

@@ -2,10 +2,16 @@ import { styled } from "styled-components";
 
 const CreateOrderWrapper = styled.div`
   .top {
-    display: flex;
-    justify-content: center;
     margin-bottom: 20px;
     font-size: 20px;
+
+    a {
+      margin-right: auto;
+    }
+
+    h3 {
+      text-align: center;
+    }
   }
 
   .wrapper {
@@ -14,8 +20,10 @@ const CreateOrderWrapper = styled.div`
     display: flex;
     gap: 50px;
 
-    .left, .right{
+    .left,
+    .right {
       width: 50%;
+      height: 100vh;
     }
 
     label {
@@ -30,7 +38,7 @@ const CreateOrderWrapper = styled.div`
       width: 100%;
     }
 
-    button{
+    button {
       margin-top: 25px;
       width: 100%;
     }
@@ -43,25 +51,24 @@ const CreateOrderWrapper = styled.div`
     padding: 10px;
     border-radius: 5px;
 
-    .result-top{
+    .result-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      span{
+      span {
         font-size: 20px;
         font-weight: bold;
-
       }
     }
 
-    .analiz-result{
+    .analiz-result {
       display: flex;
       justify-content: space-between;
 
-      .analizName{
+      .analizName {
         width: 80%;
       }
-      .price{
+      .price {
         width: 20%;
         text-align: end;
       }

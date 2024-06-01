@@ -4,20 +4,21 @@ import { AnalizResultAddWrapper } from "../AddAnalizResult/style";
 import MyLink from "../../../../../Common/MyLink";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import BacteriaProvider from "../../../../../../Data/BacteriaProvider";
 import { toast } from "react-toastify";
 import MicroOrganismProvider from "../../../../../../Data/MicroOrganismProvider";
+import AnalizProvider from "../../../../../../Data/AnalizProvider";
 
-const AddMicrobiologyExamination = ({ id, patientId }) => {
+const AddMicrobiologyExamination = ({ id, patientId, templateId, analysisId }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [microorganism, setMicroorganism] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sampleTypeText, setSampleTypeText] = useState("");
 
+
   useEffect(() => {
     setLoading(true);
-    MicroOrganismProvider.getAllMicroorganism()
+    AnalizProvider.getAllAnalysisTemplateId(templateId)
       .then((res) => {
         setMicroorganism(res.data.data);
         console.log(res.data.data);
@@ -30,20 +31,18 @@ const AddMicrobiologyExamination = ({ id, patientId }) => {
       });
   }, []);
 
+
   
 
   const onSubmit = () => {
-    const rowData = microorganism.map((row) => {
-      return {
-        patientId: +patientId,
-        microorganismId: row.id,
-        orderDetailId: +id,
-        result: row.result || null,
-        sampleType: sampleTypeText,
-      };
-    });
+    const resultat = microorganism?.filter((row=>row.id===+analysisId))[0]
 
-    MicroOrganismProvider.createResultMicroorganism(rowData)
+    MicroOrganismProvider.createResultMicroorganism({
+      patientId: +patientId,
+      orderDetailId: +id,
+      result: resultat.result || null,
+      sampleType: sampleTypeText,
+    })
       .then((res) => {
         console.log(res);
         toast.success(res.data.message);
@@ -97,6 +96,7 @@ const AddMicrobiologyExamination = ({ id, patientId }) => {
                     <input
                       autoComplete="off"
                       className="form-control"
+                      disabled={+analysisId !== +obj.id}
                       value={obj.result || ""}
                       onChange={(e) =>
                         handleRowChange(index, "result", e.target.value)

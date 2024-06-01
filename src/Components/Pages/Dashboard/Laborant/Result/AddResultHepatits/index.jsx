@@ -3,22 +3,23 @@ import MinLoader from "../../../../../Common/MinLoader";
 import { AnalizResultAddWrapper } from "../AddAnalizResult/style";
 import MyLink from "../../../../../Common/MyLink";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import BacteriaProvider from "../../../../../../Data/BacteriaProvider";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import MicroOrganismProvider from "../../../../../../Data/MicroOrganismProvider";
 import HepatitProvider from "../../../../../../Data/HepatitProvider";
+import Select from "react-select";
+import AnalizProvider from "../../../../../../Data/AnalizProvider";
 
-const AddResultHepatits = ({ id, patientId }) => {
+const AddResultHepatits = ({ id, patientId, templateId, analysisId }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [hepatit, setHepatit] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sampleTypeText, setSampleTypeText] = useState("");
+  const [objType, setObjType] = useState('')
 
   useEffect(() => {
     setLoading(true);
-    HepatitProvider.getAllHepatits()
+    AnalizProvider.getAllAnalysisTemplateId(templateId)
       .then((res) => {
         setHepatit(res.data.data);
         console.log(res.data.data);
@@ -31,20 +32,14 @@ const AddResultHepatits = ({ id, patientId }) => {
       });
   }, []);
 
-  
-
   const onSubmit = () => {
-    const rowData = hepatit.map((row) => {
-      return {
-        patientId: +patientId,
-        hepatitisId: row.id,
-        orderDetailId: +id,
-        result: row.result || null,
-        sampleType: sampleTypeText,
-      };
-    });
-
-    HepatitProvider.createResultHepatits(rowData)
+    const resultat = hepatit?.filter((row=>row.id===+analysisId))[0]
+    HepatitProvider.createResultHepatits({
+      patientId: +patientId,
+      orderDetailId: +id,
+      result: resultat.result || null,
+      sampleType: sampleTypeText,
+    })
       .then((res) => {
         console.log(res);
         toast.success(res.data.message);
@@ -55,13 +50,28 @@ const AddResultHepatits = ({ id, patientId }) => {
       });
   };
 
-
   const handleRowChange = (index, field, value) => {
     const updatedHepatits = [...hepatit];
     updatedHepatits[index][field] = value;
     setHepatit(updatedHepatits);
     console.log(updatedHepatits);
   };
+
+  const optionPayment = [
+    {
+      value: "QUALITY",
+      label: "Сифат",
+    },
+    {
+      value: "AMOUNT",
+      label: "Миқдор",
+    },
+    {
+      value: "GENOTYPE",
+      label: "Генотиплар",
+    },
+  ];
+
   return (
     <AnalizResultAddWrapper>
       <div className="top">
@@ -79,7 +89,7 @@ const AddResultHepatits = ({ id, patientId }) => {
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
-              <th style={{ minWidth: "67%" }} className="col">
+              <th style={{ minWidth: "33%" }} className="col">
                 Tekshiruv predmeti
               </th>
               <th style={{ minWidth: "33%" }} className="col">
@@ -89,18 +99,42 @@ const AddResultHepatits = ({ id, patientId }) => {
           </thead>
           <tbody>
             {!loading ? (
-              hepatit.map((obj, index) => (
-                <tr key={index}>
-                  <td style={{ minWidth: "34%", fontSize: 14 }} className="col">
+              hepatit.map((obj, index) => {
+                return(
+                  <tr key={index} >
+                  <td style={{ minWidth: "33%", fontSize: 14 }} className="col">
                     {index + 1}.{obj.name}
                   </td>
-                  <td style={{ minWidth: "33%", fontSize: 14 }} className="col">
-                   {obj.type}
-                  </td>
+                  {/* <td style={{ minWidth: "33%", fontSize: 14 }} className="col">
+                    <Controller
+                      control={control}
+                      name="region"
+                      render={({
+                        field: { onChange, onBlur, value, name, ref },
+                      }) => (
+                        <Select
+                          className="select col-3 w-100"
+                          value={value}
+                          isDisabled={
+                            +analysisId !== +obj.id
+                          }
+                          placeholder="Tanlang"
+                          options={optionPayment}
+                          onBlur={onBlur}
+                          onChange={(v) => {
+                            onChange(v);
+                            setObjType(v.value);
+                          }}
+                          ref={ref}
+                        />
+                      )}
+                    />
+                  </td> */}
                   <td style={{ minWidth: "33%" }} className="col">
                     <input
                       autoComplete="off"
                       className="form-control"
+                      disabled={+analysisId !== +obj.id}
                       value={obj.result || ""}
                       onChange={(e) =>
                         handleRowChange(index, "result", e.target.value)
@@ -108,7 +142,8 @@ const AddResultHepatits = ({ id, patientId }) => {
                     />
                   </td>
                 </tr>
-              ))
+                )
+              })
             ) : (
               <MinLoader />
             )}

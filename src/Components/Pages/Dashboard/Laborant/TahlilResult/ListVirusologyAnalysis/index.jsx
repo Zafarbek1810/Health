@@ -43,28 +43,20 @@ const ListVirusologyAnalysis = ({ patientId, orderId }) => {
         </thead>
         <tbody>
           {!loading ? (
-            results.length ? (
-              results.map((obj, index) => (
-                <>
-                  <tr key={index}>
-                    <td style={{ minWidth: "25%" }} className="col">
-                      {obj.virus_name}
-                    </td>
-                    <td style={{ minWidth: "25%" }} className="col">
-                      {obj.result}
-                    </td>
-                    <td style={{ minWidth: "25%" }} className="col">
-                      {obj.opcrete}
-                    </td>
-                    <td style={{ minWidth: "25%" }} className="col">
-                      {obj.sampleType}
-                    </td>
-                  </tr>
-                </>
-              ))
-            ) : (
-              <h3 className="noItem">Natijalar mavjud emas</h3>
-            )
+                <tr>
+                  <td style={{ minWidth: "25%" }} className="col">
+                    {results.analysisName}
+                  </td>
+                  <td style={{ minWidth: "25%" }} className="col">
+                    {results.result}
+                  </td>
+                  <td style={{ minWidth: "25%" }} className="col">
+                    {results.opcrete}
+                  </td>
+                  <td style={{ minWidth: "25%" }} className="col">
+                    {results.sampleType}
+                  </td>
+                </tr>
           ) : (
             <MinLoader />
           )}

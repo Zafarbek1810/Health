@@ -101,6 +101,10 @@ const VirusMainWrapper = styled.div`
               height: 20px;
               /* fill: rgb(253, 181, 40); */
             }
+
+            &:disabled{
+              opacity: 0.6;
+            }
           }
         }
       }

@@ -4,7 +4,7 @@ import AnalizProvider from "../../../../../../Data/AnalizProvider";
 import LabaratoryProvider from "../../../../../../Data/LabaratoryProvider";
 import { Controller, useForm } from "react-hook-form";
 import { Select, Button } from "antd";
-import MyLink from '../../../../../../Components/Common/MyLink'
+import MyLink from "../../../../../../Components/Common/MyLink";
 import OrderProvider from "../../../../../../Data/OrderProvider";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
@@ -121,9 +121,10 @@ const CreateOrder = ({ id }) => {
       .catch((err) => {
         console.log(err);
         toast.error("Barcha maydonlarni to'ldiring!");
-      }).finally(()=>{
-        setSubmittable(false)
       })
+      .finally(() => {
+        setSubmittable(false);
+      });
   };
 
   useEffect(() => {
@@ -138,12 +139,11 @@ const CreateOrder = ({ id }) => {
     }
   }, [id]);
 
-
   return (
     <CreateOrderWrapper>
       <div className="top">
-      <MyLink to="/dashboard/operator/order/">Orqaga</MyLink>
-      <h3>Buyurtma yaratish</h3>
+        <MyLink to="/dashboard/operator/order/">Orqaga</MyLink>
+        <h3>Buyurtma yaratish</h3>
       </div>
       <div className="wrapper">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -227,11 +227,13 @@ const CreateOrder = ({ id }) => {
                     mode="multiple"
                     className="select w-100"
                     placeholder="Analiz tanlang"
+                    virtual={false}
                     value={analizId[id] ?? []}
                     options={analiz[id]?.map((item) => {
+                      console.log(item);
                       return {
                         value: item.id,
-                        label: item.analysisName || item.name,
+                        label: item.analysisName ,
                       };
                     })}
                     onChange={(v) => {

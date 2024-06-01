@@ -350,13 +350,13 @@ const MainContract = () => {
                 <td style={{ minWidth: "14%" }} className="col">
                   <div className="btns">
                     
-                    <IconButton onClick={() => handleEditHepatit(obj)}>
+                    <IconButton disabled={obj.paymentStatus === 1} onClick={() => handleEditHepatit(obj)}>
                       <EditSvg />
                     </IconButton>
-                    <IconButton onClick={() => handleChangePayment(obj)}>
+                    <IconButton disabled={obj.paymentStatus === 1} onClick={() => handleChangePayment(obj)}>
                       <EyeSvg />
                     </IconButton>
-                    <IconButton onClick={() => handleDeleteHepatit(obj)}>
+                    <IconButton disabled={obj.paymentStatus === 1} onClick={() => handleDeleteHepatit(obj)}>
                       <DeleteSvg />
                     </IconButton>
                   </div>

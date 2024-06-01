@@ -15,6 +15,9 @@ export default class AnalizProvider {
   static async getAllAnalysisByLab(id) {
     return await client.get(`/seo/analysis/get/all/by/lab?laboratoryId=${id}`);
   }
+  static async getAllAnalysisTemplateId(id) {
+    return await client.get(`/seo/analysis/get/by-template?templateId=${id}`);
+  }
   static async getShablonId(analysisId) {
     return await client.get(`/seo/analysis/get/${analysisId}`);
   }
@@ -114,10 +117,10 @@ export default class AnalizProvider {
       return Promise.reject(err);
     }
   }
-  static async getPdfMicrobiological(isCyrillic, patientId, orderDetailId) {
+  static async getPdfMicrobiological(isCyrillic, patientId, orderId) {
     try {
       const response = await client.get(
-        `/pdf/get-microbiological-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        `/pdf/get-microbiological-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderId=${orderId}`,
         {
           responseType: "blob",
         }
@@ -128,10 +131,10 @@ export default class AnalizProvider {
       return Promise.reject(err);
     }
   }
-  static async getPdfHepatits(isCyrillic, patientId, orderDetailId) {
+  static async getPdfHepatits(isCyrillic, patientId, orderId) {
     try {
       const response = await client.get(
-        `/pdf/get-hepatitis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        `/pdf/get-hepatitis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderId=${orderId}`,
         {
           responseType: "blob",
         }
@@ -142,10 +145,10 @@ export default class AnalizProvider {
       return Promise.reject(err);
     }
   }
-  static async getVirusologyAnalysis(isCyrillic, patientId, orderDetailId) {
+  static async getVirusologyAnalysis(isCyrillic, patientId, orderId) {
     try {
       const response = await client.get(
-        `/pdf/get-virology-analysis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderDetailId=${orderDetailId}`,
+        `/pdf/get-virology-analysis-pdf?isCyrillic=${isCyrillic}&patientId=${patientId}&orderId=${orderId}`,
         {
           responseType: "blob",
         }

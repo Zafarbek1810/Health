@@ -72,11 +72,17 @@ const Tahlillar = () => {
         case 7: router.push(
           `/dashboard/laborant/microbiology-examination?id=${detailObj.id}&patientId=${detailObj.patientId}`
         ); break;
-        case 8: router.push(
-          `/dashboard/laborant/add-result-hepatits?id=${detailObj.id}&patientId=${detailObj.patientId}`
-        ); break;
+        // case 8: router.push(
+        //   `/dashboard/laborant/add-result-hepatits?id=${detailObj.id}&patientId=${detailObj.patientId}`
+        // ); break;
         case 9: router.push(
-          `/dashboard/laborant/add-virusology-analysis?id=${detailObj.id}&patientId=${detailObj.patientId}`
+          `/dashboard/laborant/add-result-hepatits?id=${detailObj.id}&patientId=${detailObj.patientId}&templateId=${res?.data.data.templateAnalysis.id}&analysisId=${analysisId}`
+        ); break;
+        case 10: router.push(
+          `/dashboard/laborant/add-virusology-analysis?id=${detailObj.id}&patientId=${detailObj.patientId}&templateId=${res?.data.data.templateAnalysis.id}&analysisId=${analysisId}`
+        ); break;
+        case 11: router.push(
+          `/dashboard/laborant/microbiology-examination?id=${detailObj.id}&patientId=${detailObj.patientId}&templateId=${res?.data.data.templateAnalysis.id}&analysisId=${analysisId}`
         ); break;
 
         default : router.push(`/dashboard/laborant/tahlillar`);

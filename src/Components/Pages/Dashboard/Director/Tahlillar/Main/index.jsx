@@ -119,6 +119,7 @@ const Tahlillar = () => {
   const handleOpenDrawer = (obj) => {
     setOpenDrawer(true);
     setDrawerData(obj);
+    console.log(obj);
   };
 
   const getPdfBtn = (drawerData) => {
@@ -282,40 +283,12 @@ const Tahlillar = () => {
           });
         break;
 
-        case 7:
-        AnalizProvider.getPdfMicrobiological(
-          true,
-          drawerData.patientId,
-          drawerData.id
-        )
-          .then((res) => {
-            console.log(res);
-            const blob = new Blob([res.data], {
-              type: "application/pdf",
-            });
-
-            const link = document.createElement("a");
-            link.href = window.URL.createObjectURL(blob);
-            //no download
-            link.target = "_blank";
-            link.click();
-
-            // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
-            // link.click();
-          })
-          .catch((err) => {
-            console.log(err);
-            toast.error(err?.response?.data?.message);
-          })
-          .finally(() => {
-            setLoadingPdf(false);
-          });
-        break;
-      case 8:
+       
+      case 9:
         AnalizProvider.getPdfHepatits(
           true,
           drawerData.patientId,
-          drawerData.id
+          drawerData.orderId
         )
           .then((res) => {
             console.log(res);
@@ -340,11 +313,11 @@ const Tahlillar = () => {
             setLoadingPdf(false);
           });
         break;
-      case 9:
+      case 10:
         AnalizProvider.getVirusologyAnalysis(
           true,
           drawerData.patientId,
-          drawerData.id
+          drawerData.orderId
         )
           .then((res) => {
             console.log(res);
@@ -369,6 +342,35 @@ const Tahlillar = () => {
             setLoadingPdf(false);
           });
         break;
+        case 11:
+          AnalizProvider.getPdfMicrobiological(
+            true,
+            drawerData.patientId,
+            drawerData.orderId
+          )
+            .then((res) => {
+              console.log(res);
+              const blob = new Blob([res.data], {
+                type: "application/pdf",
+              });
+  
+              const link = document.createElement("a");
+              link.href = window.URL.createObjectURL(blob);
+              //no download
+              link.target = "_blank";
+              link.click();
+  
+              // link.download = `${drawerData.firstName} ${drawerData.lastName}.pdf`;
+              // link.click();
+            })
+            .catch((err) => {
+              console.log(err);
+              toast.error(err?.response?.data?.message);
+            })
+            .finally(() => {
+              setLoadingPdf(false);
+            });
+          break;
     }
   };
 

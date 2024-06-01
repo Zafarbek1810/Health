@@ -11,8 +11,10 @@ import CashSvg from "../../../../Common/Svgs/CashSvg";
 import CardSvg from "../../../../Common/Svgs/CardSvg";
 import ReturnCash from "../../../../Common/Svgs/ReturnCash";
 import TotalSum from "../../../../Common/Svgs/TotalSum";
+import { useRouter } from "next/router";
 
 const Statistika = () => {
+  const router = useRouter();
   const [patient, setPatient] = useState({});
   const [currency, setCurrency] = useState({});
   const [count, setCount] = useState({});
@@ -77,7 +79,11 @@ const Statistika = () => {
         setGeneralData(res.data.data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status === 403) {
+          router.push("/login");
+        } else {
+          console.log(err);
+        }
       });
   }, [dateString]);
 

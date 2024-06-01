@@ -11,7 +11,7 @@ import ParasiteProvider from "../../../../../../Data/ParasiteProvider";
 import BacteriaProvider from "../../../../../../Data/BacteriaProvider";
 import MicroOrganismProvider from "../../../../../../Data/MicroOrganismProvider";
 
-const EditMicroorganismExam = ({ patientId, orderId }) => {
+const EditMicroorganismExam = ({ patientId, orderId,  templateId, analysisId, }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [parasitology, setParasitology] = useState([]);
@@ -21,11 +21,9 @@ const EditMicroorganismExam = ({ patientId, orderId }) => {
   const [resultsData, setResultsData] = useState([]);
   const [sampleTypeText, setSampleTypeText] = useState("");
 
- 
-  
-
   function removeDuplicatesById(array1, array2) {
-    const concatenatedArray = array1.concat(array2);
+    const normalizedArray1 = Array.isArray(array1) ? array1 : [array1];
+    const concatenatedArray = normalizedArray1.concat(array2);
     const uniqueArray = [];
 
     concatenatedArray.forEach((obj) => {
@@ -44,25 +42,39 @@ const EditMicroorganismExam = ({ patientId, orderId }) => {
     setResultsData(removeDuplicatesById(parasitologyResult, parasitology));
   }, [parasitology, parasitologyResult]);
 
-  //3talik
+
+
   useEffect(() => {
     setLoading(true);
     MicroOrganismProvider.getResulMicroorganismByPatientId(patientId, orderId)
       .then((res) => {
-        console.log(res.data.data);
-        const response = res.data.data.map((item) => {
-          return {
-            uniqueId: item?.id,
-            ...item,
-          };
-        });
-
-        setParasitologyResult(response);
-        console.log(response, "results");
+        console.log(res);
+        setParasitologyResult({uniqueId: res?.data?.data?.id, ...res.data.data})
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, [patientId, orderId]);
+
+
+  //3talik
+  // useEffect(() => {
+  //   setLoading(true);
+  //   MicroOrganismProvider.getResulMicroorganismByPatientId(patientId, orderId)
+  //     .then((res) => {
+  //       console.log(res.data.data);
+  //       const response = res.data.data.map((item) => {
+  //         return {
+  //           uniqueId: item?.id,
+  //           ...item,
+  //         };
+  //       });
+
+  //       setParasitologyResult(response);
+  //       console.log(response, "results");
+  //     })
+  //     .catch((err) => console.log(err))
+  //     .finally(() => setLoading(false));
+  // }, [patientId, orderId]);
 
   console.log(resultsData, "resultsData");
   //all parasites
@@ -94,25 +106,18 @@ const EditMicroorganismExam = ({ patientId, orderId }) => {
   };
 
   const onSubmit = (data) => {
-    const rowData = resultsData.map((row) =>
-      {
-        return(
-          {
-            id: row.resultId,
+    const resultat = resultsData?.filter((row=>row.id===+analysisId))[0]
+
+    MicroOrganismProvider.createResultMicroorganism({
+            id: resultat.resultId,
             patientId: +patientId,
-            microorganismId: row.id,
             orderDetailId: +orderId,
-            result: row.result || null,
+            result: resultat.result || null,
             sampleType:
               sampleTypeText.length === 0
                 ? parasitologyResult[0]?.sampleType
                 : sampleTypeText,
-          }
-        )
-      }
-    );
-
-    MicroOrganismProvider.createResultMicroorganism(rowData)
+          })
       .then((res) => {
         setLoading2(true);
         console.log(res);
@@ -136,7 +141,7 @@ const EditMicroorganismExam = ({ patientId, orderId }) => {
         <input
           onChange={(e) => setSampleTypeText(e.target.value)}
           placeholder="Namuna turi"
-          defaultValue={parasitologyResult[0]?.sampleType || ""}
+          defaultValue={parasitologyResult?.sampleType || ""}
           type="text"
           style={{ width: "30%", marginLeft: "auto" }}
           autoComplete="off"
@@ -166,6 +171,7 @@ const EditMicroorganismExam = ({ patientId, orderId }) => {
                     <input
                       autoComplete="off"
                       className="form-control"
+                      disabled={+analysisId !==  +obj.id}
                       value={obj.result || ""}
                       onChange={(e) =>
                         handleRowChange(index, "result", e.target.value)

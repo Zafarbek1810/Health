@@ -16,6 +16,11 @@ const TahlillarWrapper = styled.div`
         }
       }
     }
+
+    img{
+      width: 20px;
+     height: 20px;
+    }
 }
  .table {
     margin-top: 20px;

@@ -3,9 +3,10 @@ import BacteriaProvider from "../../../../../../Data/BacteriaProvider";
 import MinLoader from "../../../../../Common/MinLoader";
 import MainResultListWrapper from "../ListResultMain/style";
 import HepatitProvider from "../../../../../../Data/HepatitProvider";
+import MyLink from "../../../../../Common/MyLink";
 
 const ListResultHepatit = ({ patientId, orderId }) => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -25,41 +26,34 @@ const ListResultHepatit = ({ patientId, orderId }) => {
 
   return (
     <MainResultListWrapper>
+       <MyLink to="/dashboard/laborant/tahlil-result">Orqaga</MyLink>
       <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th style={{ minWidth: "30%" }} className="col">
+            <th style={{ minWidth: "25%" }} className="col">
               Nomi
             </th>
-            <th style={{ minWidth: "30%" }} className="col">
+            <th style={{ minWidth: "25%" }} className="col">
               Tahlil natijasi
             </th>
-            <th style={{ minWidth: "30%" }} className="col">
+            <th style={{ minWidth: "25%" }} className="col">
               Namuna turi
             </th>
           </tr>
         </thead>
         <tbody>
           {!loading ? (
-            results.length ? (
-              results.map((obj, index) => (
-                <>
-                  <tr key={index}>
-                    <td style={{ minWidth: "30%" }} className="col">
-                      {obj.name}
-                    </td>
-                    <td style={{ minWidth: "30%" }} className="col">
-                      {obj.result}
-                    </td>
-                    <td style={{ minWidth: "30%" }} className="col">
-                      {obj.sampleType}
-                    </td>
-                  </tr>
-                </>
-              ))
-            ) : (
-              <h3 className="noItem">Natijalar mavjud emas</h3>
-            )
+            <tr>
+              <td style={{ minWidth: "25%" }} className="col">
+                {results?.name}
+              </td>
+              <td style={{ minWidth: "25%" }} className="col">
+                {results?.result}
+              </td>
+              <td style={{ minWidth: "25%" }} className="col">
+                {results?.sampleType}
+              </td>
+            </tr>
           ) : (
             <MinLoader />
           )}

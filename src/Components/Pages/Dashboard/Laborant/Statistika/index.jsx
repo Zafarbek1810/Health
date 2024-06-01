@@ -7,8 +7,10 @@ import LineCHarts from "./LineCharts";
 import PatientProvider from "../../../../../Data/PatientProvider";
 import OrderProvider from "../../../../../Data/OrderProvider";
 import CountUp from "react-countup";
+import { useRouter } from "next/router";
 
 const Statistika = () => {
+  const router = useRouter();
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -18,7 +20,11 @@ const Statistika = () => {
         console.log(res.data.data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status === 403) {
+          router.push("/login");
+        } else {
+          console.log(err);
+        }
       });
   }, []);
 

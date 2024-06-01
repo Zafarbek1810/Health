@@ -15,8 +15,10 @@ import CashSvg from "../../../../Common/Svgs/CashSvg";
 import MicroscopeSvg from "../../../../Common/Svgs/MicroscopeSvg";
 import UseHeart from "../../../../Common/Svgs/UseHeart";
 import CashSvg2 from "../../../../Common/Svgs/CashSvg2";
+import { useRouter } from "next/router";
 
 const Statistika = () => {
+  const router = useRouter();
   const [patient, setPatient] = useState({});
   const [currency, setCurrency] = useState({});
   const [generalData, setGeneralData] = useState({});
@@ -31,7 +33,11 @@ const Statistika = () => {
         console.log(res.data.data);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response && err.response.status === 403) {
+          router.push("/login");
+        } else {
+          console.log(err);
+        }
       });
   }, []);
 
@@ -99,7 +105,7 @@ const Statistika = () => {
       </div>
 
       <div className="bottom">
-      {/* <div
+        {/* <div
           className="roww"
           style={{ marginBottom: 16, justifyContent: "space-between" }}
         >
@@ -181,17 +187,21 @@ const Statistika = () => {
               <div bordered={true} className="bottom">
                 <p>Bemorlar soni:</p>{" "}
                 <span>
-                  {patient.currentPatientCount
-                  ? <CountUp end={(patient.currentPatientCount)} separator=" "/> 
-                    : "0"}
+                  {patient.currentPatientCount ? (
+                    <CountUp end={patient.currentPatientCount} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
               <div bordered={true} className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
-                  {currency.currentDayIncome
-                    ? <CountUp end={(currency.currentDayIncome)} separator=" "/> 
-                    : "0"}
+                  {currency.currentDayIncome ? (
+                    <CountUp end={currency.currentDayIncome} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
             </Card>
@@ -202,17 +212,21 @@ const Statistika = () => {
               <div className="bottom">
                 <p>Bemorlar soni:</p>{" "}
                 <span>
-                  {patient.currentWeekCount
-                    ? <CountUp end={(patient.currentWeekCount)} separator=" "/> 
-                    : "0"}
+                  {patient.currentWeekCount ? (
+                    <CountUp end={patient.currentWeekCount} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
               <div className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
-                  {currency.currentWeekIncome
-                  ? <CountUp end={(currency.currentWeekIncome)} separator=" "/> 
-                    : "0"}
+                  {currency.currentWeekIncome ? (
+                    <CountUp end={currency.currentWeekIncome} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
             </Card>
@@ -223,17 +237,21 @@ const Statistika = () => {
               <div className="bottom">
                 <p>Bemorlar soni:</p>{" "}
                 <span>
-                  {patient.currentMonthCount
-                     ? <CountUp end={(patient.currentMonthCount)} separator=" "/> 
-                    : "0"}
+                  {patient.currentMonthCount ? (
+                    <CountUp end={patient.currentMonthCount} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
               <div className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
-                  {currency.currentMonthIncome
-                  ? <CountUp end={(currency.currentMonthIncome)} separator=" "/> 
-                    : "0"}
+                  {currency.currentMonthIncome ? (
+                    <CountUp end={currency.currentMonthIncome} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
             </Card>
@@ -244,17 +262,21 @@ const Statistika = () => {
               <div className="bottom">
                 <p>Bemorlar soni:</p>{" "}
                 <span>
-                  {patient.currentYearCount
-                   ? <CountUp end={(patient.currentYearCount)} separator=" "/> 
-                    : "0"}
+                  {patient.currentYearCount ? (
+                    <CountUp end={patient.currentYearCount} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
               <div className="bottom">
                 <p>Kirim:</p>{" "}
                 <span>
-                  {currency.currentYearIncome
-                   ? <CountUp end={(currency.currentYearIncome)} separator=" "/> 
-                    : "0"}
+                  {currency.currentYearIncome ? (
+                    <CountUp end={currency.currentYearIncome} separator=" " />
+                  ) : (
+                    "0"
+                  )}
                 </span>
               </div>
             </Card>
@@ -271,7 +293,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <CashSvg/>
+                <CashSvg />
               </div>
               <Statistic
                 title="Naqd to'langan miqdor"
@@ -284,11 +306,11 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <CardSvg/>
+                <CardSvg />
               </div>
               <Statistic
                 title="Plastikdan to'langan miqdor"
-                value={(generalData?.totalPlasticSum)}
+                value={generalData?.totalPlasticSum}
                 formatter={formatter}
                 className="stat"
               />
@@ -297,7 +319,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <ReturnCash/>
+                <ReturnCash />
               </div>
               <Statistic
                 title="Qaytarilgan miqdor"
@@ -310,7 +332,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <TotalSum/>
+                <TotalSum />
               </div>
               <Statistic
                 title="Jami miqdor"
@@ -323,7 +345,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <MicroscopeSvg/>
+                <MicroscopeSvg />
               </div>
               <Statistic
                 title="Analizlar soni"
@@ -336,7 +358,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <UseHeart/>
+                <UseHeart />
               </div>
               <Statistic
                 title="Bemorlar soni"
@@ -349,7 +371,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <CardSvg/>
+                <CardSvg />
               </div>
               <Statistic
                 title="Plastik orqali to`lov"
@@ -362,7 +384,7 @@ const Statistika = () => {
           <Col span={6} style={{ marginBottom: 10 }}>
             <Card bordered={true} className="topCards1">
               <div className="svg">
-                <CashSvg2/>
+                <CashSvg2 />
               </div>
               <Statistic
                 title="Naqd orqali to`lov"
@@ -374,10 +396,10 @@ const Statistika = () => {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12} style={{marginBottom:16}}>
+          <Col span={12} style={{ marginBottom: 16 }}>
             <Card bordered={true}>
               <div class="card-title">Laboratoriyalardagi kirim</div>
-              <PieStatistic dateString={dateString}/>
+              <PieStatistic dateString={dateString} />
             </Card>
           </Col>
           <Col span={12}>
@@ -388,7 +410,9 @@ const Statistika = () => {
           </Col>
           <Col span={24}>
             <Card bordered={true}>
-              <div class="card-title">So`nggi 10 kundagi naqd va plastikdagi tushumlar</div>
+              <div class="card-title">
+                So`nggi 10 kundagi naqd va plastikdagi tushumlar
+              </div>
               <BarChart />
             </Card>
           </Col>

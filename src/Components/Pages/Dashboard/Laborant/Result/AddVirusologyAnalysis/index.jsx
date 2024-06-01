@@ -6,8 +6,9 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import VirusologyProvider from "../../../../../../Data/VirusologyProvider";
+import AnalizProvider from "../../../../../../Data/AnalizProvider";
 
-const AddVirusologyAnalysis = ({ id, patientId }) => {
+const AddVirusologyAnalysis = ({ id, patientId, templateId, analysisId }) => {
   const router = useRouter();
   const { register, handleSubmit, control, reset, setValue } = useForm();
   const [virusology, setVirusology] = useState([]);
@@ -16,7 +17,7 @@ const AddVirusologyAnalysis = ({ id, patientId }) => {
 
   useEffect(() => {
     setLoading(true);
-    VirusologyProvider.getAllVirus()
+    AnalizProvider.getAllAnalysisTemplateId(templateId)
       .then((res) => {
         setVirusology(res.data.data);
         console.log(res.data.data);
@@ -32,18 +33,14 @@ const AddVirusologyAnalysis = ({ id, patientId }) => {
   
 
   const onSubmit = () => {
-    const rowData = virusology.map((row) => {
-      return {
-        patientId: +patientId,
-        virusId: row.id,
-        orderDetailId: +id,
-        result: row.result || null,
-        opcrete: row.opcrete || null,
-        sampleType: sampleTypeText,
-      };
-    });
-
-    VirusologyProvider.createResultVirusologyAnalysis(rowData)
+    const resultat = virusology?.filter((row=>row.id===+analysisId))[0]
+    VirusologyProvider.createResultVirusologyAnalysis({
+      patientId: +patientId,
+      orderDetailId: +id,
+      result: resultat.result || null,
+      opcrete: resultat.opcrete || null,
+      sampleType: sampleTypeText,
+    })
       .then((res) => {
         console.log(res);
         toast.success(res.data.message);
@@ -94,12 +91,13 @@ const AddVirusologyAnalysis = ({ id, patientId }) => {
               virusology.map((obj, index) => (
                 <tr key={index}>
                   <td style={{ minWidth: "33%", fontSize: 14 }} className="col">
-                    {index + 1}.{obj.virus_name}
+                    {index + 1}.{obj.name}
                   </td>
                   <td style={{ minWidth: "33%", fontSize: 14 }} className="col">
                   <input
                       autoComplete="off"
                       className="form-control"
+                      disabled={+analysisId !== +obj.id}
                       value={obj.opcrete || ""}
                       onChange={(e) =>
                         handleRowChange(index, "opcrete", e.target.value)
@@ -110,6 +108,7 @@ const AddVirusologyAnalysis = ({ id, patientId }) => {
                     <input
                       autoComplete="off"
                       className="form-control"
+                      disabled={+analysisId !== +obj.id}
                       value={obj.result || ""}
                       onChange={(e) =>
                         handleRowChange(index, "result", e.target.value)
